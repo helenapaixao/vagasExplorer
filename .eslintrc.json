@@ -1,0 +1,66 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb",
+        "plugin:@typescript-eslint/recommended",
+        "prettier/@typescript-eslint",
+        "plugin:prettier/recomended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "react-hooks",
+        "@typescript-eslint",
+        "prettier"
+
+    ],
+    "rules": {
+        "prettier/prettier":"error",
+        "react-hooks/rules-of-hooks":"error",
+        "react-hooks/exhaustive-deps":"warn",
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "import/prefer-default-export":"off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/explicit-function-return-type": [
+            "error",
+            {
+                "allowExpressions":true
+            }
+        ],
+
+        "import/extensions":[
+            "error",
+            "ignorePackages",
+            {
+                "ts":"never",
+                "tsx":"never"
+            }
+        ]
+    },
+    "overrides": [
+        {
+          // enable the rule specifically for TypeScript files
+          "files": ["*.ts", "*.tsx"],
+          "rules": {
+            "@typescript-eslint/explicit-module-boundary-types": ["error"]
+          }
+        }
+      ],
+
+    "settings": {
+        "import/resolver": {
+            "typescript": {}
+        }
+    }
+}
