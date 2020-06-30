@@ -1,10 +1,10 @@
 import React, { useState, FormEvent, useEffect } from "react";
-import { FiChevronRight } from "react-icons/fi";
+import { FiChevronRight,FiChevronLeft } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import api from "../../services/api";
 
 import logoImg from "../../assets/logo.svg";
-import { Title, Form, Repositories, Error, Header } from "./styles";
+import { Title, Repositories, Error, Header ,FooterFinal} from "./styles";
 
 interface Repository {
     full_name: string;
@@ -60,7 +60,12 @@ const Dashboard: React.FC = () => {
         <>
             <Header>
                 <img src={logoImg} alt="logo" />
+                <Link to="/">
+                    <FiChevronLeft size={16} />
+                    Voltar
+                </Link>
                 <h1>vagasExplorer</h1>
+
             </Header>
 
             <Title>Principais repositórios de vagas</Title>
@@ -127,30 +132,33 @@ const Dashboard: React.FC = () => {
                         alt="androiddevbr-br"
                     />
                     <div>
-                        <strong>vuejs-br</strong>
+                        <strong>androiddevbr</strong>
                         <p>Mural de vagas para desenvolvedor Android.</p>
                     </div>
                     <FiChevronRight size={20} />
                 </Link>
 
                 <Link
-                    key="androiddevbr/vagas"
-                    to="/repository/androiddevbr/vagas"
+                    key="react-brasil/vagas"
+                    to="/repository/react-brasil/vagas"
                 >
                     <img
-                        src="https://avatars0.githubusercontent.com/u/59667653?v=4.githubusercontent.com/u/13825651?v=4"
-                        alt="qa-brasil-br"
+                        src="https://avatars2.githubusercontent.com/u/16929016?s=500&v=4"
+                        alt="React Brasil"
                     />
                     <div>
-                        <strong>qa-brasil</strong>
-                        <p>
-                            Espaço para divulgação de vagas para Quality
-                            Assurance 🚀
-                        </p>
+                        <strong>React Brasil</strong>
+                        <p>Espaço para divulgação de vagas relacionadas com React</p>
                     </div>
                     <FiChevronRight size={20} />
                 </Link>
+
+
             </Repositories>
+
+            <FooterFinal>
+            Feito com ❤️ por Helena Paixão 👋️ <a href="https://www.linkedin.com/in/helenapaixao">Entre em contato!</a>
+            </FooterFinal>
         </>
     );
 };
