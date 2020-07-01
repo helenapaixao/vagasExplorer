@@ -93,7 +93,7 @@ export const AnimationContainer = styled.div`
         }
     }
     > a {
-        color: #ff9000;
+        color: #3A3A3A;
         display: block;
         margin-top: 24px;
         text-decoration: none;
@@ -101,7 +101,7 @@ export const AnimationContainer = styled.div`
         display: flex;
         align-items: center;
         &:hover {
-            color: ${shade(0.2, "#ff9000")};
+            color: ${shade(0.2, "#3A3A3A")};
         }
         svg {
             margin-left: 16px;

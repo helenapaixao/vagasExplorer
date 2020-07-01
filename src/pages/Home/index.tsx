@@ -1,8 +1,14 @@
 import React from "react";
 import logo from "../../assets/logo.svg";
-import ImageHome from "../../assets/image_home.svg";
+import Animation from "../../components/Animation";
 
-import { Image, Title, Header, Footer, FooterFinal,AnimationContainer } from "./styles";
+import {
+    Title,
+    Header,
+    Footer,
+    FooterFinal,
+    AnimationContainer,
+} from "./styles";
 
 import { FiLogIn } from "react-icons/fi";
 
@@ -10,15 +16,15 @@ const Home: React.FC = () => {
     return (
         <>
             <Header>
-
                 <img src={logo} alt="logo" />
                 <h1>vagasExplorer</h1>
             </Header>
             <AnimationContainer>
-            <Title>Seu buscador de vagas de tecnologia</Title>
-            <div>
-                <Image src={ImageHome} />
-            </div>
+                <Title>Seu buscador de vagas de tecnologia</Title>
+
+                <div>
+                    <Animation />
+                </div>
             </AnimationContainer>
             <Footer>
                 <div>
@@ -34,7 +40,10 @@ const Home: React.FC = () => {
             </Footer>
 
             <FooterFinal>
-            Feito com ❤️ por Helena Paixão 👋️ <a href="https://www.linkedin.com/in/helenapaixao">Entre em contato!</a>
+                Feito com ❤️ por Helena Paixão 👋️{" "}
+                <a href="https://www.linkedin.com/in/helenapaixao">
+                    Entre em contato!
+                </a>
             </FooterFinal>
         </>
     );
