@@ -36,26 +36,26 @@ const Dashboard: React.FC = () => {
         );
     }, [repositories]);
 
-    async function handleAddRepository(
-        event: FormEvent<HTMLFormElement>,
-    ): Promise<void> {
-        event.preventDefault();
-        if (!newRepo) {
-            setInputError("Digite o autor/repositorio");
-            return;
-        }
-        try {
-            const response = await api.get<Repository>(`repos/${newRepo}`);
+    // async function handleAddRepository(
+    //     event: FormEvent<HTMLFormElement>,
+    // ): Promise<void> {
+    //     event.preventDefault();
+    //     if (!newRepo) {
+    //         setInputError("Digite o autor/repositorio");
+    //         return;
+    //     }
+    //     try {
+    //         const response = await api.get<Repository>(`repos/${newRepo}`);
 
-            const repository = response.data;
+    //         const repository = response.data;
 
-            setRepositories([...repositories, repository]);
-            setNewRepo("");
-            setInputError("");
-        } catch (err) {
-            setInputError("Erro na busca por esse repositório");
-        }
-    }
+    //         setRepositories([...repositories, repository]);
+    //         setNewRepo("");
+    //         setInputError("");
+    //     } catch (err) {
+    //         setInputError("Erro na busca por esse repositório");
+    //     }
+    // }
     return (
         <>
             <Header>
@@ -149,6 +149,21 @@ const Dashboard: React.FC = () => {
                     <div>
                         <strong>React Brasil</strong>
                         <p>Espaço para divulgação de vagas relacionadas com React</p>
+                    </div>
+                    <FiChevronRight size={20} />
+                </Link>
+
+                <Link
+                    key="qa-brasil/vagas"
+                    to="/repository/qa-brasil/vagas"
+                >
+                    <img
+                        src="https://avatars0.githubusercontent.com/u/59667653?s=200&v=4"
+                        alt="@qa-brasil"
+                    />
+                    <div>
+                        <strong>QA Brasil </strong>
+                        <p>Comunidade Brasileira para Analistas de testes</p>
                     </div>
                     <FiChevronRight size={20} />
                 </Link>

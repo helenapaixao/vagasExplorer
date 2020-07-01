@@ -5,9 +5,9 @@ import { Container } from "./styles";
 import animationData from "../../assets/25920-questions.json";
 
 const Animation: React.FC = () => {
-    const [autoplay, setAutoplay] = useState(false);
-    const [loop, setLoop] = useState(true);
-    const [direction, setDirection] = useState(1);
+    const [autoplay] = useState(false);
+    const [loop] = useState(true);
+    const [direction] = useState(1);
 
     return (
         <Container>
