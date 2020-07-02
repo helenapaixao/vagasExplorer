@@ -1,10 +1,10 @@
 import React, { useState, FormEvent, useEffect } from "react";
-import { FiChevronRight,FiChevronLeft } from "react-icons/fi";
+import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import api from "../../services/api";
 
 import logoImg from "../../assets/logo.svg";
-import { Title, Repositories, Error, Header ,FooterFinal} from "./styles";
+import { Title, Repositories, Error, Header, FooterFinal } from "./styles";
 
 interface Repository {
     full_name: string;
@@ -65,7 +65,6 @@ const Dashboard: React.FC = () => {
                     Voltar
                 </Link>
                 <h1>vagasExplorer</h1>
-
             </Header>
 
             <Title>Principais repositórios de vagas</Title>
@@ -148,15 +147,15 @@ const Dashboard: React.FC = () => {
                     />
                     <div>
                         <strong>React Brasil</strong>
-                        <p>Espaço para divulgação de vagas relacionadas com React</p>
+                        <p>
+                            Espaço para divulgação de vagas relacionadas com
+                            React
+                        </p>
                     </div>
                     <FiChevronRight size={20} />
                 </Link>
 
-                <Link
-                    key="qa-brasil/vagas"
-                    to="/repository/qa-brasil/vagas"
-                >
+                <Link key="qa-brasil/vagas" to="/repository/qa-brasil/vagas">
                     <img
                         src="https://avatars0.githubusercontent.com/u/59667653?s=200&v=4"
                         alt="@qa-brasil"
@@ -167,12 +166,13 @@ const Dashboard: React.FC = () => {
                     </div>
                     <FiChevronRight size={20} />
                 </Link>
-
-
             </Repositories>
 
             <FooterFinal>
-            Feito com ❤️ por Helena Paixão 👋️ <a href="https://www.linkedin.com/in/helenapaixao">Entre em contato!</a>
+                Feito com ❤️ por Helena Paixão 👋️{" "}
+                <a href="https://www.linkedin.com/in/helenapaixao">
+                    Entre em contato!
+                </a>
             </FooterFinal>
         </>
     );
