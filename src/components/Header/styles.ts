@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FiChevronLeft } from "react-icons/fi";
+import { FiChevronLeft } from 'react-icons/fi';
 
 export const Container = styled.header`
   grid-area: header;
@@ -21,7 +21,7 @@ export const LogoContainer = styled.div`
 
 export const LogoImage = styled.img.attrs({
   src: require('../../assets/logo.svg'),
-  alt: 'Vagas Explorer'
+  alt: 'Vagas Explorer',
 })`
   height: 60px;
   margin-right: 10px;
@@ -44,5 +44,5 @@ export const ActionContainer = styled.div`
 `;
 
 export const IconBack = styled(FiChevronLeft).attrs({
-  size: 16
+  size: 16,
 })``;

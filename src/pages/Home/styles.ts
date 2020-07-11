@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { shade } from "polished";
-import { FiLogIn } from "react-icons/fi";
+import styled from 'styled-components';
+import { shade } from 'polished';
+import { FiLogIn } from 'react-icons/fi';
 
 export const Title = styled.section`
   grid-area: slogan;
@@ -31,7 +31,7 @@ export const Title = styled.section`
     transition: all 0.2s ease-in-out;
 
     &:hover {
-      background-color: ${shade(0.2, "#3A3A3A")};
+      background-color: ${shade(0.2, '#3A3A3A')};
     }
 
     svg {
@@ -48,7 +48,6 @@ export const Ilustration = styled.section`
   justify-content: center;
 `;
 
-
 export const Footer = styled.footer`
   grid-area: footer;
 
@@ -64,7 +63,7 @@ export const Footer = styled.footer`
     transition: all 0.2s ease-in-out;
 
     &:hover {
-      color: ${shade(0.2, "#3A3A3A")};
+      color: ${shade(0.2, '#3A3A3A')};
     }
   }
 `;

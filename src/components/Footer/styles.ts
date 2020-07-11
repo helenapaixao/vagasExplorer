@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { shade } from "polished";
+import { shade } from 'polished';
 
 export const Footer = styled.footer`
   grid-area: footer;
@@ -19,7 +19,7 @@ export const Footer = styled.footer`
     transition: all 0.2s ease-in-out;
 
     &:hover {
-      color: ${shade(0.2, "#3A3A3A")};
+      color: ${shade(0.2, '#3A3A3A')};
     }
   }
 `;

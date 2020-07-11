@@ -6,7 +6,6 @@ export const Container = styled.section`
 `;
 
 export const RepositoryInfo = styled.header`
-
   > div {
     display: flex;
     align-items: center;

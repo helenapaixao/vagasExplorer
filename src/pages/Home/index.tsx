@@ -1,11 +1,11 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-import Layout from "../../components/Layout";
-import Header from "../../components/Header";
-import Animation from "../../components/Animation";
+import Layout from '../../components/Layout';
+import Header from '../../components/Header';
+import Animation from '../../components/Animation';
 
-import * as S from "./styles";
+import * as S from './styles';
 
 const Home: React.FC = () => {
   return (

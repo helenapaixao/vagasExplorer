@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useRouteMatch } from "react-router-dom";
-import { FiChevronRight } from "react-icons/fi";
+import React, { useEffect, useState } from 'react';
+import { useRouteMatch } from 'react-router-dom';
+import { FiChevronRight } from 'react-icons/fi';
 
-import api from "../../services/api";
+import api from '../../services/api';
 
-import Layout from "../../components/Layout";
-import Header from "../../components/Header";
+import Layout from '../../components/Layout';
+import Header from '../../components/Header';
 
 import * as S from './styles';
 
@@ -20,14 +20,13 @@ interface RepositoryProps {
   };
 }
 
-
 interface IssueProps {
   title: string;
   id: string;
   html_url: string;
   user: {
     login: string;
-    avatar_url:string;
+    avatar_url: string;
   };
 }
 
@@ -49,11 +48,11 @@ const Repository: React.FC = () => {
     api.get(`repos/${params.repository}/issues`).then((response) => {
       setIssues(response.data);
     });
-}, [params.repository]);
+  }, [params.repository]);
 
   return (
     <Layout isContentFull>
-      <Header isLink='/dashboard' />
+      <Header isLink="/dashboard" />
       <S.Container>
         {repository && (
           <S.RepositoryInfo>
