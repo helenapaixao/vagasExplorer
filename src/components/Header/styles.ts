@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { FiChevronLeft } from "react-icons/fi";
-import { shade } from "polished";
 
 export const Container = styled.header`
   grid-area: header;
