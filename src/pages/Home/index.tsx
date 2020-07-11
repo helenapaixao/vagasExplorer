@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
 import Animation from "../../components/Animation";
-import Footer from "../../components/Footer";
 
 import * as S from "./styles";
 
@@ -22,7 +21,6 @@ const Home: React.FC = () => {
       <S.Ilustration>
         <Animation />
       </S.Ilustration>
-      <Footer />
     </Layout>
   );
 };

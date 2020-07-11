@@ -3,14 +3,13 @@ import { FiChevronRight } from "react-icons/fi";
 
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
-import Footer from "../../components/Footer";
 
 import * as S from './styles';
 
 const Dashboard: React.FC = () => {
   return (
     <Layout isContentFull>
-      <Header isBack />
+      <Header isLink='/' />
       <S.Repositories>
         <h1>Principais repositórios de vagas</h1>
         <S.RepositoryItem key="backend-br/vagas" to="/repository/backend-br/vagas">
@@ -93,7 +92,6 @@ const Dashboard: React.FC = () => {
           <FiChevronRight size={20} />
         </S.RepositoryItem>
       </S.Repositories>
-      <Footer />
     </Layout>
   );
 };
