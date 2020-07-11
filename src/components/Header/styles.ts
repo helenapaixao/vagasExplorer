@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FiLogIn } from "react-icons/fi";
+import { FiChevronLeft } from "react-icons/fi";
 import { shade } from "polished";
 
 export const Container = styled.header`
@@ -34,25 +34,16 @@ export const ActionContainer = styled.div`
   a {
     display: flex;
     align-items: center;
-    justify-content: center;
     text-decoration: none;
-    background-color: #3a3a3a;
-    border-radius: 10px;
-    border: 0;
-    padding: 16px;
-    width: 240px;
-    font-weight: 500;
     color: #a8a8b3;
-    transition: all 0.2s ease-in-out;
+    transition: color 0.2s;
 
     &:hover {
-      background-color: ${shade(0.2, "#3A3A3A")};
-    }
-
-    svg {
-      margin-right: 10px;
+      color: #666;
     }
   }
 `;
 
-export const IconLogin = styled(FiLogIn)``;
+export const IconBack = styled(FiChevronLeft).attrs({
+  size: 16
+})``;

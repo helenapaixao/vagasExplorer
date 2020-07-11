@@ -1,9 +1,13 @@
 import React from 'react';
-import { Link,  } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import * as S from './styles';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  isBack?: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({ isBack }) => {
   return (
     <S.Container>
       <S.LogoContainer>
@@ -11,10 +15,12 @@ const Header: React.FC = () => {
         <h1>vagasExplorer</h1>
       </S.LogoContainer>
       <S.ActionContainer>
-        <Link to="/dashboard">
-          <S.IconLogin />
-          Ver vagas
-        </Link>
+        {isBack && (
+          <Link to="/">
+            <S.IconBack />
+            Voltar
+          </Link>
+        )}
       </S.ActionContainer>
     </S.Container>
   );
