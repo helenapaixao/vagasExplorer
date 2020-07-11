@@ -10,8 +10,6 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
-    "@types/react-lottie": "^1.2.5",
-    "@types/styled-components": "^5.1.0",
     "@unform/core": "^2.1.3",
     "axios": "^0.19.2",
     "lottie": "^0.0.1",
@@ -27,7 +25,6 @@
     "react-spring": "^8.0.27",
     "styled-components": "^5.1.1",
     "typescript": "~3.7.2",
-    "unform": "^1.2.3",
     "uuid": "^8.2.0",
     "uuidv4": "^6.1.1"
   },
@@ -50,7 +47,9 @@
     ]
   },
   "devDependencies": {
+    "@types/react-lottie": "^1.2.5",
     "@types/react-router-dom": "^5.1.5",
+    "@types/styled-components": "^5.1.1",
     "@typescript-eslint/eslint-plugin": "^3.2.0",
     "@typescript-eslint/parser": "^3.2.0",
     "eslint-config-airbnb": "^18.1.0",
