@@ -8,9 +8,12 @@ export const Footer = styled.footer`
   align-items: center;
   justify-content: center;
 
+  span {
+    margin: 0 5px;
+  }
+
   a {
     text-decoration: none;
-    margin-left: 10px;
     color: #3a3a3a;
     font-weight: bold;
     transition: all 0.2s ease-in-out;
