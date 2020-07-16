@@ -1,52 +1,28 @@
-import React from "react";
-import logo from "../../assets/logo.svg";
-import Animation from "../../components/Animation";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-import {
-    Title,
-    Header,
-    Footer,
-    FooterFinal,
-    AnimationContainer,
-} from "./styles";
+import Layout from '../../components/Layout';
+import Header from '../../components/Header';
+import Animation from '../../components/Animation';
 
-import { FiLogIn } from "react-icons/fi";
+import * as S from './styles';
 
 const Home: React.FC = () => {
-    return (
-        <>
-            <Header>
-                <img src={logo} alt="logo" />
-                <h1>vagasExplorer</h1>
-            </Header>
-            <AnimationContainer>
-                <Title>Seu buscador de vagas de tecnologia</Title>
-
-                <div>
-                    <Animation />
-                </div>
-            </AnimationContainer>
-            <Footer>
-                <div>
-                    <a href="/dashboard">
-                        <span>
-                            <FiLogIn />
-                        </span>
-                        <div>
-                            <strong>Entrar</strong>
-                        </div>
-                    </a>
-                </div>
-            </Footer>
-
-            <FooterFinal>
-                Feito com ❤️ por Helena Paixão 👋️{" "}
-                <a href="https://www.linkedin.com/in/helenapaixao">
-                    Entre em contato!
-                </a>
-            </FooterFinal>
-        </>
-    );
+  return (
+    <Layout>
+      <Header />
+      <S.Title>
+        <h1>Seu buscador de vagas de tecnologia</h1>
+        <Link to="/dashboard">
+          <S.IconLogin />
+          Encontrar vagas
+        </Link>
+      </S.Title>
+      <S.Ilustration>
+        <Animation />
+      </S.Ilustration>
+    </Layout>
+  );
 };
 
 export default Home;

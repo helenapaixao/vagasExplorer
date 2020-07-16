@@ -1,4 +1,3 @@
-
 import styled, { css } from 'styled-components';
 
 import Tooltip from '../Tooltip';

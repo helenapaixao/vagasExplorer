@@ -1,5 +1,3 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-export const Container = styled.div`
-    margin-left: 250px;
-`;
+export const Container = styled.div``;
