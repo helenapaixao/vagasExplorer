@@ -22,12 +22,12 @@ export const RepositoryInfo = styled.header`
 
     strong {
       font-size: 36px;
-      color: #3d3d4d;
+      color: ${(props) => props.theme.colors.text};
     }
 
     p {
       font-size: 18px;
-      color: #797980;
+      color: ${(props) => props.theme.colors.text};
       margin-top: 4px;
     }
   }
@@ -45,13 +45,13 @@ export const RepositoryInfo = styled.header`
       strong {
         display: block;
         font-size: 36px;
-        color: #3d3d4d;
+        color: ${(props) => props.theme.colors.text};
       }
 
       span {
         display: flex;
         margin-top: 4px;
-        color: #6c6c80;
+        color: ${(props) => props.theme.colors.text};
       }
     }
   }

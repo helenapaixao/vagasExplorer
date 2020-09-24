@@ -44,7 +44,7 @@ export const Repositories = styled.section`
 
       strong {
         font-size: 20px;
-        color: #3d3d4d;
+        color: ${(props) => props.theme.colors.text};
       }
 
       p {
