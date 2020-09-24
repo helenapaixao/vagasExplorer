@@ -41,7 +41,8 @@
     "global-require": 0,
     "no-unused-expressions": "off",
     "@typescript-eslint/explicit-function-return-type": [
-      "error",
+      "error" ,
+      "off",
       {
         "allowExpressions": true
       }

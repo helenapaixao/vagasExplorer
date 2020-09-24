@@ -1,15 +1,27 @@
 import React from 'react';
 import { FiChevronRight } from 'react-icons/fi';
+import { ThemeProvider, DefaultTheme } from 'styled-components';
 
 import Layout from '../../components/Layout';
 import Header from '../../components/Header';
+import usePeristedState from '../../utils/usePersistedState';
+
+import light from '../../styles/themes/light';
+import dark from '../../styles/themes/dark';
 
 import * as S from './styles';
 
 const Dashboard: React.FC = () => {
+  const [theme, setTheme] = usePeristedState<DefaultTheme>('theme', light);
+
+  const toggleTheme = () => {
+    setTheme(theme.title === 'light' ? dark : light);
+  };
+
   return (
     <Layout isContentFull>
-      <Header isLink="/" />
+      <Header isLink="/" toggleTheme={toggleTheme} />
+
       <S.Repositories>
         <h1>Principais repositórios de vagas</h1>
         <S.RepositoryItem

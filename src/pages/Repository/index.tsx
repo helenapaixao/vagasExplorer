@@ -2,10 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import { FiChevronRight } from 'react-icons/fi';
 
+import { ThemeProvider, DefaultTheme } from 'styled-components';
 import api from '../../services/api';
 
 import Layout from '../../components/Layout';
 import Header from '../../components/Header';
+
+import light from '../../styles/themes/light';
+import dark from '../../styles/themes/dark';
+
+import usePeristedState from '../../utils/usePersistedState';
 
 import * as S from './styles';
 
@@ -40,6 +46,8 @@ const Repository: React.FC = () => {
 
   const { params } = useRouteMatch<RepositoryParamsProps>();
 
+  const [theme, setTheme] = usePeristedState<DefaultTheme>('theme', light);
+
   useEffect(() => {
     api.get(`repos/${params.repository}`).then((response) => {
       setRepositories(response.data);
@@ -50,9 +58,13 @@ const Repository: React.FC = () => {
     });
   }, [params.repository]);
 
+  const toggleTheme = () => {
+    setTheme(theme.title === 'light' ? dark : light);
+  };
+
   return (
     <Layout isContentFull>
-      <Header isLink="/dashboard" />
+      <Header isLink="/dashboard" toggleTheme={toggleTheme} />
       <S.Container>
         {repository && (
           <S.RepositoryInfo>

@@ -10,12 +10,14 @@ export default createGlobalStyle`
 
   body {
     font: 400 14px 'Roboto', sans-serif;
-    background-color: #f0f0f5 ;
+    color: ${(props) => props.theme.colors.text};
+    background: ${(props) => props.theme.colors.background};
+
     -webkit-font-smoothing: antialiased;
   }
 
   h1 {
-    color: #3a3a3a;
+    color: ${(props) => props.theme.colors.text};
     font-size: 20px;
   }
 

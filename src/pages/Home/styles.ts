@@ -12,7 +12,7 @@ export const Title = styled.section`
 
   h1 {
     font-size: 48px;
-    color: #3a3a3a;
+    color: ${(props) => props.theme.colors.text};
     margin-bottom: 50px;
   }
 
@@ -27,7 +27,7 @@ export const Title = styled.section`
     padding: 16px;
     width: 240px;
     font-weight: 500;
-    color: #a8a8b3;
+    color: ${(props) => props.theme.colors.text};
     transition: all 0.2s ease-in-out;
 
     &:hover {
