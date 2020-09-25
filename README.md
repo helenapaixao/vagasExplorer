@@ -26,11 +26,9 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 O vagaExplorer é um projeto desenvolvido para contribuir com a comunidade de desenvolvedores em busca de uma oportunidade de trabalho.
 
-## 🔖 Layout
+Você pode vizualizar o projeto em produção [aqui](https://vagasexplorer.netlify.app/).
 
-Você pode vizualizar o projeto em produção [desse link](https://vagasexplorer.netlify.app/).
 
-Para abrir o arquivo no formato `.sketch` em qualquer sistema operacional utilize a ferramenta [Figma](https://figma.com).
 
 ## 🤔 Como contribuir
 
