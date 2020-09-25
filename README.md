@@ -28,7 +28,7 @@ O vagaExplorer é um projeto desenvolvido para contribuir com a comunidade de de
 
 ## 🔖 Layout
 
-Você pode baixar o layout do projeto no formato `.sketch` através [desse link](nope).
+Você pode vizualizar o projeto em produção [desse link](https://vagasexplorer.netlify.app/).
 
 Para abrir o arquivo no formato `.sketch` em qualquer sistema operacional utilize a ferramenta [Figma](https://figma.com).
 
