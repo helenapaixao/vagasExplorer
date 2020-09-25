@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ThemeProvider, DefaultTheme } from 'styled-components';
+import { DefaultTheme } from 'styled-components';
 import usePeristedState from '../../utils/usePersistedState';
 
 import Layout from '../../components/Layout';

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import { FiChevronRight } from 'react-icons/fi';
 
-import { ThemeProvider, DefaultTheme } from 'styled-components';
+import {  DefaultTheme } from 'styled-components';
 import api from '../../services/api';
 
 import Layout from '../../components/Layout';

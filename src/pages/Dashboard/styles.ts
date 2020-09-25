@@ -13,7 +13,7 @@ export const Repositories = styled.section`
   }
 
   a {
-    max-width: 700px;
+    max-width: auto;
     background-color: #fff;
     border-radius: 5px;
     width: 100%;
@@ -62,3 +62,9 @@ export const Repositories = styled.section`
 `;
 
 export const RepositoryItem = styled(Link)``;
+
+export const Content = styled.div`
+/*   width: 100vw;
+  height: 100vh; */
+
+`;

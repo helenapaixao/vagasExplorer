@@ -7,7 +7,7 @@ import GlobalStyle from './styles/global';
 import light from './styles/themes/light';
 
 const App: React.FC = () => {
-  const [theme, setTheme] = usePeristedState<DefaultTheme>('theme', light);
+  const [theme] = usePeristedState<DefaultTheme>('theme', light);
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
