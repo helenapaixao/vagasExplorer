@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
-import { FiChevronRight } from 'react-icons/fi';
+import { FiChevronRight, FiSearch } from 'react-icons/fi';
 
-import {  DefaultTheme } from 'styled-components';
+import { DefaultTheme } from 'styled-components';
 import api from '../../services/api';
 
 import Layout from '../../components/Layout';
@@ -14,6 +14,7 @@ import dark from '../../styles/themes/dark';
 import usePeristedState from '../../utils/usePersistedState';
 
 import * as S from './styles';
+import SearchInput from '../../components/SearchInput';
 
 interface RepositoryProps {
   full_name: string;
@@ -43,6 +44,7 @@ interface RepositoryParamsProps {
 const Repository: React.FC = () => {
   const [repository, setRepositories] = useState<RepositoryProps | null>(null);
   const [issues, setIssues] = useState<IssueProps[]>([]);
+  const [searchValue, setSearchValue] = useState('');
 
   const { params } = useRouteMatch<RepositoryParamsProps>();
 
@@ -57,6 +59,18 @@ const Repository: React.FC = () => {
       setIssues(response.data);
     });
   }, [params.repository]);
+
+  useEffect(() => {
+    async function loadRepository(): Promise<void> {
+      api
+        .get(`/repos/${searchValue.replace(' ', '+')}/issues`)
+        .then(({ data: Issues }) => {
+          setIssues(Issues);
+        });
+    }
+
+    loadRepository();
+  }, [searchValue]);
 
   const toggleTheme = () => {
     setTheme(theme.title === 'light' ? dark : light);
@@ -86,6 +100,14 @@ const Repository: React.FC = () => {
             </ul>
           </S.RepositoryInfo>
         )}
+        <SearchInput
+          name="search"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          icon={FiSearch}
+          placeholder="Buscar"
+        />
+
         <S.Issues>
           {issues.map((issue) => (
             <a key={issue.id} href={issue.html_url}>

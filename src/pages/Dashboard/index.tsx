@@ -9,6 +9,7 @@ import usePeristedState from '../../utils/usePersistedState';
 import light from '../../styles/themes/light';
 import dark from '../../styles/themes/dark';
 
+
 import * as S from './styles';
 
 const Dashboard: React.FC = () => {
