@@ -107,7 +107,49 @@ const Dashboard: React.FC = () => {
             />
             <div>
               <strong>QA Brasil </strong>
-              <p>Comunidade Brasileira para Analistas de testes</p>
+              <p>Espaço para divulgação de vagas para Analistas de testes</p>
+            </div>
+            <FiChevronRight size={20} />
+          </S.RepositoryItem>
+          <S.RepositoryItem
+            key="phpdevbr/vagas"
+            to="/repository/phpdevbr/vagas"
+          >
+            <img
+              src="https://avatars0.githubusercontent.com/u/21205969?v=3&u=811926aba01e8a43d7a8ffda50b7b66a57ccdd0a"
+              alt="@qa-brasil"
+            />
+            <div>
+              <strong>phpdevbr</strong>
+              <p>Espaço para divulgação de vagas para desenvolvedores PHP.</p>
+            </div>
+            <FiChevronRight size={20} />
+          </S.RepositoryItem>
+          <S.RepositoryItem
+            key="flutterbr/vagas"
+            to="/repository/flutterbr/vagas"
+          >
+            <img
+              src="https://github.com/Flutter-Brazil/brand/raw/master/src/jpg/banner.jpeg"
+              alt="@flutter-Brazil"
+            />
+            <div>
+              <strong>flutterbr</strong>
+              <p>Espaço para divulgação de vagas relacionadas com Flutter e Dart</p>
+            </div>
+            <FiChevronRight size={20} />
+          </S.RepositoryItem>
+          <S.RepositoryItem
+            key="dotnetdevbr/vagas"
+            to="/repository/dotnetdevbr/vagas"
+          >
+            <img
+              src="https://user-images.githubusercontent.com/3299130/48214486-2fed0800-e367-11e8-8274-6858c79ab7b4.png"
+              alt="@uxbrasil"
+            />
+            <div>
+              <strong>uxbrasil</strong>
+              <p>Espaço para divulgação de vagas para designers UI e pesquisadores UX.</p>
             </div>
             <FiChevronRight size={20} />
           </S.RepositoryItem>

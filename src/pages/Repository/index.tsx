@@ -63,7 +63,7 @@ const Repository: React.FC = () => {
   useEffect(() => {
     async function loadRepository(): Promise<void> {
       api
-        .get(`/repos/${searchValue.replace(' ', '+')}/issues`)
+        .get(`/repos/${searchValue.replace(' ', '+')}`)
         .then(({ data: Issues }) => {
           setIssues(Issues);
         });
