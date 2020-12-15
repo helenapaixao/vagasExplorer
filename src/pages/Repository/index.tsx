@@ -45,7 +45,7 @@ const Repository: React.FC = () => {
   const [repository, setRepositories] = useState<RepositoryProps | null>(null);
   const [issues, setIssues] = useState<IssueProps[]>([]);
   const [searchValue, setSearchValue] = useState('');
-
+  const [filter, setFilter ] = useState('')
   const { params } = useRouteMatch<RepositoryParamsProps>();
 
   const [theme, setTheme] = usePeristedState<DefaultTheme>('theme', light);
@@ -59,6 +59,8 @@ const Repository: React.FC = () => {
       setIssues(response.data);
     });
   }, [params.repository]);
+
+
 
   useEffect(() => {
     async function loadRepository(): Promise<void> {
@@ -80,6 +82,12 @@ const Repository: React.FC = () => {
     <Layout isContentFull>
       <Header isLink="/dashboard" toggleTheme={toggleTheme} />
       <S.Container>
+     {/*  <input
+          type="text"
+          placeholder="Digite aqui"
+          value={searchValue}
+          onChange={e => setSearchValue(e.target.value)}
+        /> */}
         {repository && (
           <S.RepositoryInfo>
             <div>
@@ -100,13 +108,6 @@ const Repository: React.FC = () => {
             </ul>
           </S.RepositoryInfo>
         )}
-        <SearchInput
-          name="search"
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-          icon={FiSearch}
-          placeholder="Buscar"
-        />
 
         <S.Issues>
           {issues.map((issue) => (
