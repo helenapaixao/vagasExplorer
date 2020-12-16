@@ -34,29 +34,26 @@ interface IssueProps {
     login: string;
     avatar_url: string;
   };
-  labels: {
-    id:string;
-    name:string;
-    color?: string;
-  }
-
-}
-
-interface ILabelsProps {
-    id:string;
+  labels: [{
     name: string;
     color?: string;
-
+  }]
 }
+
 
 interface RepositoryParamsProps {
   repository: string;
 }
 
-const Repository = () => {
+const Repository = ({
+  html_url,
+  title,
+  user,
+  labels
+}: IssueProps) => {
   const [repository, setRepositories] = useState<RepositoryProps | null>(null);
   const [issues, setIssues] = useState<IssueProps[]>([]);
-  const [labels, setLabels] = useState<IssueProps[]>([]);
+/*   const [labels, setLabels] = useState<IssueProps[]>([]); */
   const { params } = useRouteMatch<RepositoryParamsProps>();
 
   const [theme, setTheme] = usePeristedState<DefaultTheme>('theme', light);
@@ -70,10 +67,10 @@ const Repository = () => {
       setIssues(response.data);
     });
 
-    api.get(`repos/${params.repository}/labels`).then((response) => {
+    /* api.get(`repos/${params.repository}/labels`).then((response) => {
     setLabels(response.data);
    console.log(response.data)
-    });
+    }); */
   }, [params.repository]);
 
   const toggleTheme = () => {
@@ -86,12 +83,6 @@ const Repository = () => {
     <Layout isContentFull>
       <Header isLink="/dashboard" toggleTheme={toggleTheme} />
       <S.Container>
-     {/*  <input
-          type="text"
-          placeholder="Digite aqui"
-          value={searchValue}
-          onChange={e => setSearchValue(e.target.value)}
-        /> */}
         {repository && (
           <S.RepositoryInfo>
             <div>
@@ -121,12 +112,6 @@ const Repository = () => {
                 <strong>{issue.title}</strong>
                 <p>{issue.user.login}</p>
               </div>
-              <S.LabelContent>
-
-               <S.Label color={issue.labels.color && insertHashToColor(issue.labels.color)}>{issue.labels.name}</S.Label>
-
-              </S.LabelContent>
-
               <FiChevronRight size={20} />
             </a>
           ))}
