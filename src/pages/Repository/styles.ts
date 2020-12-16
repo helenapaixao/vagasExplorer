@@ -107,3 +107,17 @@ export const Issues = styled.div`
     }
   }
 `;
+
+export const Label = styled.span`
+  background: ${props => props.color || '#C4C4C4'};
+  color: #000;
+  margin-left: 1rem;
+  padding: 0.4rem 1rem;
+  border-radius: 2rem;
+
+`;
+
+export const LabelContent = styled.div`
+
+
+`;

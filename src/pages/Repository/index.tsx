@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
-import { FiChevronRight, FiSearch } from 'react-icons/fi';
+import { FiChevronRight } from 'react-icons/fi';
 
 import { DefaultTheme } from 'styled-components';
 import api from '../../services/api';
@@ -14,7 +14,6 @@ import dark from '../../styles/themes/dark';
 import usePeristedState from '../../utils/usePersistedState';
 
 import * as S from './styles';
-import SearchInput from '../../components/SearchInput';
 
 interface RepositoryProps {
   full_name: string;
@@ -35,17 +34,29 @@ interface IssueProps {
     login: string;
     avatar_url: string;
   };
+  labels: {
+    id:string;
+    name:string;
+    color?: string;
+  }
+
+}
+
+interface ILabelsProps {
+    id:string;
+    name: string;
+    color?: string;
+
 }
 
 interface RepositoryParamsProps {
   repository: string;
 }
 
-const Repository: React.FC = () => {
+const Repository = () => {
   const [repository, setRepositories] = useState<RepositoryProps | null>(null);
   const [issues, setIssues] = useState<IssueProps[]>([]);
-  const [searchValue, setSearchValue] = useState('');
-  const [filter, setFilter ] = useState('')
+  const [labels, setLabels] = useState<IssueProps[]>([]);
   const { params } = useRouteMatch<RepositoryParamsProps>();
 
   const [theme, setTheme] = usePeristedState<DefaultTheme>('theme', light);
@@ -58,25 +69,18 @@ const Repository: React.FC = () => {
     api.get(`repos/${params.repository}/issues`).then((response) => {
       setIssues(response.data);
     });
+
+    api.get(`repos/${params.repository}/labels`).then((response) => {
+    setLabels(response.data);
+   console.log(response.data)
+    });
   }, [params.repository]);
-
-
-
-  useEffect(() => {
-    async function loadRepository(): Promise<void> {
-      api
-        .get(`/repos/${searchValue.replace(' ', '+')}`)
-        .then(({ data: Issues }) => {
-          setIssues(Issues);
-        });
-    }
-
-    loadRepository();
-  }, [searchValue]);
 
   const toggleTheme = () => {
     setTheme(theme.title === 'light' ? dark : light);
   };
+
+  const insertHashToColor = (color: string) => `#${color}`;
 
   return (
     <Layout isContentFull>
@@ -117,6 +121,12 @@ const Repository: React.FC = () => {
                 <strong>{issue.title}</strong>
                 <p>{issue.user.login}</p>
               </div>
+              <S.LabelContent>
+
+               <S.Label color={issue.labels.color && insertHashToColor(issue.labels.color)}>{issue.labels.name}</S.Label>
+
+              </S.LabelContent>
+
               <FiChevronRight size={20} />
             </a>
           ))}
