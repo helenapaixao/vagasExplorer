@@ -1,17 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
-import { FiChevronRight } from 'react-icons/fi';
+import Issue from '../../components/Issue';
 
-import { DefaultTheme } from 'styled-components';
 import api from '../../services/api';
-
-import Layout from '../../components/Layout';
-import Header from '../../components/Header';
-
-import light from '../../styles/themes/light';
-import dark from '../../styles/themes/dark';
-
-import usePeristedState from '../../utils/usePersistedState';
 
 import * as S from './styles';
 
@@ -19,106 +10,87 @@ interface RepositoryProps {
   full_name: string;
   description: string;
   stargazers_count: number;
-  open_issues_count: number;
+  forks_count: number;
+  open_issues: number;
   owner: {
+    avatar_url: string,
     login: string;
-    avatar_url: string;
-  };
+  },
+}
+
+interface RepositoryParams {
+  reponame: string;
 }
 
 interface IssueProps {
-  title: string;
-  id: string;
+  id: number;
   html_url: string;
+  number: number;
+  title: string;
   user: {
     login: string;
-    avatar_url: string;
-  };
+  }
   labels: [{
     name: string;
-    color?: string;
   }]
+
 }
 
-
-interface RepositoryParamsProps {
-  repository: string;
-}
-
-const Repository = ({
-  html_url,
-  title,
-  user,
-  labels
-}: IssueProps) => {
-  const [repository, setRepositories] = useState<RepositoryProps | null>(null);
+const Repository = () => {
+  const [repository, setRepository] = useState<RepositoryProps | null>(null);
   const [issues, setIssues] = useState<IssueProps[]>([]);
-/*   const [labels, setLabels] = useState<IssueProps[]>([]); */
-  const { params } = useRouteMatch<RepositoryParamsProps>();
 
-  const [theme, setTheme] = usePeristedState<DefaultTheme>('theme', light);
+  const {params} = useRouteMatch<RepositoryParams>();
 
   useEffect(() => {
-    api.get(`repos/${params.repository}`).then((response) => {
-      setRepositories(response.data);
-    });
+    async function handleGetData(): Promise<void> {
+      const repo = await fetch(`${api}/repos/${params.reponame}`)
+      const repoData = await repo.json();
 
-    api.get(`repos/${params.repository}/issues`).then((response) => {
-      setIssues(response.data);
-    });
+      const issues = await fetch(`${api}/repos/${params.reponame}/issues`)
+      const issuesData = await issues.json();
 
-    /* api.get(`repos/${params.repository}/labels`).then((response) => {
-    setLabels(response.data);
-   console.log(response.data)
-    }); */
-  }, [params.repository]);
+      setRepository(repoData);
+      setIssues(issuesData);
+    }
 
-  const toggleTheme = () => {
-    setTheme(theme.title === 'light' ? dark : light);
-  };
-
-  const insertHashToColor = (color: string) => `#${color}`;
+    handleGetData();
+  }, [params.reponame])
 
   return (
-    <Layout isContentFull>
-      <Header isLink="/dashboard" toggleTheme={toggleTheme} />
-      <S.Container>
-        {repository && (
-          <S.RepositoryInfo>
-            <div>
-              <img
-                src={repository.owner.avatar_url}
-                alt={repository.owner.login}
-              />
-              <div>
-                <strong>{repository.full_name}</strong>
-                <p>{repository.description}</p>
-              </div>
-            </div>
-            <ul>
-              <li>
-                <strong>{repository.open_issues_count}</strong>
-                <span>Vagas abertas</span>
-              </li>
-            </ul>
-          </S.RepositoryInfo>
-        )}
+    <S.Container>
+      <S.Content>
+      {/*   {
+          repository &&
+          <ProfileRepositoryCard
+            full_name={repository.full_name}
+            description={repository.description}
+            stargazers_count={repository.stargazers_count}
+            forks_count={repository.forks_count}
+            open_issues={repository.open_issues}
+            owner={repository.owner}
 
-        <S.Issues>
-          {issues.map((issue) => (
-            <a key={issue.id} href={issue.html_url}>
-              <img src={issue.user.avatar_url} alt={issue.user.login} />
-              <div>
-                <strong>{issue.title}</strong>
-                <p>{issue.user.login}</p>
-              </div>
-              <FiChevronRight size={20} />
-            </a>
-          ))}
-        </S.Issues>
-      </S.Container>
-    </Layout>
+          />
+        } */}
+        <S.IssuesContent>
+          <strong>Issues</strong>
+
+          {
+            issues.length ? issues.map(item => (
+              <Issue
+                html_url={item.html_url}
+                key={item.id}
+                number={item.number}
+                title={item.title}
+                user={item.user}
+                labels={item.labels}
+              />
+            )) : <strong>Nenhuma issue a ser listada</strong>
+          }
+        </S.IssuesContent>
+      </S.Content>
+    </S.Container>
   );
-};
+}
 
 export default Repository;
