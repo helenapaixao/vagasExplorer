@@ -18,6 +18,7 @@ export interface IResult {
   description: string;
   stargazers_count: number;
   open_issues_count: number;
+  length: null;
   owner: {
     login: string;
     avatar_url: string;
@@ -25,15 +26,10 @@ export interface IResult {
 
 }
 
-
-
-
-
-
 const Search: React.FC = () => {
     const [query, setQuery] = useState("");
     const [inputError, setInputError] = useState("");
-    const [result, setResult] = useState<IResult[]>([]);
+    const [result, setResult] = useState<IResult | null>(null);
     const [lastQuery, setLastQuery] = useState("");
 
     async function handleSearch(
@@ -47,8 +43,8 @@ const Search: React.FC = () => {
         }
 
         try {
-            const searchResult = await api.get(`search/multi?query=${query}`);
-            setResult(searchResult);
+            const searchResult = await api.get(`search/${query}`);
+            setResult(searchResult.data);
 
             setLastQuery(query);
             setQuery("");
@@ -65,7 +61,7 @@ const Search: React.FC = () => {
     return (
         <>
             <Container>
-                <Header />
+
                 <Content>
                     <Form onSubmit={handleSearch}>
                         <SearchInput
@@ -75,7 +71,7 @@ const Search: React.FC = () => {
                             placeholder="Busque algum filme(genêro,ano)"
                         />
 
-                        <Button type="submit">Buscar Filme</Button>
+                        <Button type="submit">Buscar</Button>
 
 
                     </Form>
