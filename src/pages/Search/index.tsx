@@ -43,7 +43,7 @@ const Search: React.FC = () => {
         }
 
         try {
-            const searchResult = await api.get(`react-brasil/vagas/${query}`);
+            const searchResult = await api.get(`search/issues?q=${query}`);
             setResult(searchResult.data);
 
             setLastQuery(query);
