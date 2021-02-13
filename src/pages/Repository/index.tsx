@@ -52,7 +52,8 @@ const Repository: React.FC = () => {
 
   useEffect(() => {
     api.get(`repos/${params.repository}`).then((response) => {
-      setRepositories(response.data);
+       setRepositories(response.data);
+      console.log(response.data)
     });
 
     api.get(`repos/${params.repository}/issues`).then((response) => {
@@ -62,18 +63,6 @@ const Repository: React.FC = () => {
 
 
 
-  useEffect(() => {
-    async function loadRepository(): Promise<void> {
-      api
-        .get(`/repos/${searchValue.replace(' ', '+')}`)
-        .then(({ data: Issues }) => {
-          setIssues(Issues);
-        });
-    }
-
-    loadRepository();
-  }, [searchValue]);
-
   const toggleTheme = () => {
     setTheme(theme.title === 'light' ? dark : light);
   };
@@ -82,12 +71,7 @@ const Repository: React.FC = () => {
     <Layout isContentFull>
       <Header isLink="/dashboard" toggleTheme={toggleTheme} />
       <S.Container>
-     {/*  <input
-          type="text"
-          placeholder="Digite aqui"
-          value={searchValue}
-          onChange={e => setSearchValue(e.target.value)}
-        /> */}
+
         {repository && (
           <S.RepositoryInfo>
             <div>

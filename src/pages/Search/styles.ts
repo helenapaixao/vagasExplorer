@@ -20,13 +20,13 @@ export const Content = styled.div`
 
 export const Form = styled.form`
   margin-top: 4rem;
-  width: 70rem;
+  width: 40rem;
   display: flex;
   flex: 1;
   input {
     flex: 1;
-    height: 5rem;
-    width: 60rem;
+    height: 2rem;
+    width: 10rem;
     padding: 0 2rem;
     border: 0;
     border-bottom-left-radius: 50px;
@@ -54,7 +54,7 @@ export const Form = styled.form`
     font-size: 2rem;
   }
   @media (max-width: 576px) {
-    width: 40rem;
+    width: 30rem;
   }
 `;
 
