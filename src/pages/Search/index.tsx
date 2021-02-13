@@ -43,18 +43,18 @@ const Search: React.FC = () => {
         }
 
         try {
-            const searchResult = await api.get(`search/${query}`);
+            const searchResult = await api.get(`react-brasil/vagas/${query}`);
             setResult(searchResult.data);
 
             setLastQuery(query);
             setQuery("");
             setInputError("");
 
-            if (searchResult.length === 0) {
+            /* if (searchResult.length === 0) {
                 setInputError(`No results found for ${query}`);
-            }
+            } */
         } catch (err) {
-            setInputError("Ops, something bad happend.");
+            setInputError("Ops, algo não está certo.");
         }
     }
 
@@ -68,7 +68,7 @@ const Search: React.FC = () => {
                             name="text"
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            placeholder="Busque algum filme(genêro,ano)"
+                            placeholder="Busque"
                         />
 
                         <Button type="submit">Buscar</Button>
@@ -79,12 +79,12 @@ const Search: React.FC = () => {
 
                 {inputError && <Error>{inputError}</Error>}
 
-                {result.length > 0 && (
+              {/*   {result > 0 && (
 
                         <h1>Resultados para: {lastQuery}</h1>
 
 
-                )}
+                )} */}
             </Container>
         </>
     );
