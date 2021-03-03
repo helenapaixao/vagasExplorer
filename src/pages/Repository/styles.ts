@@ -1,4 +1,11 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const entranceLeft = keyframes`
+  to {
+    right: 10px;
+    opacity: 1;
+  }
+`;
 
 export const Container = styled.section`
   grid-area: content;
@@ -61,8 +68,8 @@ export const Issues = styled.div`
   margin-top: 40px;
 
   img {
-    border: 50%;
-    height: 60px;
+    border-radius: 50%;
+    height: 70px;
   }
 
   a {
@@ -75,6 +82,7 @@ export const Issues = styled.div`
     display: flex;
     align-items: center;
     transition: transform 0.2s;
+    position: relative;
 
     & + a {
       margin-top: 16px;
@@ -106,4 +114,57 @@ export const Issues = styled.div`
       border: 50%;
     }
   }
+`;
+
+export const Labels = styled.div`
+  margin: -10px 20px 20px;
+  padding: 20px 15px 15px 15px;
+  border: 1px solid #dcdcdc;
+  border-top: none;
+  border-radius: 5px;
+  background: transparent;
+  width: fit-content;
+`;
+
+export const Label = styled.label`
+  background: #${(props) => props.color};
+  font-size: 0.7rem;
+  padding: 2px 10px;
+  margin: 3px;
+  display: inline-block;
+  border-radius: 3px;
+  color: #000;
+  cursor: pointer;
+`;
+
+export const Search = styled.div`
+  position: relative;
+  margin: 3rem auto;
+`;
+
+export const Input = styled.input`
+  background: #fff;
+  border: none;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 0 auto;
+  display: block;
+  width: 100%;
+  text-align: center;
+  transition: all 0.2s ease;
+
+  &:focus {
+    box-shadow: 0 0 25px -10px #3498db;
+  }
+`;
+
+export const Icon = styled.label`
+  position: absolute;
+  right: 20px;
+  opacity: 0;
+  transform: translateY(-150%);
+  cursor: pointer;
+  line-height: 1rem;
+  color: red;
+  animation: ${entranceLeft} 0.4s forwards;
 `;
