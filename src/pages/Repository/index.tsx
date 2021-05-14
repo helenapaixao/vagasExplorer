@@ -85,6 +85,8 @@ const Repository: React.FC = () => {
     if (!val) setIssues(allIssues);
 
     setSearchValue(val);
+
+// eslint-disable-next-line
     const issuesFiltered = allIssues.filter((issue) => {
       if (issue.title.toLowerCase().indexOf(val.toLowerCase()) !== -1) {
         return true;
@@ -103,7 +105,7 @@ const Repository: React.FC = () => {
       }
     });
 
-     return setIssues(issuesFiltered);
+    setIssues(issuesFiltered);
   };
 
   return (
