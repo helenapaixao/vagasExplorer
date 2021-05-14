@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { useRouteMatch } from 'react-router-dom';
-import { FiChevronRight, FiSearch } from 'react-icons/fi';
+import { FiChevronRight, FiX } from 'react-icons/fi';
 
 import { DefaultTheme } from 'styled-components';
 import api from '../../services/api';
@@ -14,7 +14,6 @@ import dark from '../../styles/themes/dark';
 import usePeristedState from '../../utils/usePersistedState';
 
 import * as S from './styles';
-import SearchInput from '../../components/SearchInput';
 
 interface RepositoryProps {
   full_name: string;
@@ -30,25 +29,37 @@ interface RepositoryProps {
 interface IssueProps {
   title: string;
   id: string;
+  body: string;
   html_url: string;
   user: {
     login: string;
     avatar_url: string;
   };
+  labels: labelsProps[];
 }
 
 interface RepositoryParamsProps {
   repository: string;
 }
 
+interface labelsProps {
+  color: string;
+  id: number;
+  name: string;
+}
+
 const Repository: React.FC = () => {
   const [repository, setRepositories] = useState<RepositoryProps | null>(null);
   const [issues, setIssues] = useState<IssueProps[]>([]);
   const [searchValue, setSearchValue] = useState('');
-  const [filter, setFilter ] = useState('')
+  const [filter, setFilter] = useState('');
   const { params } = useRouteMatch<RepositoryParamsProps>();
 
+  const [allIssues, setAllIssues] = useState<IssueProps[]>([]);
+
   const [theme, setTheme] = usePeristedState<DefaultTheme>('theme', light);
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     api.get(`repos/${params.repository}`).then((response) => {
@@ -57,37 +68,47 @@ const Repository: React.FC = () => {
 
     api.get(`repos/${params.repository}/issues`).then((response) => {
       setIssues(response.data);
+      setAllIssues(response.data);
+      console.log(response.data);
     });
   }, [params.repository]);
 
-
-
-  useEffect(() => {
-    async function loadRepository(): Promise<void> {
-      api
-        .get(`/repos/${searchValue.replace(' ', '+')}`)
-        .then(({ data: Issues }) => {
-          setIssues(Issues);
-        });
-    }
-
-    loadRepository();
-  }, [searchValue]);
-
   const toggleTheme = () => {
     setTheme(theme.title === 'light' ? dark : light);
+  };
+
+  const handleSearch = (val: string) => {
+    if (null !== inputRef.current) {
+      inputRef.current.focus();
+    }
+
+    if (!val) setIssues(allIssues);
+
+    setSearchValue(val);
+    const issuesFiltered = allIssues.filter((issue) => {
+      if (issue.title.toLowerCase().indexOf(val.toLowerCase()) !== -1) {
+        return true;
+      }
+
+      if (issue.body.toLowerCase().indexOf(val.toLowerCase()) !== -1) {
+        return true;
+      }
+
+      for (let i = 0; i < issue.labels.length; i++) {
+        if (
+          issue.labels[i].name.toLowerCase().indexOf(val.toLowerCase()) !== -1
+        ) {
+          return true;
+        }
+      }
+    });
+    setIssues(issuesFiltered);
   };
 
   return (
     <Layout isContentFull>
       <Header isLink="/dashboard" toggleTheme={toggleTheme} />
       <S.Container>
-     {/*  <input
-          type="text"
-          placeholder="Digite aqui"
-          value={searchValue}
-          onChange={e => setSearchValue(e.target.value)}
-        /> */}
         {repository && (
           <S.RepositoryInfo>
             <div>
@@ -102,7 +123,7 @@ const Repository: React.FC = () => {
             </div>
             <ul>
               <li>
-                <strong>{repository.open_issues_count}</strong>
+                <strong>{issues.length}</strong>
                 <span>Vagas abertas</span>
               </li>
             </ul>
@@ -110,16 +131,47 @@ const Repository: React.FC = () => {
         )}
 
         <S.Issues>
-          {issues.map((issue) => (
-            <a key={issue.id} href={issue.html_url}>
-              <img src={issue.user.avatar_url} alt={issue.user.login} />
-              <div>
-                <strong>{issue.title}</strong>
-                <p>{issue.user.login}</p>
-              </div>
-              <FiChevronRight size={20} />
-            </a>
-          ))}
+          <>
+            <S.Search>
+              <S.Input
+                ref={inputRef}
+                type="text"
+                placeholder="Busque por tecnologia, nível de vaga, local, regime, tipo etc..."
+                value={searchValue}
+                onChange={(e) => handleSearch(e.target.value)}
+              />
+              {searchValue && (
+                <S.Icon onClick={() => handleSearch('')}>
+                  <FiX size={20} />
+                </S.Icon>
+              )}
+            </S.Search>
+            {issues.map((issue) => (
+              <React.Fragment key={issue.id}>
+                <a href={issue.html_url}>
+                  <img src={issue.user.avatar_url} alt={issue.user.login} />
+                  <div>
+                    <strong>{issue.title}</strong>
+                    <p>{issue.user.login}</p>
+                  </div>
+                  <FiChevronRight size={20} />
+                </a>
+
+                {issue.labels.length > 0 && (
+                  <S.Labels>
+                    {issue.labels.map((label) => (
+                      <S.Label
+                        color={label.color}
+                        onClick={() => handleSearch(label.name)}
+                      >
+                        <span>{label.name}</span>
+                      </S.Label>
+                    ))}
+                  </S.Labels>
+                )}
+              </React.Fragment>
+            ))}
+          </>
         </S.Issues>
       </S.Container>
     </Layout>
