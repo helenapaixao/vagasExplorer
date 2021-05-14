@@ -26,6 +26,7 @@ interface RepositoryProps {
   };
 }
 
+
 interface IssueProps {
   title: string;
   id: string;
