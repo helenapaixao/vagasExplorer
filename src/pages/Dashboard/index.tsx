@@ -1,25 +1,13 @@
 import React from 'react';
 import { FiChevronRight } from 'react-icons/fi';
-import {  DefaultTheme } from 'styled-components';
-
 
 import Layout from '../../components/Layout';
 import Header from '../../components/Header';
-import usePeristedState from '../../utils/usePersistedState';
-
-import light from '../../styles/themes/light';
-import dark from '../../styles/themes/dark';
-
 
 import * as S from './styles';
+import { ToggleTheme } from '../../utils/ToggleThemeInterface';
 
-const Dashboard: React.FC = () => {
-  const [theme, setTheme] = usePeristedState<DefaultTheme>('theme', light);
-
-  const toggleTheme = () => {
-    setTheme(theme.title === 'light' ? dark : light);
-  };
-
+const Dashboard: React.FC<ToggleTheme> = ({ toggleTheme }) => {
   return (
     <Layout isContentFull>
       <Header isLink="/" toggleTheme={toggleTheme} />
@@ -136,7 +124,9 @@ const Dashboard: React.FC = () => {
             />
             <div>
               <strong>flutterbr</strong>
-              <p>Espaço para divulgação de vagas relacionadas com Flutter e Dart</p>
+              <p>
+                Espaço para divulgação de vagas relacionadas com Flutter e Dart
+              </p>
             </div>
             <FiChevronRight size={20} />
           </S.RepositoryItem>
@@ -150,7 +140,10 @@ const Dashboard: React.FC = () => {
             />
             <div>
               <strong>uxbrasil</strong>
-              <p>Espaço para divulgação de vagas para designers UI e pesquisadores UX.</p>
+              <p>
+                Espaço para divulgação de vagas para designers UI e
+                pesquisadores UX.
+              </p>
             </div>
             <FiChevronRight size={20} />
           </S.RepositoryItem>
