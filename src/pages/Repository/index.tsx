@@ -102,6 +102,8 @@ const Repository: React.FC = () => {
         }
       }
     });
+
+    return
     setIssues(issuesFiltered);
   };
 
