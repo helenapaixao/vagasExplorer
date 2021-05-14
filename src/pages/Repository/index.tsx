@@ -103,8 +103,7 @@ const Repository: React.FC = () => {
       }
     });
 
-    return
-    setIssues(issuesFiltered);
+     return setIssues(issuesFiltered);
   };
 
   return (
