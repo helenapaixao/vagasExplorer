@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import { FiChevronRight, FiX } from 'react-icons/fi';
 
@@ -52,7 +52,7 @@ const Repository: React.FC = () => {
   const [repository, setRepositories] = useState<RepositoryProps | null>(null);
   const [issues, setIssues] = useState<IssueProps[]>([]);
   const [searchValue, setSearchValue] = useState('');
-  const [filter, setFilter] = useState('');
+  //const [filter, setFilter] = useState('');
   const { params } = useRouteMatch<RepositoryParamsProps>();
 
   const [allIssues, setAllIssues] = useState<IssueProps[]>([]);
@@ -101,6 +101,8 @@ const Repository: React.FC = () => {
           return true;
         }
       }
+
+      return false;
     });
     setIssues(issuesFiltered);
   };
