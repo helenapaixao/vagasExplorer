@@ -5,6 +5,7 @@ import { shade } from 'polished';
 
 import { ThemeContext } from 'styled-components';
 import * as S from './styles';
+import { Logo } from '../Logo';
 
 interface HeaderProps {
   isLink?: string;
@@ -16,7 +17,9 @@ const Header: React.FC<HeaderProps> = ({ isLink, toggleTheme }) => {
   return (
     <S.Container>
       <S.LogoContainer>
-        <S.LogoImage />
+        <S.LogoImage>
+          <Logo isDark={title === 'dark'} />
+        </S.LogoImage>
         <h1>vagasExplorer</h1>
       </S.LogoContainer>
       <Switch

@@ -19,11 +19,7 @@ export const LogoContainer = styled.div`
   }
 `;
 
-export const LogoImage = styled.img.attrs({
-  src: require('../../assets/logo.svg'),
-  alt: 'Vagas Explorer',
-})`
-  height: 60px;
+export const LogoImage = styled.div`
   margin-right: 10px;
 `;
 
