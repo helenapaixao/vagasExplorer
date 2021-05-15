@@ -137,9 +137,12 @@ const Repository: React.FC<ToggleTheme> = ({ toggleTheme }) => {
                 </S.Icon>
               )}
             </S.Search>
-            {issues.map((issue) => (
+            {issues.map((issue, index) => (
               <React.Fragment key={issue.id}>
-                <a href={issue.html_url}>
+                <a
+                  href={issue.html_url}
+                  style={{ animationDelay: `0.${index}ms` }}
+                >
                   <img src={issue.user.avatar_url} alt={issue.user.login} />
                   <div>
                     <strong>{issue.title}</strong>
@@ -149,7 +152,7 @@ const Repository: React.FC<ToggleTheme> = ({ toggleTheme }) => {
                 </a>
 
                 {issue.labels.length > 0 && (
-                  <S.Labels>
+                  <S.Labels style={{ animationDelay: `0.${index}ms` }}>
                     {issue.labels.map((label) => (
                       <S.Label
                         color={label.color}

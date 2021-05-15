@@ -29,4 +29,30 @@ export default createGlobalStyle`
   button {
     cursor: pointer;
   }
+
+  .page{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+  }
+
+  .fade-appear,
+  .fade-enter {
+      opacity: 0;
+      z-index: 1;
+  }
+  .fade-appear-active,
+  .fade-enter.fade-enter-active {
+      opacity: 1;
+      transition: opacity 300ms linear 150ms;
+  }
+  .fade-exit {
+      opacity: 1;
+  }
+  .fade-exit.fade-exit-active {
+      opacity: 0;
+      transition: opacity 150ms linear;
+  }
+
 `;

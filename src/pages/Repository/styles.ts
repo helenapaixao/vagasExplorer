@@ -12,6 +12,15 @@ export const Container = styled.section`
   margin: 20px 0 40px;
 `;
 
+const fadeIn = keyframes`
+from{
+  opacity: 0;
+}
+to{
+  opacity: 1;
+}
+`;
+
 export const RepositoryInfo = styled.header`
   > div {
     display: flex;
@@ -73,6 +82,9 @@ export const Issues = styled.div`
   }
 
   a {
+    z-index: 1;
+    animation: ${fadeIn} 1s forwards;
+    opacity: 0;
     background: #fff;
     border-radius: 5px;
     width: 100%;
@@ -93,6 +105,7 @@ export const Issues = styled.div`
     }
 
     div {
+      
       margin: 0 16px;
       flex: 1;
 
@@ -117,6 +130,8 @@ export const Issues = styled.div`
 `;
 
 export const Labels = styled.div`
+  animation: ${fadeIn} 1s forwards;
+  opacity: 0;
   margin: -10px 20px 20px;
   padding: 20px 15px 15px 15px;
   border: 1px solid #dcdcdc;
@@ -124,6 +139,7 @@ export const Labels = styled.div`
   border-radius: 5px;
   background: transparent;
   width: fit-content;
+  z-index: 0;
 `;
 
 export const Label = styled.label`
