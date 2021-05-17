@@ -53,6 +53,8 @@ const Repository: React.FC = () => {
   const [repository, setRepositories] = useState<RepositoryProps | null>(null);
   const [issues, setIssues] = useState<IssueProps[]>([]);
   const [searchValue, setSearchValue] = useState('');
+
+
   const { params } = useRouteMatch<RepositoryParamsProps>();
 
   const [allIssues, setAllIssues] = useState<IssueProps[]>([]);
@@ -103,6 +105,8 @@ const Repository: React.FC = () => {
           return true;
         }
       }
+
+      return false;
     });
 
     setIssues(issuesFiltered);
