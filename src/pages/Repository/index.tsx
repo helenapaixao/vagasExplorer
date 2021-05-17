@@ -2,18 +2,13 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import { FiChevronRight, FiX } from 'react-icons/fi';
 
-import { DefaultTheme } from 'styled-components';
 import api from '../../services/api';
 
 import Layout from '../../components/Layout';
 import Header from '../../components/Header';
 
-import light from '../../styles/themes/light';
-import dark from '../../styles/themes/dark';
-
-import usePeristedState from '../../utils/usePersistedState';
-
 import * as S from './styles';
+import { ToggleTheme } from '../../utils/ToggleThemeInterface';
 
 interface RepositoryProps {
   full_name: string;
@@ -25,7 +20,6 @@ interface RepositoryProps {
     avatar_url: string;
   };
 }
-
 
 interface IssueProps {
   title: string;
@@ -49,7 +43,7 @@ interface labelsProps {
   name: string;
 }
 
-const Repository: React.FC = () => {
+const Repository: React.FC<ToggleTheme> = ({ toggleTheme }) => {
   const [repository, setRepositories] = useState<RepositoryProps | null>(null);
   const [issues, setIssues] = useState<IssueProps[]>([]);
   const [searchValue, setSearchValue] = useState('');
@@ -58,8 +52,6 @@ const Repository: React.FC = () => {
   const { params } = useRouteMatch<RepositoryParamsProps>();
 
   const [allIssues, setAllIssues] = useState<IssueProps[]>([]);
-
-  const [theme, setTheme] = usePeristedState<DefaultTheme>('theme', light);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -75,10 +67,6 @@ const Repository: React.FC = () => {
     });
   }, [params.repository]);
 
-  const toggleTheme = () => {
-    setTheme(theme.title === 'light' ? dark : light);
-  };
-
   const handleSearch = (val: string) => {
     if (null !== inputRef.current) {
       inputRef.current.focus();
@@ -88,7 +76,7 @@ const Repository: React.FC = () => {
 
     setSearchValue(val);
 
-// eslint-disable-next-line
+    // eslint-disable-next-line
     const issuesFiltered = allIssues.filter((issue) => {
       if (issue.title.toLowerCase().indexOf(val.toLowerCase()) !== -1) {
         return true;
@@ -153,9 +141,12 @@ const Repository: React.FC = () => {
                 </S.Icon>
               )}
             </S.Search>
-            {issues.map((issue) => (
+            {issues.map((issue, index) => (
               <React.Fragment key={issue.id}>
-                <a href={issue.html_url}>
+                <a
+                  href={issue.html_url}
+                  style={{ animationDelay: `0.${index}ms` }}
+                >
                   <img src={issue.user.avatar_url} alt={issue.user.login} />
                   <div>
                     <strong>{issue.title}</strong>
@@ -165,7 +156,7 @@ const Repository: React.FC = () => {
                 </a>
 
                 {issue.labels.length > 0 && (
-                  <S.Labels>
+                  <S.Labels style={{ animationDelay: `0.${index}ms` }}>
                     {issue.labels.map((label) => (
                       <S.Label
                         color={label.color}
