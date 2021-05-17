@@ -26,6 +26,7 @@ interface RepositoryProps {
   };
 }
 
+
 interface IssueProps {
   title: string;
   id: string;
@@ -52,7 +53,8 @@ const Repository: React.FC = () => {
   const [repository, setRepositories] = useState<RepositoryProps | null>(null);
   const [issues, setIssues] = useState<IssueProps[]>([]);
   const [searchValue, setSearchValue] = useState('');
-  //const [filter, setFilter] = useState('');
+
+
   const { params } = useRouteMatch<RepositoryParamsProps>();
 
   const [allIssues, setAllIssues] = useState<IssueProps[]>([]);
@@ -85,6 +87,8 @@ const Repository: React.FC = () => {
     if (!val) setIssues(allIssues);
 
     setSearchValue(val);
+
+// eslint-disable-next-line
     const issuesFiltered = allIssues.filter((issue) => {
       if (issue.title.toLowerCase().indexOf(val.toLowerCase()) !== -1) {
         return true;
@@ -104,6 +108,7 @@ const Repository: React.FC = () => {
 
       return false;
     });
+
     setIssues(issuesFiltered);
   };
 
