@@ -7,6 +7,7 @@ export const Container = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  
 `;
 
 export const LogoContainer = styled.div`
@@ -16,11 +17,15 @@ export const LogoContainer = styled.div`
 
   h1 {
     font-size: 30px;
+    
   }
 `;
 
 export const LogoImage = styled.div`
   margin-right: 10px;
+  @media (max-width: 1199.98px) {
+    padding-left: 20px;
+  }
 `;
 
 export const ActionContainer = styled.div`
