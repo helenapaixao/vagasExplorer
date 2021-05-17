@@ -118,7 +118,7 @@ const Repository: React.FC<ToggleTheme> = ({ toggleTheme }) => {
             </div>
             <ul>
               <li>
-                <strong>{issues.length}</strong>
+                <strong>{repository.open_issues_count}</strong>
                 <span>Vagas abertas</span>
               </li>
             </ul>
