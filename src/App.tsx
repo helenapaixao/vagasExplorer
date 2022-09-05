@@ -4,7 +4,6 @@ import { ThemeProvider, DefaultTheme } from 'styled-components';
 import usePeristedState from './utils/usePersistedState';
 import Routes from './routes';
 import GlobalStyle from './styles/global';
-
 import light from './styles/themes/light';
 import dark from './styles/themes/dark';
 

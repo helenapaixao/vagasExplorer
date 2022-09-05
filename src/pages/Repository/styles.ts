@@ -105,7 +105,7 @@ export const Issues = styled.div`
     }
 
     div {
-      
+
       margin: 0 16px;
       flex: 1;
 
@@ -134,7 +134,7 @@ export const Labels = styled.div`
   opacity: 0;
   margin: -10px 20px 20px;
   padding: 20px 15px 15px 15px;
-  border: 1px solid #dcdcdc;
+  border: none;
   border-top: none;
   border-radius: 5px;
   background: transparent;
@@ -170,7 +170,7 @@ export const Input = styled.input`
   transition: all 0.2s ease;
 
   &:focus {
-    box-shadow: 0 0 25px -10px #3498db;
+    box-shadow: 0 0 25px -10px #C62E65;
   }
 `;
 

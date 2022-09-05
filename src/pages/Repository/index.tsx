@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import { FiChevronRight, FiX } from 'react-icons/fi';
+import {RepositoryParamsProps, IssueProps, RepositoryProps} from './intefaces'
 
 import api from '../../services/api';
 
@@ -10,38 +11,6 @@ import Header from '../../components/Header';
 import * as S from './styles';
 import { ToggleTheme } from '../../utils/ToggleThemeInterface';
 
-interface RepositoryProps {
-  full_name: string;
-  description: string;
-  stargazers_count: number;
-  open_issues_count: number;
-  owner: {
-    login: string;
-    avatar_url: string;
-  };
-}
-
-interface IssueProps {
-  title: string;
-  id: string;
-  body: string;
-  html_url: string;
-  user: {
-    login: string;
-    avatar_url: string;
-  };
-  labels: labelsProps[];
-}
-
-interface RepositoryParamsProps {
-  repository: string;
-}
-
-interface labelsProps {
-  color: string;
-  id: number;
-  name: string;
-}
 
 const Repository: React.FC<ToggleTheme> = ({ toggleTheme }) => {
   const [repository, setRepositories] = useState<RepositoryProps | null>(null);
@@ -152,7 +121,7 @@ const Repository: React.FC<ToggleTheme> = ({ toggleTheme }) => {
                     <strong>{issue.title}</strong>
                     <p>{issue.user.login}</p>
                   </div>
-                  <FiChevronRight size={20} />
+                  <FiChevronRight size={40} />
                 </a>
 
                 {issue.labels.length > 0 && (

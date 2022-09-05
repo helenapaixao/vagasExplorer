@@ -59,13 +59,6 @@ const reposData = [
     name: ' flutterbr',
     desc: ' Espaço para divulgação de vagas relacionadas com Flutter e Dart',
   },
-  {
-    link: '/repository/uxbrasil/vagas',
-    imageUrl:
-      'https://user-images.githubusercontent.com/3299130/48214486-2fed0800-e367-11e8-8274-6858c79ab7b4.png',
-    name: ' uxbrasil',
-    desc: ' Espaço para divulgação de vagas para designers UI e pesquisadores UX.',
-  },
 ];
 
 const Dashboard: React.FC<ToggleTheme> = ({ toggleTheme }) => {
