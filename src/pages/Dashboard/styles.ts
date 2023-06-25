@@ -5,6 +5,7 @@ export const Repositories = styled.section`
   grid-area: content;
   margin: 20px 0 40px;
 
+
   h1 {
     font-size: 48px;
     color: ${(props) => props.theme.colors.text};
@@ -64,7 +65,21 @@ export const Repositories = styled.section`
 export const RepositoryItem = styled(Link)``;
 
 export const Content = styled.div`
-/*   width: 100vw;
-  height: 100vh; */
+  flex: 1;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: 'content content';
+  gap: 20px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'content'
+      'content';
+  }
 
 `;

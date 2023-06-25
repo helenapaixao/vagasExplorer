@@ -7,7 +7,11 @@ export const Container = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    justify-content: center;
+  }
 `;
 
 export const LogoContainer = styled.div`
@@ -17,7 +21,6 @@ export const LogoContainer = styled.div`
 
   h1 {
     font-size: 30px;
-    
   }
 `;
 

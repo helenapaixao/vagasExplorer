@@ -140,6 +140,12 @@ export const Labels = styled.div`
   background: transparent;
   width: fit-content;
   z-index: 0;
+
+  @media (max-width: 768px) {
+    margin: 0;
+    padding: 10px;
+  }
+
 `;
 
 export const Label = styled.label`
@@ -156,6 +162,11 @@ export const Label = styled.label`
 export const Search = styled.div`
   position: relative;
   margin: 3rem auto;
+
+  @media (max-width: 768px) {
+    margin: 1rem auto;
+  }
+
 `;
 
 export const Input = styled.input`
