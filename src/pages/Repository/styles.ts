@@ -184,3 +184,29 @@ export const Icon = styled.label`
   color: red;
   animation: ${entranceLeft} 0.4s forwards;
 `;
+
+
+
+export const Pagination = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  button {
+    padding: 8px 16px;
+    background-color: #C62E65;
+    border: none;
+    border-radius: 4px;
+    margin: 0 4px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #C62E65;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+`;

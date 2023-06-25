@@ -1,7 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import { FiChevronRight, FiX } from 'react-icons/fi';
-import {RepositoryParamsProps, IssueProps, RepositoryProps} from './intefaces'
+import {
+  RepositoryParamsProps,
+  IssueProps,
+  RepositoryProps,
+} from './intefaces';
 
 import api from '../../services/api';
 
@@ -10,31 +14,51 @@ import Header from '../../components/Header';
 
 import * as S from './styles';
 import { ToggleTheme } from '../../utils/ToggleThemeInterface';
+import Button from '../../components/Button';
 
-
-const Repository = ({ toggleTheme } :ToggleTheme) => {
+const Repository = ({ toggleTheme }: ToggleTheme) => {
   const [repository, setRepositories] = useState<RepositoryProps | null>(null);
   const [issues, setIssues] = useState<IssueProps[]>([]);
   const [searchValue, setSearchValue] = useState('');
-
+  const [page, setPage] = useState(1);
 
   const { params } = useRouteMatch<RepositoryParamsProps>();
 
   const [allIssues, setAllIssues] = useState<IssueProps[]>([]);
 
   const inputRef = useRef<HTMLInputElement>(null);
-
   useEffect(() => {
-    api.get(`repos/${params.repository}`).then((response) => {
-      setRepositories(response.data);
-    });
+    const fetchRepositoryData = async () => {
+      try {
+        const repositoryResponse = await api.get(`repos/${params.repository}`);
+        setRepositories(repositoryResponse.data);
+      } catch (error) {
+        console.error('Erro ao buscar dados do repositório:', error);
+      }
+    };
 
-    api.get(`repos/${params.repository}/issues`).then((response) => {
-      setIssues(response.data);
-      setAllIssues(response.data);
-      console.log(response.data);
-    });
-  }, [params.repository]);
+    const fetchIssuesData = async () => {
+      try {
+        const issuesResponse = await api.get(
+          `repos/${params.repository}/issues`,
+          {
+            params: {
+              page,
+              per_page: 10, // Defina a quantidade de issues por página
+            },
+          },
+        );
+        setIssues(issuesResponse.data);
+        setAllIssues(issuesResponse.data);
+      } catch (error) {
+        console.error('Erro ao buscar dados das issues:', error);
+      } finally {
+      }
+    };
+
+    fetchRepositoryData();
+    fetchIssuesData();
+  }, [params.repository, page]);
 
   const handleSearch = (val: string) => {
     if (null !== inputRef.current) {
@@ -67,6 +91,14 @@ const Repository = ({ toggleTheme } :ToggleTheme) => {
     });
 
     setIssues(issuesFiltered);
+  };
+
+  const handleNextPage = () => {
+    setPage(page + 1);
+  };
+
+  const handlePreviousPage = () => {
+    setPage(page - 1);
   };
 
   return (
@@ -110,6 +142,7 @@ const Repository = ({ toggleTheme } :ToggleTheme) => {
                 </S.Icon>
               )}
             </S.Search>
+
             {issues.map((issue, index) => (
               <React.Fragment key={issue.id}>
                 <a
@@ -138,6 +171,12 @@ const Repository = ({ toggleTheme } :ToggleTheme) => {
                 )}
               </React.Fragment>
             ))}
+            <S.Pagination>
+              <Button color='#0000' disabled={page === 1} onClick={handlePreviousPage}>
+                Anterior
+              </Button>
+              <Button onClick={handleNextPage}>Proxima</Button>
+            </S.Pagination>
           </>
         </S.Issues>
       </S.Container>
