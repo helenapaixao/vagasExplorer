@@ -5,7 +5,6 @@ export const Repositories = styled.section`
   grid-area: content;
   margin: 20px 0 40px;
 
-
   h1 {
     font-size: 48px;
     color: ${(props) => props.theme.colors.text};
@@ -81,5 +80,4 @@ export const Content = styled.div`
       'content'
       'content';
   }
-
 `;

@@ -11,18 +11,24 @@ interface HeaderProps {
   isLink?: string;
   toggleTheme(): void;
 }
+//clicar na logo e voltar uma pagina anterior
+const handleBack = () => {
+  window.history.back();
+}
+
 
 const Header = ({ isLink, toggleTheme } :HeaderProps) => {
   const { colors, title } = useContext(ThemeContext);
   return (
     <S.Container>
       <S.LogoContainer>
-        <S.LogoImage>
-          <Logo isDark={
+        <span onClick={handleBack}>
+        <S.LogoImage >
+          <Logo  isDark={
             title === 'dark'
-
           } />
         </S.LogoImage>
+        </span>
         <h1>vagasExplorer</h1>
       </S.LogoContainer>
       <Switch

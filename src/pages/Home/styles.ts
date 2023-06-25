@@ -4,35 +4,28 @@ import { FiLogIn } from 'react-icons/fi';
 
 export const Title = styled.section`
   grid-area: slogan;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  @media (min-width: 992px) and (max-width: 1199.98px) {
-
-  }
 
   h1 {
     font-size: 48px;
     color: ${(props) => props.theme.colors.text};
     margin-bottom: 50px;
 
-    // Dispositivos small (telefones em modo paisagem, com 576px ou mais)
-  @media (max-width: 767.98px) {
-    margin-left: 20px;
-    font-size:40px;
-  }
+    @media (max-width: 767.98px) {
+      margin-left: 20px;
+      font-size: 40px;
+    }
 
-    // Dispositivos médios (tablets com 768px ou mais)
-  @media (min-width: 768px) and (max-width: 991.98px) { 
-    margin-left: 20px;
-  }
+    @media (min-width: 768px) and (max-width: 991.98px) {
+      margin-left: 20px;
+    }
 
-    // Dispositivos large (desktops com 992px ou mais)
     @media (min-width: 992px) and (max-width: 1199.98px) {
-    margin-left: 20px;
-  }
+      margin-left: 20px;
+    }
   }
 
   a {
@@ -48,10 +41,10 @@ export const Title = styled.section`
     font-weight: 500;
     color: ${(props) => props.theme.colors.primary};
     transition: all 0.2s ease-in-out;
-    
+
     @media (max-width: 550.98px) {
     margin-left: 20px;
-    
+
   }
 
     &:hover {
