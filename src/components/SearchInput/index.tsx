@@ -9,13 +9,13 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ComponentType<IconBaseProps>;
 }
 
-const SearchInput: React.FC<InputProps> = ({
+const SearchInput = ({
   name,
   value = '',
   containerStyle = {},
   icon: Icon,
   ...rest
-}) => {
+} : InputProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (

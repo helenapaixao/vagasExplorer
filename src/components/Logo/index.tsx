@@ -1,6 +1,11 @@
 import React from 'react';
 
-export const Logo: React.FC<any> = ({ isDark }) =>
+
+type PropsLogo = {
+  isDark: true | false,
+};
+
+export const Logo = ({ isDark }: PropsLogo) =>
   isDark === false ? (
     <svg
       height="60"

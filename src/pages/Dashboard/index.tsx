@@ -9,7 +9,7 @@ import * as S from './styles';
 import { ToggleTheme } from '../../utils/ToggleThemeInterface';
 
 
-const Dashboard: React.FC<ToggleTheme> = ({ toggleTheme }) => {
+const Dashboard = ({ toggleTheme }: ToggleTheme) => {
   return (
     <Layout isContentFull>
       <Header isLink="/" toggleTheme={toggleTheme} />

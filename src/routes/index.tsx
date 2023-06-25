@@ -7,7 +7,7 @@ import Dashboard from '../pages/Dashboard';
 import Repository from '../pages/Repository';
 import Home from '../pages/Home';
 
-const Routes: React.FC<ToggleTheme> = ({ toggleTheme }) => (
+const Routes = ({ toggleTheme }: ToggleTheme) => (
   <Route
     render={({ location }) => (
       <TransitionGroup>

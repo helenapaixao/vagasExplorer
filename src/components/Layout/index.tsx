@@ -6,9 +6,10 @@ import * as S from './styles';
 
 interface LayoutProps {
   isContentFull?: boolean;
+  children: React.ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, isContentFull }) => {
+const Layout = ({ children, isContentFull } : LayoutProps) => {
   return (
     <S.Container isContentFull={isContentFull} className="page">
       {children}

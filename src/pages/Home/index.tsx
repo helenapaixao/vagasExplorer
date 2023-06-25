@@ -8,7 +8,7 @@ import Animation from '../../components/Animation';
 
 import * as S from './styles';
 
-const Home: React.FC<ToggleTheme> = ({ toggleTheme }) => {
+const Home = ({ toggleTheme }: ToggleTheme) => {
   return (
     <Layout>
       <Header toggleTheme={toggleTheme} />

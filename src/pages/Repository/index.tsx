@@ -12,7 +12,7 @@ import * as S from './styles';
 import { ToggleTheme } from '../../utils/ToggleThemeInterface';
 
 
-const Repository: React.FC<ToggleTheme> = ({ toggleTheme }) => {
+const Repository = ({ toggleTheme } :ToggleTheme) => {
   const [repository, setRepositories] = useState<RepositoryProps | null>(null);
   const [issues, setIssues] = useState<IssueProps[]>([]);
   const [searchValue, setSearchValue] = useState('');

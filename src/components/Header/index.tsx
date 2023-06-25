@@ -12,13 +12,16 @@ interface HeaderProps {
   toggleTheme(): void;
 }
 
-const Header: React.FC<HeaderProps> = ({ isLink, toggleTheme }) => {
+const Header = ({ isLink, toggleTheme } :HeaderProps) => {
   const { colors, title } = useContext(ThemeContext);
   return (
     <S.Container>
       <S.LogoContainer>
         <S.LogoImage>
-          <Logo isDark={title === 'dark'} />
+          <Logo isDark={
+            title === 'dark'
+
+          } />
         </S.LogoImage>
         <h1>vagasExplorer</h1>
       </S.LogoContainer>

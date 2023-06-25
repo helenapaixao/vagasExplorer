@@ -1,7 +1,7 @@
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-const SkeletonComp: React.FC = () => {
+const SkeletonComp = () => {
   return <Skeleton height={20} width={300} />;
 };
 
