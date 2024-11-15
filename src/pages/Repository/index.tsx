@@ -21,6 +21,7 @@ const Repository = ({ toggleTheme }: ToggleTheme) => {
   const [issues, setIssues] = useState<IssueProps[]>([]);
   const [searchValue, setSearchValue] = useState('');
   const [page, setPage] = useState(1);
+  const [hasMoreIssues, setHasMoreIssues] = useState(true);
 
   const { params } = useRouteMatch<RepositoryParamsProps>();
 
@@ -44,12 +45,14 @@ const Repository = ({ toggleTheme }: ToggleTheme) => {
           {
             params: {
               page,
-              per_page: 10, // Defina a quantidade de issues por página
+              per_page: 10, 
             },
           },
         );
-        setIssues(issuesResponse.data);
-        setAllIssues(issuesResponse.data);
+        const issuesData = issuesResponse.data;
+        setIssues((prevIssues) => [...prevIssues, ...issuesData]);
+        setAllIssues(issuesData);
+        setHasMoreIssues(issuesData.length > 0);
       } catch (error) {
         console.error('Erro ao buscar dados das issues:', error);
       } finally {
@@ -175,7 +178,7 @@ const Repository = ({ toggleTheme }: ToggleTheme) => {
               <Button color='#0000' disabled={page === 1} onClick={handlePreviousPage}>
                 Anterior
               </Button>
-              <Button onClick={handleNextPage}>Proxima</Button>
+              <Button  onClick={handleNextPage}>Proxima</Button>
             </S.Pagination>
           </>
         </S.Issues>
