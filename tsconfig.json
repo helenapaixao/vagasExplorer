@@ -13,8 +13,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "preserve"
   },
-  "include": ["src"],
-  "files": ["src/styles/styled.d.ts"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "files": ["src/styles/styled.d.ts"],
+  "exclude": ["node_modules"]
 }
