@@ -1,6 +1,7 @@
 import React from 'react';
+import Link from 'next/link';
 import { FiChevronRight } from 'react-icons/fi';
-import {reposData} from './reposData'
+import { reposData } from './reposData';
 
 import Layout from '../../components/Layout';
 import Header from '../../components/Header';
@@ -19,14 +20,16 @@ const Dashboard = ({ toggleTheme }: ToggleTheme) => {
 
         <S.Content>
           {reposData.map((repo) => (
-            <S.RepositoryItem key={repo.link} to={repo.link}>
-              <img src={repo.imageUrl} alt={repo.name} />
-              <div>
-                <strong>{repo.name}</strong>
-                <p>{repo.desc}</p>
-              </div>
-              <FiChevronRight size={20} />
-            </S.RepositoryItem>
+            <Link key={repo.link} href={repo.link} passHref legacyBehavior>
+              <S.RepositoryItem>
+                <img src={repo.imageUrl} alt={repo.name} />
+                <div>
+                  <strong>{repo.name}</strong>
+                  <p>{repo.desc}</p>
+                </div>
+                <FiChevronRight size={20} />
+              </S.RepositoryItem>
+            </Link>
           ))}
         </S.Content>
       </S.Repositories>

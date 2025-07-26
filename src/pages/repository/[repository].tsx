@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useRouteMatch } from 'react-router-dom';
+import { useRouter } from 'next/router';
 import { FiChevronRight, FiX } from 'react-icons/fi';
 import {
   RepositoryParamsProps,
@@ -23,7 +23,8 @@ const Repository = ({ toggleTheme }: ToggleTheme) => {
   const [page, setPage] = useState(1);
   const [hasMoreIssues, setHasMoreIssues] = useState(true);
 
-  const { params } = useRouteMatch<RepositoryParamsProps>();
+  const router = useRouter();
+  const { repository: repoParam } = router.query as Partial<RepositoryParamsProps>;
 
   const [allIssues, setAllIssues] = useState<IssueProps[]>([]);
 
@@ -31,7 +32,8 @@ const Repository = ({ toggleTheme }: ToggleTheme) => {
   useEffect(() => {
     const fetchRepositoryData = async () => {
       try {
-        const repositoryResponse = await api.get(`repos/${params.repository}`);
+        if (!repoParam) return;
+        const repositoryResponse = await api.get(`repos/${repoParam}`);
         setRepositories(repositoryResponse.data);
       } catch (error) {
         console.error('Erro ao buscar dados do repositório:', error);
@@ -41,7 +43,7 @@ const Repository = ({ toggleTheme }: ToggleTheme) => {
     const fetchIssuesData = async () => {
       try {
         const issuesResponse = await api.get(
-          `repos/${params.repository}/issues`,
+          `repos/${repoParam}/issues`,
           {
             params: {
               page,
@@ -61,7 +63,7 @@ const Repository = ({ toggleTheme }: ToggleTheme) => {
 
     fetchRepositoryData();
     fetchIssuesData();
-  }, [params.repository, page]);
+  }, [repoParam, page]);
 
   const handleSearch = (val: string) => {
     if (null !== inputRef.current) {

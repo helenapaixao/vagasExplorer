@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import Switch from 'react-switch';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { shade } from 'polished';
 
 import { ThemeContext } from 'styled-components';
@@ -44,9 +44,11 @@ const Header = ({ isLink, toggleTheme } :HeaderProps) => {
       />
       <S.ActionContainer>
         {isLink && (
-          <Link to={isLink}>
-            <S.IconBack />
-            Voltar
+          <Link href={isLink} legacyBehavior>
+            <a>
+              <S.IconBack />
+              Voltar
+            </a>
           </Link>
         )}
       </S.ActionContainer>

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 export const Repositories = styled.section`
   grid-area: content;
@@ -61,7 +60,7 @@ export const Repositories = styled.section`
   }
 `;
 
-export const RepositoryItem = styled(Link)``;
+export const RepositoryItem = styled.a``;
 
 export const Content = styled.div`
   flex: 1;
