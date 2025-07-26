@@ -5,6 +5,5 @@ export default {
     secundary: '#3c3744',
     background: '#f0f0f5',
     text: '#3a3a3a',
-
   },
 };

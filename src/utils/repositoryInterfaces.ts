@@ -9,7 +9,13 @@ export interface RepositoryProps {
   };
 }
 
- export interface IssueProps {
+export interface LabelsProps {
+  color: string;
+  id: number;
+  name: string;
+}
+
+export interface IssueProps {
   title: string;
   id: string;
   body: string;
@@ -18,17 +24,9 @@ export interface RepositoryProps {
     login: string;
     avatar_url: string;
   };
-  labels: labelsProps[];
+  labels: LabelsProps[];
 }
 
 export interface RepositoryParamsProps {
   repository: string;
-}
-
-
-
-export interface labelsProps {
-  color: string;
-  id: number;
-  name: string;
 }
