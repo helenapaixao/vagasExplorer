@@ -105,7 +105,6 @@ export const Issues = styled.div`
     }
 
     div {
-
       margin: 0 16px;
       flex: 1;
 
@@ -128,7 +127,6 @@ export const Issues = styled.div`
     }
   }
 `;
-
 export const Labels = styled.div`
   animation: ${fadeIn} 1s forwards;
   opacity: 0;
@@ -140,14 +138,11 @@ export const Labels = styled.div`
   background: transparent;
   width: fit-content;
   z-index: 0;
-
   @media (max-width: 768px) {
     margin: 0;
     padding: 10px;
   }
-
 `;
-
 export const Label = styled.label`
   background: #${(props) => props.color};
   font-size: 0.7rem;
@@ -158,17 +153,13 @@ export const Label = styled.label`
   color: #000;
   cursor: pointer;
 `;
-
 export const Search = styled.div`
   position: relative;
   margin: 3rem auto;
-
   @media (max-width: 768px) {
     margin: 1rem auto;
   }
-
 `;
-
 export const Input = styled.input`
   background: #fff;
   border: none;
@@ -181,7 +172,7 @@ export const Input = styled.input`
   transition: all 0.2s ease;
 
   &:focus {
-    box-shadow: 0 0 25px -10px #C62E65;
+    box-shadow: 0 0 25px -10px #c62e65;
   }
 `;
 
@@ -195,9 +186,6 @@ export const Icon = styled.label`
   color: red;
   animation: ${entranceLeft} 0.4s forwards;
 `;
-
-
-
 export const Pagination = styled.div`
   display: flex;
   justify-content: center;
@@ -205,14 +193,14 @@ export const Pagination = styled.div`
 
   button {
     padding: 8px 16px;
-    background-color: #C62E65;
+    background-color: #c62e65;
     border: none;
     border-radius: 4px;
     margin: 0 4px;
     cursor: pointer;
 
     &:hover {
-      background-color: #C62E65;
+      background-color: #c62e65;
     }
 
     &:disabled {

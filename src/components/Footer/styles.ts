@@ -19,7 +19,7 @@ export const Footer = styled.footer`
     transition: all 0.2s ease-in-out;
 
     &:hover {
-      color: ${shade(0.2, '#C62E65')};
+      color: ${shade(0.2, '#c62e65')};
     }
   }
 
