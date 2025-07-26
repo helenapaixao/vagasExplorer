@@ -28,5 +28,5 @@ export interface IssueProps {
 }
 
 export interface RepositoryParamsProps {
-  repository: string;
+  repository: string | string[];
 }

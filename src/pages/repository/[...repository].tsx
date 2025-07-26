@@ -24,7 +24,9 @@ const Repository = ({ toggleTheme }: ToggleTheme) => {
   const [hasMoreIssues, setHasMoreIssues] = useState(true);
 
   const router = useRouter();
-  const { repository: repoParam } = router.query as Partial<RepositoryParamsProps>;
+  const { repository: repoParam } =
+    router.query as Partial<RepositoryParamsProps>;
+  const repoPath = Array.isArray(repoParam) ? repoParam.join('/') : repoParam;
 
   const [allIssues, setAllIssues] = useState<IssueProps[]>([]);
 
@@ -32,8 +34,8 @@ const Repository = ({ toggleTheme }: ToggleTheme) => {
   useEffect(() => {
     const fetchRepositoryData = async () => {
       try {
-        if (!repoParam) return;
-        const repositoryResponse = await api.get(`repos/${repoParam}`);
+        if (!repoPath) return;
+        const repositoryResponse = await api.get(`repos/${repoPath}`);
         setRepositories(repositoryResponse.data);
       } catch (error) {
         console.error('Erro ao buscar dados do repositório:', error);
@@ -43,11 +45,11 @@ const Repository = ({ toggleTheme }: ToggleTheme) => {
     const fetchIssuesData = async () => {
       try {
         const issuesResponse = await api.get(
-          `repos/${repoParam}/issues`,
+          `repos/${repoPath}/issues`,
           {
             params: {
               page,
-              per_page: 10, 
+              per_page: 10,
             },
           },
         );
@@ -63,7 +65,7 @@ const Repository = ({ toggleTheme }: ToggleTheme) => {
 
     fetchRepositoryData();
     fetchIssuesData();
-  }, [repoParam, page]);
+  }, [repoPath, page]);
 
   const handleSearch = (val: string) => {
     if (null !== inputRef.current) {
