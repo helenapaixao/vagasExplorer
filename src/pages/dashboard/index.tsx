@@ -1,12 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { FiChevronRight } from 'react-icons/fi';
-import { reposData } from './reposData';
+import { reposData } from '../../utils/reposData';
 
 import Layout from '../../components/Layout';
 import Header from '../../components/Header';
 
-import * as S from './styles';
+import * as S from '../../styles/dashboard';
 import { ToggleTheme } from '../../utils/ToggleThemeInterface';
 
 

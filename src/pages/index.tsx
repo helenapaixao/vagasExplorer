@@ -3,7 +3,7 @@ import Layout from '../components/Layout';
 import Header from '../components/Header';
 import Animation from '../components/Animation';
 import { ToggleTheme } from '../utils/ToggleThemeInterface';
-import * as S from './Home/styles';
+import * as S from '../styles/home';
 
 export default function Home({ toggleTheme }: ToggleTheme) {
   return (

@@ -5,14 +5,14 @@ import {
   RepositoryParamsProps,
   IssueProps,
   RepositoryProps,
-} from './intefaces';
+} from '../../utils/repositoryInterfaces';
 
 import api from '../../services/api';
 
 import Layout from '../../components/Layout';
 import Header from '../../components/Header';
 
-import * as S from './styles';
+import * as S from '../../styles/repository';
 import { ToggleTheme } from '../../utils/ToggleThemeInterface';
 import Button from '../../components/Button';
 
