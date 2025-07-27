@@ -6,8 +6,13 @@ import GlobalStyle from '../styles/global';
 import light from '../styles/themes/light';
 import dark from '../styles/themes/dark';
 
-const ThemeProvider: React.FC<{ theme: DefaultTheme }> = ({ theme, children }) => (
-  <StyledComponentsThemeProvider theme={theme}>{children}</StyledComponentsThemeProvider>
+const ThemeProvider: React.FC<{ theme: DefaultTheme }> = ({
+  theme,
+  children,
+}) => (
+  <StyledComponentsThemeProvider theme={theme}>
+    {children}
+  </StyledComponentsThemeProvider>
 );
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
