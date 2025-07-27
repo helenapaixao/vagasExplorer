@@ -33,17 +33,17 @@ export const LogoImage = styled.div`
 
 export const ActionContainer = styled.div`
   display: flex;
+`;
 
-  a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: #a8a8b3;
-    transition: color 0.2s;
+export const ActionLink = styled.a`
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #a8a8b3;
+  transition: color 0.2s;
 
-    &:hover {
-      color: #666;
-    }
+  &:hover {
+    color: #666;
   }
 `;
 

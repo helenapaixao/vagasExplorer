@@ -50,10 +50,10 @@ const Header: React.FC<HeaderProps> = ({ isLink, toggleTheme }) => {
       <S.ActionContainer>
         {isLink && (
           <Link href={isLink} legacyBehavior passHref>
-            <a>
+            <S.ActionLink>
               <S.IconBack />
               Voltar
-            </a>
+            </S.ActionLink>
           </Link>
         )}
       </S.ActionContainer>
