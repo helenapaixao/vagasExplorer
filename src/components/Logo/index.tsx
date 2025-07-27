@@ -5,7 +5,7 @@ type PropsLogo = {
 };
 
 function Logo({ isDark }: PropsLogo) {
-  isDark === false ? (
+  return isDark === false ? (
     <svg
       height="60"
       viewBox="0 0 512.002 512.002"
