@@ -1,57 +1,28 @@
 {
   "env": {
     "browser": true,
-    "es6": true
+    "es2021": true
   },
   "extends": [
     "plugin:react/recommended",
-    "airbnb",
     "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint",
+    "airbnb",
+    "airbnb/hooks",
     "plugin:prettier/recommended"
   ],
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
-  },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
     },
-    "ecmaVersion": 2018,
+    "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": [
-    "react",
-    "react-hooks",
-    "@typescript-eslint",
-    "prettier"
-  ],
+  "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
-    "react/react-in-jsx-scope": "off",
-    "react/function-component-definition": [
-      "error",
-      {
-        "namedComponents": "arrow-function",
-        "unnamedComponents": "arrow-function"
-      }
-    ],
     "prettier/prettier": "error",
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
+    "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
-    "import/prefer-default-export": "off",
-    "react/jsx-props-no-spreading": "off",
-    "@typescript-eslint/no-empty-function": "off",
-    "react/prop-types": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "global-require": 0,
-    "no-unused-expressions": "off",
-    "@typescript-eslint/explicit-function-return-type": [
-      "off",
-      { "allowExpressions": true }
-    ],
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -59,14 +30,32 @@
         "ts": "never",
         "tsx": "never"
       }
-    ]
+    ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": ["**/*.test.ts", "**/*.test.tsx", "**/*.stories.tsx"]
+      }
+    ],
+    "react/require-default-props": "off",
+    "react/prop-types": "off",
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "react/function-component-definition": [
+      "error",
+      {
+        "namedComponents": "arrow-function"
+      }
+    ],
+    "jsx-a11y/anchor-is-valid": "off",
+    "react/jsx-props-no-spreading": "off",
+    "import/prefer-default-export": "off"
   },
   "settings": {
     "react": {
       "version": "detect"
-    },
-    "rules": {
-      "react/react-in-jsx-scope": "off"
     },
     "import/resolver": {
       "typescript": {}
