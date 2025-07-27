@@ -12,11 +12,11 @@ interface HeaderProps {
   toggleTheme(): void;
 }
 
-function handleBack() {
+const handleBack = () => {
   window.history.back();
-}
+};
 
-function Header({ isLink, toggleTheme }: HeaderProps) {
+const Header: React.FC<HeaderProps> = ({ isLink, toggleTheme }) => {
   const { colors, title } = useContext(ThemeContext);
 
   return (
@@ -26,6 +26,7 @@ function Header({ isLink, toggleTheme }: HeaderProps) {
           onClick={handleBack}
           style={{ all: 'unset', cursor: 'pointer' }}
           aria-label="Voltar para página anterior"
+          type="button"
         >
           <S.LogoImage>
             <Logo isDark={title === 'dark'} />
@@ -48,7 +49,7 @@ function Header({ isLink, toggleTheme }: HeaderProps) {
 
       <S.ActionContainer>
         {isLink && (
-          <Link href={isLink} legacyBehavior>
+          <Link href={isLink} legacyBehavior passHref>
             <a>
               <S.IconBack />
               Voltar
@@ -58,6 +59,10 @@ function Header({ isLink, toggleTheme }: HeaderProps) {
       </S.ActionContainer>
     </S.Container>
   );
-}
+};
+
+Header.defaultProps = {
+  isLink: undefined,
+};
 
 export default Header;

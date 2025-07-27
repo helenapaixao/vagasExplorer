@@ -8,11 +8,11 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ComponentType<IconBaseProps>;
 }
 
-function SearchInput({
+const SearchInput: React.FC<InputProps> = ({
   containerStyle = {},
   icon: Icon,
   ...rest
-}: InputProps) {
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
@@ -21,7 +21,7 @@ function SearchInput({
       <input ref={inputRef} {...rest} />
     </Container>
   );
-}
+};
 
 SearchInput.defaultProps = {
   name: '',

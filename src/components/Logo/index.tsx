@@ -4,7 +4,7 @@ type PropsLogo = {
   isDark: true | false;
 };
 
-function Logo({ isDark }: PropsLogo) {
+const Logo: React.FC<PropsLogo> = ({ isDark }) => {
   return isDark === false ? (
     <svg
       height="60"
@@ -32,6 +32,6 @@ function Logo({ isDark }: PropsLogo) {
       <path d="m100.44 136.438c2.4 0 4.808-.859 6.724-2.601l.005-.005c4.086-3.715 4.385-10.037.67-14.124-3.713-4.086-10.042-4.386-14.128-.67-4.086 3.715-4.388 10.04-.673 14.126 1.974 2.172 4.683 3.274 7.402 3.274z" />
     </svg>
   );
-}
+};
 
 export default Logo;

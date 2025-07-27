@@ -7,14 +7,14 @@ interface TooltipProps {
   children: React.ReactNode;
 }
 
-function Tooltip({ title, className, children }: TooltipProps) {
+const Tooltip: React.FC<TooltipProps> = ({ title, className, children }) => {
   return (
     <Container className={className}>
       {children}
       <span>{title}</span>
     </Container>
   );
-}
+};
 
 Tooltip.defaultProps = {
   className: undefined,

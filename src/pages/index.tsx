@@ -6,7 +6,7 @@ import Animation from '../components/Animation';
 import { ToggleTheme } from '../utils/ToggleThemeInterface';
 import * as S from '../styles/home';
 
-export default function Home({ toggleTheme }: ToggleTheme) {
+const Home: React.FC<ToggleTheme> = ({ toggleTheme }) => {
   return (
     <Layout>
       <Header toggleTheme={toggleTheme} />
@@ -22,4 +22,6 @@ export default function Home({ toggleTheme }: ToggleTheme) {
       </S.Ilustration>
     </Layout>
   );
-}
+};
+
+export default Home;

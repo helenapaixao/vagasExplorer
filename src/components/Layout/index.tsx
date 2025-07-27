@@ -9,14 +9,14 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-function Layout({ children, isContentFull }: LayoutProps) {
+const Layout: React.FC<LayoutProps> = ({ children, isContentFull }) => {
   return (
     <S.Container isContentFull={isContentFull} className="page">
       {children}
       <Footer />
     </S.Container>
   );
-}
+};
 
 Layout.defaultProps = {
   isContentFull: false,
