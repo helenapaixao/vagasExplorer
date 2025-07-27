@@ -5,7 +5,7 @@ import { shade } from 'polished';
 
 import { ThemeContext } from 'styled-components';
 import * as S from './styles';
-import { Logo } from '../Logo';
+import Logo from '../Logo';
 
 interface HeaderProps {
   isLink?: string;
