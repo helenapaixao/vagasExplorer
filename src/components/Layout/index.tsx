@@ -9,13 +9,17 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-const Layout = ({ children, isContentFull } : LayoutProps) => {
+function Layout({ children, isContentFull }: LayoutProps) {
   return (
     <S.Container isContentFull={isContentFull} className="page">
       {children}
       <Footer />
     </S.Container>
   );
+}
+
+Layout.defaultProps = {
+  isContentFull: false,
 };
 
 export default Layout;

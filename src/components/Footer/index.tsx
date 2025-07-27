@@ -1,8 +1,7 @@
 import React from 'react';
-
 import * as S from './styles';
 
-const Footer = () => {
+function Footer() {
   return (
     <S.Footer>
       Feito com
@@ -16,6 +15,6 @@ const Footer = () => {
       <a href="https://www.linkedin.com/in/helenapaixao">Entre em contato!</a>
     </S.Footer>
   );
-};
+}
 
 export default Footer;

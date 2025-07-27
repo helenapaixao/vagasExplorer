@@ -1,11 +1,12 @@
+import React, { useState } from 'react';
 import type { AppProps } from 'next/app';
-import { ThemeProvider, DefaultTheme } from 'styled-components';
-import { useState } from 'react';
+import { ThemeProvider } from 'styled-components';
 import GlobalStyle from '../styles/global';
 import light from '../styles/themes/light';
 import dark from '../styles/themes/dark';
+import type { DefaultTheme } from 'styled-components';
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   const [theme, setTheme] = useState<DefaultTheme>(light);
 
   const toggleTheme = () => {
@@ -18,4 +19,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <GlobalStyle />
     </ThemeProvider>
   );
-}
+};
+
+export default MyApp;

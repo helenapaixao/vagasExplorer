@@ -3,10 +3,12 @@ import { Container } from './styles';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
-const Button = ({ children, ...rest }: ButtonProps) => (
-  <Container type="button" {...rest}>
-    {children}
-  </Container>
-);
+function Button({ children, ...rest }: ButtonProps) {
+  return (
+    <Container type="button" {...rest}>
+      {children}
+    </Container>
+  );
+}
 
 export default Button;

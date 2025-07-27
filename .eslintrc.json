@@ -29,6 +29,14 @@
     "prettier"
   ],
   "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/function-component-definition": [
+      "error",
+      {
+        "namedComponents": "arrow-function",
+        "unnamedComponents": "arrow-function"
+      }
+    ],
     "prettier/prettier": "error",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
@@ -54,6 +62,12 @@
     ]
   },
   "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "rules": {
+      "react/react-in-jsx-scope": "off"
+    },
     "import/resolver": {
       "typescript": {}
     }

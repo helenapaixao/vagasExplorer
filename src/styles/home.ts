@@ -43,9 +43,8 @@ export const Title = styled.section`
     transition: all 0.2s ease-in-out;
 
     @media (max-width: 550.98px) {
-    margin-left: 20px;
-
-  }
+      margin-left: 20px;
+    }
 
     &:hover {
       background-color: ${shade(0.2, '#535353')};

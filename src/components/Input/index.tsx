@@ -15,7 +15,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ComponentType<IconBaseProps>;
 }
 
-const Input = ({ name, icon: Icon, ...rest } :InputProps) => {
+function Input({ name, icon: Icon, ...rest }: InputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
@@ -28,7 +28,6 @@ const Input = ({ name, icon: Icon, ...rest } :InputProps) => {
 
   const handleInputBlur = useCallback(() => {
     setIsFocused(false);
-
     setIsFilled(!!inputRef.current?.value);
   }, []);
 
@@ -39,6 +38,7 @@ const Input = ({ name, icon: Icon, ...rest } :InputProps) => {
       path: 'value',
     });
   }, [fieldName, registerField]);
+
   return (
     <Container isErrored={!!error} isFilled={isFilled} isFocused={isFocused}>
       {Icon && <Icon size={20} />}
@@ -49,7 +49,6 @@ const Input = ({ name, icon: Icon, ...rest } :InputProps) => {
         ref={inputRef}
         {...rest}
       />
-
       {error && (
         <Error title={error}>
           <FiAlertCircle color="#c53030" size={20} />
@@ -57,6 +56,10 @@ const Input = ({ name, icon: Icon, ...rest } :InputProps) => {
       )}
     </Container>
   );
+}
+
+Input.defaultProps = {
+  icon: undefined,
 };
 
 export default Input;

@@ -4,7 +4,7 @@ import { Container } from './styles';
 
 import animationData from '../../assets/25920-questions.json';
 
-const Animation = () => {
+function Animation() {
   const [autoplay] = useState(false);
   const [loop] = useState(true);
   const [direction] = useState(1);
@@ -21,6 +21,6 @@ const Animation = () => {
       />
     </Container>
   );
-};
+}
 
 export default Animation;

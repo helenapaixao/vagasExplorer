@@ -9,8 +9,7 @@ import Header from '../../components/Header';
 import * as S from '../../styles/dashboard';
 import { ToggleTheme } from '../../utils/ToggleThemeInterface';
 
-
-const Dashboard = ({ toggleTheme }: ToggleTheme) => {
+function Dashboard({ toggleTheme }: ToggleTheme) {
   return (
     <Layout isContentFull>
       <Header isLink="/" toggleTheme={toggleTheme} />
@@ -35,6 +34,6 @@ const Dashboard = ({ toggleTheme }: ToggleTheme) => {
       </S.Repositories>
     </Layout>
   );
-};
+}
 
 export default Dashboard;

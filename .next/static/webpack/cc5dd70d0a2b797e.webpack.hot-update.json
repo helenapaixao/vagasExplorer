@@ -1,0 +1,1 @@
+{"c":["pages/index","webpack"],"r":["pages/dashboard"],"m":["./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?absolutePagePath=%2FUsers%2Fhelenapaixao%2FDocuments%2FExplorer%2FvagasExplorer%2Fsrc%2Fpages%2Fdashboard%2Findex.tsx&page=%2Fdashboard!","./src/pages/dashboard/index.tsx","./src/styles/dashboard.ts","./src/utils/reposData.ts"]}

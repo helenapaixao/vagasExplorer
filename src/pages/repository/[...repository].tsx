@@ -16,50 +16,39 @@ import * as S from '../../styles/repository';
 import { ToggleTheme } from '../../utils/ToggleThemeInterface';
 import Button from '../../components/Button';
 
-const Repository = ({ toggleTheme }: ToggleTheme) => {
-  const [repository, setRepositories] = useState<RepositoryProps | null>(null);
+function Repository({ toggleTheme }: ToggleTheme) {
+  const [repository, setRepository] = useState<RepositoryProps | null>(null);
   const [issues, setIssues] = useState<IssueProps[]>([]);
+  const [allIssues, setAllIssues] = useState<IssueProps[]>([]);
   const [searchValue, setSearchValue] = useState('');
   const [page, setPage] = useState(1);
-  const [hasMoreIssues, setHasMoreIssues] = useState(true);
 
   const router = useRouter();
-  const { repository: repoParam } =
-    router.query as Partial<RepositoryParamsProps>;
+  const { repository: repoParam } = router.query as Partial<RepositoryParamsProps>;
   const repoPath = Array.isArray(repoParam) ? repoParam.join('/') : repoParam;
 
-  const [allIssues, setAllIssues] = useState<IssueProps[]>([]);
-
   const inputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     const fetchRepositoryData = async () => {
+      if (!repoPath) return;
       try {
-        if (!repoPath) return;
-        const repositoryResponse = await api.get(`repos/${repoPath}`);
-        setRepositories(repositoryResponse.data);
-      } catch (error) {
-        console.error('Erro ao buscar dados do repositório:', error);
+        const { data } = await api.get(`repos/${repoPath}`);
+        setRepository(data);
+      } catch {
+        // erro silenciado
       }
     };
 
     const fetchIssuesData = async () => {
       try {
-        const issuesResponse = await api.get(
-          `repos/${repoPath}/issues`,
-          {
-            params: {
-              page,
-              per_page: 10,
-            },
-          },
-        );
-        const issuesData = issuesResponse.data;
-        setIssues((prevIssues) => [...prevIssues, ...issuesData]);
-        setAllIssues(issuesData);
-        setHasMoreIssues(issuesData.length > 0);
-      } catch (error) {
-        console.error('Erro ao buscar dados das issues:', error);
-      } finally {
+        const { data } = await api.get(`repos/${repoPath}/issues`, {
+          params: { page, per_page: 10 },
+        });
+        setIssues((prev) => [...prev, ...data]);
+        setAllIssues(data);
+      } catch {
+        // erro silenciado
       }
     };
 
@@ -68,57 +57,35 @@ const Repository = ({ toggleTheme }: ToggleTheme) => {
   }, [repoPath, page]);
 
   const handleSearch = (val: string) => {
-    if (null !== inputRef.current) {
-      inputRef.current.focus();
-    }
-
-    if (!val) setIssues(allIssues);
-
+    inputRef.current?.focus();
     setSearchValue(val);
 
-    // eslint-disable-next-line
-    const issuesFiltered = allIssues.filter((issue) => {
-      if (issue.title.toLowerCase().indexOf(val.toLowerCase()) !== -1) {
-        return true;
-      }
+    if (!val) {
+      setIssues(allIssues);
+      return;
+    }
 
-      if (issue.body.toLowerCase().indexOf(val.toLowerCase()) !== -1) {
-        return true;
-      }
+    const filtered = allIssues.filter((issue) =>
+      issue.title.toLowerCase().includes(val.toLowerCase()) ||
+      issue.body.toLowerCase().includes(val.toLowerCase()) ||
+      issue.labels.some((label) => label.name.toLowerCase().includes(val.toLowerCase()))
+    );
 
-      for (let i = 0; i < issue.labels.length; i++) {
-        if (
-          issue.labels[i].name.toLowerCase().indexOf(val.toLowerCase()) !== -1
-        ) {
-          return true;
-        }
-      }
-
-      return false;
-    });
-
-    setIssues(issuesFiltered);
+    setIssues(filtered);
   };
 
-  const handleNextPage = () => {
-    setPage(page + 1);
-  };
-
-  const handlePreviousPage = () => {
-    setPage(page - 1);
-  };
+  const handleNextPage = () => setPage((prev) => prev + 1);
+  const handlePreviousPage = () => setPage((prev) => prev - 1);
 
   return (
     <Layout isContentFull>
       <Header isLink="/dashboard" toggleTheme={toggleTheme} />
+
       <S.Container>
         {repository && (
           <S.RepositoryInfo>
             <div>
-              <img
-                src={repository.owner.avatar_url}
-                alt={repository.owner.login}
-              />
+              <img src={repository.owner.avatar_url} alt={repository.owner.login} />
               <div>
                 <strong>{repository.full_name}</strong>
                 <p>{repository.description}</p>
@@ -134,61 +101,62 @@ const Repository = ({ toggleTheme }: ToggleTheme) => {
         )}
 
         <S.Issues>
-          <>
-            <S.Search>
-              <S.Input
-                ref={inputRef}
-                type="text"
-                placeholder="Busque por tecnologia, nível de vaga, local, regime, tipo etc..."
-                value={searchValue}
-                onChange={(e) => handleSearch(e.target.value)}
-              />
-              {searchValue && (
-                <S.Icon onClick={() => handleSearch('')}>
-                  <FiX size={20} />
-                </S.Icon>
+          <S.Search>
+            <S.Input
+              ref={inputRef}
+              type="text"
+              placeholder="Busque por tecnologia, nível de vaga, local, regime, tipo etc..."
+              value={searchValue}
+              onChange={(e) => handleSearch(e.target.value)}
+            />
+            {searchValue && (
+              <S.Icon onClick={() => handleSearch('')}>
+                <FiX size={20} />
+              </S.Icon>
+            )}
+          </S.Search>
+
+          {issues.map((issue, index) => (
+            <React.Fragment key={issue.id}>
+              <a href={issue.html_url} style={{ animationDelay: `0.${index}ms` }}>
+                <img src={issue.user.avatar_url} alt={issue.user.login} />
+                <div>
+                  <strong>{issue.title}</strong>
+                  <p>{issue.user.login}</p>
+                </div>
+                <FiChevronRight size={40} />
+              </a>
+
+              {issue.labels.length > 0 && (
+                <S.Labels style={{ animationDelay: `0.${index}ms` }}>
+                  {issue.labels.map((label) => (
+                    <S.Label
+                      key={label.id}
+                      color={label.color}
+                      onClick={() => handleSearch(label.name)}
+                    >
+                      <span>{label.name}</span>
+                    </S.Label>
+                  ))}
+                </S.Labels>
               )}
-            </S.Search>
+            </React.Fragment>
+          ))}
 
-            {issues.map((issue, index) => (
-              <React.Fragment key={issue.id}>
-                <a
-                  href={issue.html_url}
-                  style={{ animationDelay: `0.${index}ms` }}
-                >
-                  <img src={issue.user.avatar_url} alt={issue.user.login} />
-                  <div>
-                    <strong>{issue.title}</strong>
-                    <p>{issue.user.login}</p>
-                  </div>
-                  <FiChevronRight size={40} />
-                </a>
-
-                {issue.labels.length > 0 && (
-                  <S.Labels style={{ animationDelay: `0.${index}ms` }}>
-                    {issue.labels.map((label) => (
-                      <S.Label
-                        color={label.color}
-                        onClick={() => handleSearch(label.name)}
-                      >
-                        <span>{label.name}</span>
-                      </S.Label>
-                    ))}
-                  </S.Labels>
-                )}
-              </React.Fragment>
-            ))}
-            <S.Pagination>
-              <Button color='#0000' disabled={page === 1} onClick={handlePreviousPage}>
-                Anterior
-              </Button>
-              <Button  onClick={handleNextPage}>Proxima</Button>
-            </S.Pagination>
-          </>
+          <S.Pagination>
+            <Button
+              color="#0000"
+              disabled={page === 1}
+              onClick={handlePreviousPage}
+            >
+              Anterior
+            </Button>
+            <Button onClick={handleNextPage}>Próxima</Button>
+          </S.Pagination>
         </S.Issues>
       </S.Container>
     </Layout>
   );
-};
+}
 
 export default Repository;
