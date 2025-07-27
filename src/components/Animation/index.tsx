@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import LottieLib from 'react-lottie';
 import type { LottieProps } from 'react-lottie';
 import { Container } from './styles';
-
+import animationData from '../../assets/25920-questions.json';
 const Lottie = LottieLib as unknown as React.ComponentType<LottieProps>;
 
-import animationData from '../../assets/25920-questions.json';
+
 
 const Animation: React.FC = () => {
   const [autoplay] = useState(false);
