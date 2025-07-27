@@ -3,9 +3,8 @@ import LottieLib from 'react-lottie';
 import type { LottieProps } from 'react-lottie';
 import { Container } from './styles';
 import animationData from '../../assets/25920-questions.json';
-const Lottie = LottieLib as unknown as React.ComponentType<LottieProps>;
 
-
+const Lottie = (LottieLib as unknown) as React.ComponentType<LottieProps>;
 
 const Animation: React.FC = () => {
   const [autoplay] = useState(false);
