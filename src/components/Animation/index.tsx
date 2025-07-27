@@ -5,6 +5,8 @@ import { Container } from './styles';
 import animationData from '../../assets/25920-questions.json';
 const Lottie = (LottieLib as unknown) as React.ComponentType<LottieProps>;
 
+
+
 const Animation: React.FC = () => {
   const [autoplay] = useState(false);
   const [loop] = useState(true);
