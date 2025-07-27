@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { AppProps } from 'next/app';
 import { ThemeProvider as SCThemeProvider } from 'styled-components';
 
-import GlobalStyle from '../styles/global';
+import RawGlobalStyle from '../styles/global';
 import light from '../styles/themes/light';
 import dark from '../styles/themes/dark';
 
@@ -10,6 +10,8 @@ const ThemeProvider = SCThemeProvider as unknown as React.FC<{
   theme: any;
   children: React.ReactNode;
 }>;
+
+const GlobalStyle = RawGlobalStyle as unknown as React.FC;
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   const [theme, setTheme] = useState(light);
