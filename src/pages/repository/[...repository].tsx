@@ -16,7 +16,7 @@ import * as S from '../../styles/repository';
 import { ToggleTheme } from '../../utils/ToggleThemeInterface';
 import Button from '../../components/Button';
 
-function Repository({ toggleTheme }: ToggleTheme) {
+const Repository: React.FC<ToggleTheme> = ({ toggleTheme }) => {
   const [repository, setRepository] = useState<RepositoryProps | null>(null);
   const [issues, setIssues] = useState<IssueProps[]>([]);
   const [allIssues, setAllIssues] = useState<IssueProps[]>([]);
@@ -24,7 +24,8 @@ function Repository({ toggleTheme }: ToggleTheme) {
   const [page, setPage] = useState(1);
 
   const router = useRouter();
-  const { repository: repoParam } = router.query as Partial<RepositoryParamsProps>;
+  const { repository: repoParam } =
+    router.query as Partial<RepositoryParamsProps>;
   const repoPath = Array.isArray(repoParam) ? repoParam.join('/') : repoParam;
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -65,10 +66,13 @@ function Repository({ toggleTheme }: ToggleTheme) {
       return;
     }
 
-    const filtered = allIssues.filter((issue) =>
-      issue.title.toLowerCase().includes(val.toLowerCase()) ||
-      issue.body.toLowerCase().includes(val.toLowerCase()) ||
-      issue.labels.some((label) => label.name.toLowerCase().includes(val.toLowerCase()))
+    const filtered = allIssues.filter(
+      (issue) =>
+        issue.title.toLowerCase().includes(val.toLowerCase()) ||
+        issue.body.toLowerCase().includes(val.toLowerCase()) ||
+        issue.labels.some((label) =>
+          label.name.toLowerCase().includes(val.toLowerCase()),
+        ),
     );
 
     setIssues(filtered);
@@ -85,7 +89,10 @@ function Repository({ toggleTheme }: ToggleTheme) {
         {repository && (
           <S.RepositoryInfo>
             <div>
-              <img src={repository.owner.avatar_url} alt={repository.owner.login} />
+              <img
+                src={repository.owner.avatar_url}
+                alt={repository.owner.login}
+              />
               <div>
                 <strong>{repository.full_name}</strong>
                 <p>{repository.description}</p>
@@ -118,7 +125,10 @@ function Repository({ toggleTheme }: ToggleTheme) {
 
           {issues.map((issue, index) => (
             <React.Fragment key={issue.id}>
-              <a href={issue.html_url} style={{ animationDelay: `0.${index}ms` }}>
+              <a
+                href={issue.html_url}
+                style={{ animationDelay: `0.${index}ms` }}
+              >
                 <img src={issue.user.avatar_url} alt={issue.user.login} />
                 <div>
                   <strong>{issue.title}</strong>
@@ -157,6 +167,6 @@ function Repository({ toggleTheme }: ToggleTheme) {
       </S.Container>
     </Layout>
   );
-}
+};
 
 export default Repository;

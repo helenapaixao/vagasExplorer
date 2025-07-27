@@ -9,7 +9,7 @@ import Header from '../../components/Header';
 import * as S from '../../styles/dashboard';
 import { ToggleTheme } from '../../utils/ToggleThemeInterface';
 
-function Dashboard({ toggleTheme }: ToggleTheme) {
+const Dashboard: React.FC<ToggleTheme> = ({ toggleTheme }) => {
   return (
     <Layout isContentFull>
       <Header isLink="/" toggleTheme={toggleTheme} />
@@ -34,6 +34,6 @@ function Dashboard({ toggleTheme }: ToggleTheme) {
       </S.Repositories>
     </Layout>
   );
-}
+};
 
 export default Dashboard;
