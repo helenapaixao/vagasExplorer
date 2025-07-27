@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import Lottie from 'react-lottie';
+import LottieLib from 'react-lottie';
+import type { LottieProps } from 'react-lottie';
 import { Container } from './styles';
+
+const Lottie = LottieLib as unknown as React.ComponentType<LottieProps>;
 
 import animationData from '../../assets/25920-questions.json';
 
