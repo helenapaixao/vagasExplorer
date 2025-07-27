@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
 import type { AppProps } from 'next/app';
 import { ThemeProvider as SCThemeProvider } from 'styled-components';
-import type { ThemeProviderProps } from 'styled-components';
 
-import GlobalStyleRaw from '../styles/global';
+import GlobalStyle from '../styles/global';
 import light from '../styles/themes/light';
 import dark from '../styles/themes/dark';
 
-const ThemeProvider: React.FC<ThemeProviderProps<any>> = ({
-  theme,
-  children,
-}) => <SCThemeProvider theme={theme}>{children}</SCThemeProvider>;
-
-const GlobalStyle = () => {
-  return <GlobalStyleRaw />;
-};
+const ThemeProvider = SCThemeProvider as unknown as React.FC<{
+  theme: any;
+  children: React.ReactNode;
+}>;
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   const [theme, setTheme] = useState(light);
