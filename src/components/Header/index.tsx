@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Switch from 'react-switch';
 import Link from 'next/link';
 import { shade } from 'polished';
-
-import { ThemeContext } from 'styled-components';
+import { useTheme } from 'styled-components';
 import * as S from './styles';
 import Logo from '../Logo';
 
@@ -17,7 +16,7 @@ const handleBack = () => {
 };
 
 const Header: React.FC<HeaderProps> = ({ isLink, toggleTheme }) => {
-  const { colors, title } = useContext(ThemeContext);
+  const { colors, title } = useTheme();
 
   return (
     <S.Container>
