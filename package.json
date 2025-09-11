@@ -18,7 +18,7 @@
     "@types/react-dom": "^18.2.0",
     "@unform/core": "^2.1.3",
     "@vercel/analytics": "^1.0.1",
-    "axios": "^0.21.1",
+    "axios": "^1.12.0",
     "framer-motion": "^7.2.1",
     "polished": "^3.6.5",
     "react": "^18.2.0",
