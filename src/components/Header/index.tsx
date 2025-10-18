@@ -15,7 +15,7 @@ const handleBack = () => {
   window.history.back();
 };
 
-const Header: React.FC<HeaderProps> = ({ isLink, toggleTheme }) => {
+const Header: React.FC<HeaderProps> = ({ isLink = undefined, toggleTheme }) => {
   const { colors, title } = useTheme();
 
   return (
@@ -58,10 +58,6 @@ const Header: React.FC<HeaderProps> = ({ isLink, toggleTheme }) => {
       </S.ActionContainer>
     </S.Container>
   );
-};
-
-Header.defaultProps = {
-  isLink: undefined,
 };
 
 export default Header;

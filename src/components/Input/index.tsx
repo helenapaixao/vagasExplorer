@@ -15,7 +15,11 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ComponentType<IconBaseProps>;
 }
 
-const Input: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
+const Input: React.FC<InputProps> = ({
+  name,
+  icon: Icon = undefined,
+  ...rest
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
@@ -56,10 +60,6 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
       )}
     </Container>
   );
-};
-
-Input.defaultProps = {
-  icon: undefined,
 };
 
 export default Input;

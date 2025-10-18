@@ -23,10 +23,4 @@ const SearchInput: React.FC<InputProps> = ({
   );
 };
 
-SearchInput.defaultProps = {
-  name: '',
-  containerStyle: {},
-  icon: undefined,
-};
-
 export default SearchInput;

@@ -1,6 +1,6 @@
 {
-  "sortedMiddleware": [],
+  "version": 3,
   "middleware": {},
   "functions": {},
-  "version": 2
+  "sortedMiddleware": []
 }
