@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FiChevronRight, FiX, FiArrowLeft, FiSearch } from 'react-icons/fi';
 import ReactMarkdown from 'react-markdown';
@@ -158,7 +159,7 @@ const Repository = () => {
         {isRouteReady && segments.length < 2 && (
           <p style={{ marginBottom: 24 }}>
             Repositório não informado.{' '}
-            <a href="/dashboard">Ver repositórios de vagas</a>
+            <Link href="/dashboard">Ver repositórios de vagas</Link>
           </p>
         )}
 
@@ -229,9 +230,11 @@ const Repository = () => {
         {!isDetailView && repository && (
           <S.RepositoryInfo>
             <div>
-              <img
+              <Image
                 src={repository.owner.avatar_url}
                 alt={repository.owner.login}
+                width={120}
+                height={120}
               />
               <div>
                 <strong>{repository.full_name}</strong>
@@ -286,7 +289,12 @@ const Repository = () => {
                   style={{ animationDelay: `0.${index}ms` }}
                   onClick={() => goToIssue(issue)}
                 >
-                  <img src={issue.user.avatar_url} alt={issue.user.login} />
+                  <Image
+                    src={issue.user.avatar_url}
+                    alt={issue.user.login}
+                    width={70}
+                    height={70}
+                  />
                   <div>
                     <strong>{issue.title}</strong>
                     <p>{issue.user.login}</p>

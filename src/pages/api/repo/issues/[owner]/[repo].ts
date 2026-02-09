@@ -27,10 +27,11 @@ export default async function handler(
     return res.status(200).json(data);
   } catch (err) {
     const status = (err as { status?: number }).status ?? 500;
-    const message =
-      status === 404
-        ? 'Repositório não encontrado.'
-        : 'Erro ao carregar vagas.';
+    let message = 'Erro ao carregar vagas.';
+    if (status === 404) message = 'Repositório não encontrado.';
+    if (status === 403)
+      message =
+        'Limite da API do GitHub atingido. Configure GITHUB_TOKEN no .env (veja .env.example).';
     return res.status(status).json({ error: message });
   }
 }
