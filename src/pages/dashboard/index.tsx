@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { FiChevronRight } from 'react-icons/fi';
 import { Skeleton } from '@/components/ui/skeleton';
 import api from '../../services/api';
@@ -62,10 +63,12 @@ const Dashboard = () => {
                 href={repo.link}
                 className="flex items-center gap-4 p-6 bg-card border border-border rounded-md hover:translate-x-1 hover:shadow-md hover:border-primary/50 transition-all no-underline text-foreground"
               >
-                <img
+                <Image
                   src={repo.imageUrl}
                   alt={repo.name}
-                  className="w-[70px] h-[70px] rounded-full flex-shrink-0 object-cover"
+                  width={70}
+                  height={70}
+                  className="rounded-full flex-shrink-0 object-cover"
                 />
                 <div className="flex-1 min-w-0">
                   <h2 className="text-base font-semibold text-foreground">

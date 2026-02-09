@@ -45,19 +45,19 @@ export default async function handler(
     }
 
     const repos = getReposFromConfig();
-    let total = 0;
-
-    for (let i = 0; i < repos.length; i += 1) {
-      const { owner, repo } = repos[i];
-      try {
-        const data = (await fetchRepo(owner, repo)) as {
-          open_issues_count?: number;
-        };
-        total += Number(data?.open_issues_count ?? 0);
-      } catch {
-        // ignora repo inacessível
-      }
-    }
+    const counts = await Promise.all(
+      repos.map(async ({ owner, repo }) => {
+        try {
+          const data = (await fetchRepo(owner, repo)) as {
+            open_issues_count?: number;
+          };
+          return Number(data?.open_issues_count ?? 0);
+        } catch {
+          return 0;
+        }
+      }),
+    );
+    const total = counts.reduce((sum, n) => sum + n, 0);
 
     cachedTotal = total;
     cachedAt = Date.now();

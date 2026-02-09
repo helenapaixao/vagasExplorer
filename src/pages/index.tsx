@@ -111,7 +111,7 @@ const Home = () => {
               title: 'Direto ao ponto',
               text: 'Leia a vaga completa no app e use o link para se candidatar no GitHub ou no site da empresa.',
             },
-          ].map((card, i) => (
+          ].map(card => (
             <motion.div
               key={card.title}
               className="p-6 rounded-lg border border-border bg-card text-card-foreground hover:border-primary hover:shadow-md transition-colors cursor-default"
