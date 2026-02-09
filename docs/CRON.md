@@ -21,7 +21,7 @@ O cron **sync-github-jobs** varre os repositórios listados em `public/repos.jso
 
 ## Agendamento
 
-No `vercel.json` o cron está configurado para rodar **a cada 6 horas** (`0 */6 * * *`). Você pode alterar o [schedule](https://vercel.com/docs/cron-jobs#configuring-cron-jobs) (formato cron).
+No `vercel.json` o cron está configurado para rodar **uma vez por dia** às 6h (`0 6 * * *`). No plano **Hobby** da Vercel, crons só podem executar uma vez por dia; no plano Pro é possível usar intervalos menores (ex.: a cada 6 horas). Você pode alterar o [schedule](https://vercel.com/docs/cron-jobs#configuring-cron-jobs) (formato cron), desde que no Hobby seja no máximo 1x/dia.
 
 ## Como rodar manualmente
 
