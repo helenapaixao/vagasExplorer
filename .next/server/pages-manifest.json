@@ -3,5 +3,7 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/repository/[...repository]": "pages/repository/[...repository].js",
-  "/dashboard": "pages/dashboard.js"
+  "/dashboard": "pages/dashboard.js",
+  "/api/repo/[owner]/[repo]": "pages/api/repo/[owner]/[repo].js",
+  "/api/repo/issues/[owner]/[repo]": "pages/api/repo/issues/[owner]/[repo].js"
 }
