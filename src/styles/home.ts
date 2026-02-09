@@ -63,7 +63,9 @@ export const CtaButton = styled.a`
   text-decoration: none;
   border-radius: 10px;
   border: 0;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
   box-shadow: 0 4px 14px rgba(198, 46, 101, 0.35);
 
   &:hover {
@@ -104,7 +106,9 @@ export const FeatureCard = styled.div`
   background: ${(props) => props.theme.colors.background};
   border-radius: 12px;
   border: 1px solid rgba(0, 0, 0, 0.06);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 
   &:hover {
     border-color: rgba(198, 46, 101, 0.2);

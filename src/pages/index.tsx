@@ -1,10 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { FiLogIn, FiGitBranch, FiSearch, FiZap } from 'react-icons/fi';
+import { Button } from '@/components/ui/button';
 import Layout from '../components/Layout';
 import Header from '../components/Header';
 import Animation from '../components/Animation';
-import { Button } from '@/components/ui/button';
 
 const Home = () => {
   return (
@@ -17,12 +17,19 @@ const Home = () => {
               Vagas de tecnologia em um só lugar
             </h1>
             <p className="text-lg text-muted-foreground">
-              Busque nas comunidades GitHub (backend-br, frontendbr, React Brasil
-              e mais). Filtre por stack, nível e regime — e candidate-se direto no
-              GitHub.
+              Busque nas comunidades GitHub (backend-br, frontendbr, React
+              Brasil e mais). Filtre por stack, nível e regime — e candidate-se
+              direto no GitHub.
             </p>
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-              <Link href="/dashboard" className="flex items-center gap-2 no-underline">
+            <Button
+              asChild
+              size="lg"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground"
+            >
+              <Link
+                href="/dashboard"
+                className="flex items-center gap-2 no-underline"
+              >
                 <FiLogIn size={20} />
                 Encontrar vagas
               </Link>

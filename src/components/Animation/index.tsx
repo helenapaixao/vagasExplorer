@@ -12,13 +12,13 @@ const Animation: React.FC = () => {
 
   useEffect(() => {
     const el = containerRef.current;
-    if (!el) return;
+    if (!el) return undefined;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) setIsInView(true);
       },
-      { threshold: 0.2, rootMargin: '0px 0px -20px 0px' }
+      { threshold: 0.2, rootMargin: '0px 0px -20px 0px' },
     );
 
     observer.observe(el);

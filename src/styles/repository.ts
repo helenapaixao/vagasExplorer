@@ -1,12 +1,5 @@
 import styled, { keyframes } from 'styled-components';
 
-const entranceLeft = keyframes`
-  to {
-    right: 10px;
-    opacity: 1;
-  }
-`;
-
 export const Container = styled.section`
   grid-area: content;
   margin: 20px 0 40px;
@@ -111,11 +104,16 @@ export const Label = styled.label<{ color?: string }>`
   font-weight: 500;
   border-radius: 9999px;
   cursor: pointer;
-  transition: opacity 0.2s ease, transform 0.15s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.15s ease;
   background: ${(props) =>
-    props.theme.title === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'};
+    props.theme.title === 'dark'
+      ? 'rgba(255,255,255,0.08)'
+      : 'rgba(0,0,0,0.06)'};
   color: ${(props) => props.theme.colors.text};
-  border-left: 3px solid ${(props) => (props.color ? `#${props.color}` : 'rgba(0,0,0,0.2)')};
+  border-left: 3px solid
+    ${(props) => (props.color ? `#${props.color}` : 'rgba(0,0,0,0.2)')};
 
   &:hover {
     opacity: 0.9;
@@ -177,7 +175,9 @@ export const Icon = styled.button`
   border-radius: 6px;
   cursor: pointer;
   color: ${(props) => props.theme.colors.placeholder || '#a8a8b3'};
-  transition: color 0.2s, background 0.2s;
+  transition:
+    color 0.2s,
+    background 0.2s;
   animation: ${fadeIn} 0.2s ease forwards;
 
   &:hover {

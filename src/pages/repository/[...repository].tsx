@@ -262,7 +262,11 @@ const Repository = () => {
                 onChange={(e) => handleSearch(e.target.value)}
               />
               {searchValue && (
-                <S.Icon type="button" onClick={() => handleSearch('')} aria-label="Limpar busca">
+                <S.Icon
+                type="button"
+                onClick={() => handleSearch('')}
+                aria-label="Limpar busca"
+              >
                   <FiX size={20} />
                 </S.Icon>
               )}

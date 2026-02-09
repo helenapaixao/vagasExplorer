@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FiChevronRight } from 'react-icons/fi';
+import { Skeleton } from '@/components/ui/skeleton';
 import api from '../../services/api';
 import Layout from '../../components/Layout';
 import Header from '../../components/Header';
-import { Skeleton } from '@/components/ui/skeleton';
 
 export type RepoItem = {
   link: string;
@@ -34,9 +34,7 @@ const Dashboard = () => {
           Principais repositórios de vagas
         </h1>
 
-        {error && (
-          <p className="text-destructive mb-4">{error}</p>
-        )}
+        {error && <p className="text-destructive mb-4">{error}</p>}
         {loading && (
           <div className="flex flex-col gap-4">
             {[1, 2, 3, 4, 5].map((i) => (
@@ -70,7 +68,9 @@ const Dashboard = () => {
                   className="w-[70px] h-[70px] rounded-full flex-shrink-0 object-cover"
                 />
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-base font-semibold text-foreground">{repo.name}</h2>
+                  <h2 className="text-base font-semibold text-foreground">
+                    {repo.name}
+                  </h2>
                   <p className="text-sm text-muted-foreground line-clamp-2">
                     {repo.desc}
                   </p>
