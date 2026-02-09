@@ -11,7 +11,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, isContentFull = false }) => {
   return (
-    <S.Container isContentFull={isContentFull} className="page">
+    <S.Container $isContentFull={isContentFull} className="page">
       {children}
       <Footer />
     </S.Container>

@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 interface LayoutProps {
-  isContentFull?: boolean;
+  $isContentFull?: boolean;
 }
 
 const fullContent = css`
@@ -26,5 +26,5 @@ export const Container = styled.main<LayoutProps>`
     'slogan ilustration'
     'footer footer';
 
-  ${({ isContentFull }) => isContentFull && fullContent};
+  ${({ $isContentFull }) => $isContentFull && fullContent};
 `;

@@ -18,7 +18,8 @@ export interface LabelsProps {
 export interface IssueProps {
   title: string;
   id: string;
-  body: string;
+  number?: number;
+  body: string | null;
   html_url: string;
   user: {
     login: string;
