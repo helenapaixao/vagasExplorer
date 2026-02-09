@@ -2,8 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/api/vagas-total": "pages/api/vagas-total.js",
-  "/dashboard": "pages/dashboard.js",
-  "/api/repos": "pages/api/repos.js",
-  "/": "pages/index.js"
+  "/": "pages/index.js",
+  "/dashboard": "pages/dashboard.js"
 }

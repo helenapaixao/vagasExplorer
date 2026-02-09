@@ -37,7 +37,7 @@ export const Headline = styled.h1`
   font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 700;
   line-height: 1.2;
-  color: ${(props) => props.theme.colors.text};
+  color: ${props => props.theme.colors.text};
   margin-bottom: 16px;
   letter-spacing: -0.02em;
 `;
@@ -45,7 +45,7 @@ export const Headline = styled.h1`
 export const Subheadline = styled.p`
   font-size: 1.125rem;
   line-height: 1.6;
-  color: ${(props) => props.theme.colors.text};
+  color: ${props => props.theme.colors.text};
   opacity: 0.85;
   margin-bottom: 32px;
 `;
@@ -103,7 +103,7 @@ export const Features = styled.section`
 
 export const FeatureCard = styled.div`
   padding: 24px;
-  background: ${(props) => props.theme.colors.background};
+  background: ${props => props.theme.colors.background};
   border-radius: 12px;
   border: 1px solid rgba(0, 0, 0, 0.06);
   transition:
@@ -125,14 +125,14 @@ export const FeatureCard = styled.div`
   h3 {
     font-size: 1.125rem;
     font-weight: 600;
-    color: ${(props) => props.theme.colors.text};
+    color: ${props => props.theme.colors.text};
     margin-bottom: 8px;
   }
 
   p {
     font-size: 0.9375rem;
     line-height: 1.5;
-    color: ${(props) => props.theme.colors.text};
+    color: ${props => props.theme.colors.text};
     opacity: 0.8;
   }
 `;

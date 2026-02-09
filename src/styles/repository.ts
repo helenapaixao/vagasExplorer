@@ -31,12 +31,12 @@ export const RepositoryInfo = styled.header`
 
     strong {
       font-size: 36px;
-      color: ${(props) => props.theme.colors.text};
+      color: ${props => props.theme.colors.text};
     }
 
     p {
       font-size: 18px;
-      color: ${(props) => props.theme.colors.text};
+      color: ${props => props.theme.colors.text};
       margin-top: 4px;
     }
   }
@@ -54,13 +54,13 @@ export const RepositoryInfo = styled.header`
       strong {
         display: block;
         font-size: 36px;
-        color: ${(props) => props.theme.colors.text};
+        color: ${props => props.theme.colors.text};
       }
 
       span {
         display: flex;
         margin-top: 4px;
-        color: ${(props) => props.theme.colors.text};
+        color: ${props => props.theme.colors.text};
       }
     }
   }
@@ -107,13 +107,13 @@ export const Label = styled.label<{ color?: string }>`
   transition:
     opacity 0.2s ease,
     transform 0.15s ease;
-  background: ${(props) =>
+  background: ${props =>
     props.theme.title === 'dark'
       ? 'rgba(255,255,255,0.08)'
       : 'rgba(0,0,0,0.06)'};
-  color: ${(props) => props.theme.colors.text};
+  color: ${props => props.theme.colors.text};
   border-left: 3px solid
-    ${(props) => (props.color ? `#${props.color}` : 'rgba(0,0,0,0.2)')};
+    ${props => (props.color ? `#${props.color}` : 'rgba(0,0,0,0.2)')};
 
   &:hover {
     opacity: 0.9;
@@ -126,8 +126,8 @@ export const Search = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  background: ${(props) => props.theme.colors.background};
-  border: 1px solid ${(props) => props.theme.colors.border || 'rgba(0,0,0,0.1)'};
+  background: ${props => props.theme.colors.background};
+  border: 1px solid ${props => props.theme.colors.border || 'rgba(0,0,0,0.1)'};
   border-radius: 10px;
   padding: 0 16px;
   transition: border-color 0.2s ease;
@@ -141,7 +141,7 @@ export const Search = styled.div`
 export const SearchIcon = styled.span`
   display: flex;
   align-items: center;
-  color: ${(props) => props.theme.colors.placeholder || '#a8a8b3'};
+  color: ${props => props.theme.colors.placeholder || '#a8a8b3'};
   flex-shrink: 0;
 `;
 
@@ -152,11 +152,11 @@ export const Input = styled.input`
   border: none;
   padding: 14px 0;
   font-size: 1rem;
-  color: ${(props) => props.theme.colors.text};
+  color: ${props => props.theme.colors.text};
   outline: none;
 
   &::placeholder {
-    color: ${(props) => props.theme.colors.placeholder || '#a8a8b3'};
+    color: ${props => props.theme.colors.placeholder || '#a8a8b3'};
   }
   @media (max-width: 768px) {
     padding: 12px 0;
@@ -174,14 +174,14 @@ export const Icon = styled.button`
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  color: ${(props) => props.theme.colors.placeholder || '#a8a8b3'};
+  color: ${props => props.theme.colors.placeholder || '#a8a8b3'};
   transition:
     color 0.2s,
     background 0.2s;
   animation: ${fadeIn} 0.2s ease forwards;
 
   &:hover {
-    color: ${(props) => props.theme.colors.text};
+    color: ${props => props.theme.colors.text};
     background: rgba(0, 0, 0, 0.05);
   }
   @media (prefers-color-scheme: dark) {
@@ -272,8 +272,8 @@ export const ModalOverlay = styled.div`
 `;
 
 export const ModalContent = styled.div`
-  background: ${(props) => props.theme.colors.background};
-  color: ${(props) => props.theme.colors.text};
+  background: ${props => props.theme.colors.background};
+  color: ${props => props.theme.colors.text};
   border-radius: 8px;
   max-width: 640px;
   width: 100%;
@@ -346,7 +346,7 @@ export const IssueDetailBack = styled.a`
   align-items: center;
   gap: 8px;
   margin-bottom: 24px;
-  color: ${(props) => props.theme.colors.text};
+  color: ${props => props.theme.colors.text};
   text-decoration: none;
   font-size: 0.95rem;
 
@@ -364,7 +364,7 @@ export const IssueDetailHeader = styled.header`
     font-size: 1.5rem;
     display: block;
     margin-bottom: 8px;
-    color: ${(props) => props.theme.colors.text};
+    color: ${props => props.theme.colors.text};
   }
 
   p {
@@ -376,7 +376,7 @@ export const IssueDetailHeader = styled.header`
 
 export const IssueDetailBody = styled.div`
   line-height: 1.6;
-  color: ${(props) => props.theme.colors.text};
+  color: ${props => props.theme.colors.text};
 
   h1,
   h2,

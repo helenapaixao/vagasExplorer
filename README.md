@@ -1,9 +1,6 @@
-
-
 <h4 align="center">
   🚀 Aplicação desenvolvida para busca de vagas
 </h4>
-
 
 <p align="center">
   <a href="#rocket-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
@@ -21,14 +18,11 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 - [React](https://reactjs.org)
 
-
 ## 💻 Projeto
 
 O vagaExplorer é um projeto desenvolvido para contribuir com a comunidade de desenvolvedores em busca de uma oportunidade de trabalho.
 
 Você pode vizualizar o projeto em produção [aqui](https://vagasexplorer.netlify.app/).
-
-
 
 ## 🤔 Como contribuir
 

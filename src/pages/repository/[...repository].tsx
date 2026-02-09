@@ -96,7 +96,7 @@ const Repository = () => {
         const { data } = await api.get(`/api/repo/issues/${repoPath}`, {
           params: { page, per_page: PER_PAGE },
         });
-        setAllIssues((prev) =>
+        setAllIssues(prev =>
           page === 1
             ? (data as IssueProps[])
             : [...prev, ...(data as IssueProps[])],
@@ -117,10 +117,10 @@ const Repository = () => {
     if (!searchValue.trim()) return null;
     const term = searchValue.toLowerCase();
     return allIssues.filter(
-      (issue) =>
+      issue =>
         issue.title.toLowerCase().includes(term) ||
         (issue.body && issue.body.toLowerCase().includes(term)) ||
-        issue.labels.some((label) => label.name.toLowerCase().includes(term)),
+        issue.labels.some(label => label.name.toLowerCase().includes(term)),
     );
   }, [allIssues, searchValue]);
 
@@ -141,8 +141,8 @@ const Repository = () => {
     if (!val) setPage(1);
   };
 
-  const handleNextPage = () => setPage((prev) => prev + 1);
-  const handlePreviousPage = () => setPage((prev) => Math.max(1, prev - 1));
+  const handleNextPage = () => setPage(prev => prev + 1);
+  const handlePreviousPage = () => setPage(prev => Math.max(1, prev - 1));
 
   const goToIssue = (issue: IssueProps) => {
     const num = issue.number ?? issue.html_url.split('/').pop();
@@ -192,7 +192,7 @@ const Repository = () => {
                         marginTop: 8,
                       }}
                     >
-                      {issueDetail.labels.map((label) => (
+                      {issueDetail.labels.map(label => (
                         <S.Label key={label.id} color={label.color}>
                           <span>{label.name}</span>
                         </S.Label>
@@ -259,14 +259,14 @@ const Repository = () => {
                 aria-label="Buscar vagas por tecnologia, nível, local, regime ou tipo"
                 placeholder="Busque por tecnologia, nível de vaga, local, regime, tipo etc..."
                 value={searchValue}
-                onChange={(e) => handleSearch(e.target.value)}
+                onChange={e => handleSearch(e.target.value)}
               />
               {searchValue && (
                 <S.Icon
-                type="button"
-                onClick={() => handleSearch('')}
-                aria-label="Limpar busca"
-              >
+                  type="button"
+                  onClick={() => handleSearch('')}
+                  aria-label="Limpar busca"
+                >
                   <FiX size={20} />
                 </S.Icon>
               )}
@@ -296,7 +296,7 @@ const Repository = () => {
 
                 {issue.labels.length > 0 && (
                   <S.Labels style={{ animationDelay: `0.${index}ms` }}>
-                    {issue.labels.map((label) => (
+                    {issue.labels.map(label => (
                       <S.Label
                         key={label.id}
                         color={label.color}

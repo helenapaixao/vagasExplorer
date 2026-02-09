@@ -58,31 +58,31 @@ Transformar o VagasExplorer em um **SaaS de agregação e curadoria de vagas** p
 
 #### Fase 1 – Fundação (MVP SaaS)
 
-| Recurso | Descrição |
-|--------|-----------|
-| **Cadastro / Login** | Auth com e-mail/senha ou OAuth (Google/GitHub). |
-| **Backend próprio** | API (Node/Next ou outro) + banco (Postgres ou similar). |
-| **Agregação de vagas** | Job que consome GitHub Issues (e depois outras fontes) e grava no banco. |
-| **Busca unificada** | Busca em todas as vagas indexadas (por stack, nível, local, regime). |
-| **Perfil do candidato** | Campos: nome, bio, tecnologias, nível, pretensão, localização. |
-| **Vagas salvas** | “Favoritar” vagas e listar em “Minhas vagas”. |
+| Recurso                 | Descrição                                                                |
+| ----------------------- | ------------------------------------------------------------------------ |
+| **Cadastro / Login**    | Auth com e-mail/senha ou OAuth (Google/GitHub).                          |
+| **Backend próprio**     | API (Node/Next ou outro) + banco (Postgres ou similar).                  |
+| **Agregação de vagas**  | Job que consome GitHub Issues (e depois outras fontes) e grava no banco. |
+| **Busca unificada**     | Busca em todas as vagas indexadas (por stack, nível, local, regime).     |
+| **Perfil do candidato** | Campos: nome, bio, tecnologias, nível, pretensão, localização.           |
+| **Vagas salvas**        | “Favoritar” vagas e listar em “Minhas vagas”.                            |
 
 #### Fase 2 – Engajamento
 
-| Recurso | Descrição |
-|--------|-----------|
-| **Alertas por e-mail** | “Me avise quando surgir vaga de React + remoto”. |
-| **Notificações in-app** | Novas vagas que batem com o perfil. |
+| Recurso                       | Descrição                                              |
+| ----------------------------- | ------------------------------------------------------ |
+| **Alertas por e-mail**        | “Me avise quando surgir vaga de React + remoto”.       |
+| **Notificações in-app**       | Novas vagas que batem com o perfil.                    |
 | **Histórico de candidaturas** | Marcar “me candidatei” e acompanhar status (opcional). |
 
 #### Fase 3 – Monetização e escala
 
-| Recurso | Descrição |
-|--------|-----------|
-| **Planos pagos** | Free (X alertas), Pro (alertas ilimitados, destaque de perfil). |
-| **Portal para empresas** | Publicar vagas direto no SaaS (além das do GitHub). |
-| **Analytics** | Para empresas: visualizações e candidaturas por vaga. |
-| **Mais fontes** | LinkedIn Jobs, Programathor, etc., via integrações ou scraping ético. |
+| Recurso                  | Descrição                                                             |
+| ------------------------ | --------------------------------------------------------------------- |
+| **Planos pagos**         | Free (X alertas), Pro (alertas ilimitados, destaque de perfil).       |
+| **Portal para empresas** | Publicar vagas direto no SaaS (além das do GitHub).                   |
+| **Analytics**            | Para empresas: visualizações e candidaturas por vaga.                 |
+| **Mais fontes**          | LinkedIn Jobs, Programathor, etc., via integrações ou scraping ético. |
 
 ### Stack sugerida para o SaaS
 
@@ -109,17 +109,18 @@ Transformar o VagasExplorer em um **SaaS de agregação e curadoria de vagas** p
 
 ## Próximos passos práticos
 
-e1. **Curto prazo (melhorar o atual)** — ✅ Implementado  
-   - Chamadas ao GitHub passam pelas API Routes (`/api/repo/[owner]/[repo]` e `/api/repo/issues/[owner]/[repo]`).  
-   - Cache em memória (10 min repo, 5 min issues) e uso de `GITHUB_TOKEN` no servidor (veja `.env.example`).  
-   - Lista de repositórios em `public/repos.json`; dashboard consome `/api/repos`.
+e1. **Curto prazo (melhorar o atual)** — ✅ Implementado
 
-2. **Médio prazo (preparar SaaS)**  
-   - Definir modelo de dados (User, Job, SavedJob, Alert).  
-   - Implementar auth e “vagas salvas”.  
+- Chamadas ao GitHub passam pelas API Routes (`/api/repo/[owner]/[repo]` e `/api/repo/issues/[owner]/[repo]`).
+- Cache em memória (10 min repo, 5 min issues) e uso de `GITHUB_TOKEN` no servidor (veja `.env.example`).
+- Lista de repositórios em `public/repos.json`; dashboard consome `/api/repos`.
+
+2. **Médio prazo (preparar SaaS)**
+   - Definir modelo de dados (User, Job, SavedJob, Alert).
+   - Implementar auth e “vagas salvas”.
    - Criar job que popula o banco a partir dos repos atuais.
 
-3. **Longo prazo (SaaS completo)**  
+3. **Longo prazo (SaaS completo)**
    - Alertas por e-mail, planos pagos, portal para empresas.
 
 Se quiser, posso detalhar um desses pontos (por exemplo: desenho da API e do banco para a Fase 1, ou exemplo de API Route com cache para o GitHub).

@@ -10,7 +10,7 @@ function getReposFromConfig(): { owner: string; repo: string }[] {
   const raw = readFileSync(path, 'utf-8');
   const list = JSON.parse(raw) as RepoItem[];
   return list
-    .map((item) => {
+    .map(item => {
       const parts = item.link
         .replace(/^\/repository\//, '')
         .split('/')
@@ -19,7 +19,7 @@ function getReposFromConfig(): { owner: string; repo: string }[] {
       const owner = parts.pop() ?? '';
       return { owner, repo };
     })
-    .filter((r) => r.owner && r.repo);
+    .filter(r => r.owner && r.repo);
 }
 
 const CACHE_TTL_MS = 10 * 60 * 1000;

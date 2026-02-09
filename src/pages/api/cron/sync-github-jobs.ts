@@ -13,7 +13,7 @@ function getReposFromConfig(): { owner: string; repo: string }[] {
   const raw = readFileSync(path, 'utf-8');
   const list = JSON.parse(raw) as RepoItem[];
   return list
-    .map((item) => {
+    .map(item => {
       const parts = item.link
         .replace(/^\/repository\//, '')
         .split('/')
@@ -22,7 +22,7 @@ function getReposFromConfig(): { owner: string; repo: string }[] {
       const owner = parts.pop() ?? '';
       return { owner, repo };
     })
-    .filter((r) => r.owner && r.repo);
+    .filter(r => r.owner && r.repo);
 }
 
 export default async function handler(
@@ -84,7 +84,7 @@ export default async function handler(
             : null;
           const labelsJson = issue.labels?.length
             ? JSON.stringify(
-                issue.labels.map((l) => ({
+                issue.labels.map(l => ({
                   id: l.id,
                   name: l.name,
                   color: l.color,

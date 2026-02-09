@@ -30,12 +30,12 @@ No nosso caso, podemos começar **sem IA nem envio automático** e focar em: **p
 
 ### Fase 1 – Perfil e preferências (MVP “DevScout light”)
 
-| Recurso | Descrição |
-|--------|-----------|
-| **Cadastro / Login** | E-mail/senha ou OAuth (Google/GitHub). |
-| **Perfil do candidato** | Nome, e-mail, bio, LinkedIn, tecnologias (tags), nível (Júnior/Pleno/Sênior), pretensão salarial (opcional), localização, regime (remoto/híbrido/presencial). |
-| **Preferências de busca** | Palavras-chave favoritas, stacks que quer ver primeiro, cidades (se presencial). |
-| **Vagas salvas** | Botão “Salvar” na tela da vaga; listar em “Minhas vagas salvas”. |
+| Recurso                   | Descrição                                                                                                                                                     |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Cadastro / Login**      | E-mail/senha ou OAuth (Google/GitHub).                                                                                                                        |
+| **Perfil do candidato**   | Nome, e-mail, bio, LinkedIn, tecnologias (tags), nível (Júnior/Pleno/Sênior), pretensão salarial (opcional), localização, regime (remoto/híbrido/presencial). |
+| **Preferências de busca** | Palavras-chave favoritas, stacks que quer ver primeiro, cidades (se presencial).                                                                              |
+| **Vagas salvas**          | Botão “Salvar” na tela da vaga; listar em “Minhas vagas salvas”.                                                                                              |
 
 Resultado: o usuário acessa o app, faz login, configura o perfil uma vez e passa a ter “Minhas vagas” e preferências para filtrar.
 
@@ -43,11 +43,11 @@ Resultado: o usuário acessa o app, faz login, configura o perfil uma vez e pass
 
 ### Fase 2 – Alertas e notificações
 
-| Recurso | Descrição |
-|--------|-----------|
-| **Alertas por e-mail** | “Me avise quando surgir vaga de React + remoto” (critérios baseados em perfil + palavras-chave). |
-| **Frequência** | Diário ou semanal (resumo de novas vagas). |
-| **Notificações in-app** | Badge ou lista “Novas vagas que batem com seu perfil” (se tiver backend com jobs). |
+| Recurso                 | Descrição                                                                                        |
+| ----------------------- | ------------------------------------------------------------------------------------------------ |
+| **Alertas por e-mail**  | “Me avise quando surgir vaga de React + remoto” (critérios baseados em perfil + palavras-chave). |
+| **Frequência**          | Diário ou semanal (resumo de novas vagas).                                                       |
+| **Notificações in-app** | Badge ou lista “Novas vagas que batem com seu perfil” (se tiver backend com jobs).               |
 
 Implementação sugerida: job (cron/worker) que varre os repositórios configurados, compara com preferências dos usuários e envia e-mail (Resend, SendGrid, etc.) ou grava notificações no banco.
 
@@ -55,10 +55,10 @@ Implementação sugerida: job (cron/worker) que varre os repositórios configura
 
 ### Fase 3 – Busca unificada e “match” simples
 
-| Recurso | Descrição |
-|--------|-----------|
-| **Índice único** | Job que consome todos os repos (backend-br, frontendbr, etc.) e grava vagas em uma tabela (ex.: `jobs`). |
-| **Busca global** | Uma caixa de busca: “React remoto pleno” retorna vagas de todos os repos, com filtros (stack, nível, regime). |
+| Recurso            | Descrição                                                                                                                    |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| **Índice único**   | Job que consome todos os repos (backend-br, frontendbr, etc.) e grava vagas em uma tabela (ex.: `jobs`).                     |
+| **Busca global**   | Uma caixa de busca: “React remoto pleno” retorna vagas de todos os repos, com filtros (stack, nível, regime).                |
 | **Score de match** | Algoritmo simples: quantas tags do perfil batem com a vaga (título + body + labels). Ordenar por “mais compatível” primeiro. |
 
 Ainda sem “candidatura automática”: o usuário vê as vagas ranqueadas e clica para abrir no app ou no GitHub.
@@ -67,10 +67,10 @@ Ainda sem “candidatura automática”: o usuário vê as vagas ranqueadas e cl
 
 ### Fase 4 – Candidatura facilitada (opcional)
 
-| Recurso | Descrição |
-|--------|-----------|
-| **Template de mensagem** | Usuário escreve um texto padrão (apresentação + link do LinkedIn/currículo). |
-| **“Copiar e candidatar”** | Na tela da vaga: botão “Copiar mensagem” que cola no clipboard para colar no GitHub ou no formulário da empresa. |
+| Recurso                   | Descrição                                                                                                                                                                     |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Template de mensagem**  | Usuário escreve um texto padrão (apresentação + link do LinkedIn/currículo).                                                                                                  |
+| **“Copiar e candidatar”** | Na tela da vaga: botão “Copiar mensagem” que cola no clipboard para colar no GitHub ou no formulário da empresa.                                                              |
 | **Integração com GitHub** | (Avançado) Se a vaga for issue do GitHub, link direto “Abrir issue no GitHub” já existe; no futuro, pré-preencher comentário com o template (ex.: via deep link ou extensão). |
 
 Não é necessário envio automático de e-mail (como o DevScout); o foco é **reduzir atrito** para o candidato se candidatar.
@@ -90,12 +90,12 @@ Não é necessário envio automático de e-mail (como o DevScout); o foco é **r
 
 ## Diferenças em relação ao DevScout
 
-| Aspecto | DevScout | VagasExplorer (esta ideia) |
-|--------|----------|----------------------------|
+| Aspecto         | DevScout                           | VagasExplorer (esta ideia)                                            |
+| --------------- | ---------------------------------- | --------------------------------------------------------------------- |
 | Fontes de vagas | LinkedIn e outras (45k+ vagas/mês) | GitHub (repos de comunidades); no futuro possível somar outras fontes |
-| Candidatura | Envio automático de e-mails | Candidatura manual com “copiar mensagem” / link para GitHub |
-| IA | Matching e envio com IA | Match por palavras-chave + labels (simples) |
-| Monetização | Planos pagos por volume de envios | Possível depois: plano pago para mais alertas ou vagas em destaque |
+| Candidatura     | Envio automático de e-mails        | Candidatura manual com “copiar mensagem” / link para GitHub           |
+| IA              | Matching e envio com IA            | Match por palavras-chave + labels (simples)                           |
+| Monetização     | Planos pagos por volume de envios  | Possível depois: plano pago para mais alertas ou vagas em destaque    |
 
 Ou seja: a ideia é um **“DevScout light”** focado em **vagas de comunidades GitHub** + **perfil + alertas + busca unificada**, sem envio automático de candidaturas na primeira versão.
 
@@ -161,14 +161,14 @@ Todas as vagas desse fluxo vêm da tabela **Job**, que por sua vez veio só dos 
 
 ### 7. Resumo do que você já tem vs o que falta
 
-| Já tem (VagasExplorer) | Falta fazer |
-|------------------------|------------|
-| Lista de repos (`repos.json`) | Banco (Postgres) + Prisma/Drizzle |
+| Já tem (VagasExplorer)                                        | Falta fazer                                                      |
+| ------------------------------------------------------------- | ---------------------------------------------------------------- |
+| Lista de repos (`repos.json`)                                 | Banco (Postgres) + Prisma/Drizzle                                |
 | API que lê issues do GitHub (`/api/repo/...`, `githubApi.ts`) | Tabela **Job** + job de sync que chama essa API e grava no banco |
-| Páginas de listagem e detalhe por repo/issue | Auth + **Profile** + **SavedJob** + **Alert** |
-| — | Job de alertas (lê Job + Alert, envia e-mail) |
-| — | Página “Minhas vagas” e “Configurar alertas” |
-| — | Rota de busca unificada (`/api/jobs`) que consulta a tabela Job |
+| Páginas de listagem e detalhe por repo/issue                  | Auth + **Profile** + **SavedJob** + **Alert**                    |
+| —                                                             | Job de alertas (lê Job + Alert, envia e-mail)                    |
+| —                                                             | Página “Minhas vagas” e “Configurar alertas”                     |
+| —                                                             | Rota de busca unificada (`/api/jobs`) que consulta a tabela Job  |
 
 Fazendo isso, você fica com um “DevScout light” **totalmente focado nos repos do GitHub**, sem depender de LinkedIn nem de outra fonte.
 

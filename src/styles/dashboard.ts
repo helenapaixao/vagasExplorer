@@ -6,7 +6,7 @@ export const Repositories = styled.section`
 
   h1 {
     font-size: 48px;
-    color: ${(props) => props.theme.colors.text};
+    color: ${props => props.theme.colors.text};
     text-align: center;
     margin: 30px 0;
   }

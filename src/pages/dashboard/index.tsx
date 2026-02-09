@@ -37,7 +37,7 @@ const Dashboard = () => {
         {error && <p className="text-destructive mb-4">{error}</p>}
         {loading && (
           <div className="flex flex-col gap-4">
-            {[1, 2, 3, 4, 5].map((i) => (
+            {[1, 2, 3, 4, 5].map(i => (
               <div
                 key={i}
                 className="flex items-center gap-4 p-6 bg-card border border-border rounded-md"
@@ -56,7 +56,7 @@ const Dashboard = () => {
 
         <div className="flex flex-col gap-4">
           {!loading &&
-            repos.map((repo) => (
+            repos.map(repo => (
               <Link
                 key={repo.link}
                 href={repo.link}
