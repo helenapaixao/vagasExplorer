@@ -9,6 +9,7 @@
     "@chakra-ui/react": "^2.10.9",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@prisma/client": "6.0.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
@@ -20,14 +21,14 @@
     "@vercel/analytics": "^1.5.0",
     "axios": "^1.12.2",
     "framer-motion": "^12.23.24",
+    "next": "^15.5.6",
     "polished": "^4.3.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-icons": "^5.5.0",
-    "react-markdown": "^9.0.1",
     "react-loading-skeleton": "^3.5.0",
     "react-lottie": "^1.2.10",
-    "next": "^15.5.6",
+    "react-markdown": "^9.0.1",
     "react-spring": "^10.0.3",
     "react-switch": "^7.1.0",
     "react-transition-group": "^4.4.5",
@@ -37,9 +38,12 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
-    "test": "echo \"No tests specified\" && exit 0"
+    "test": "echo \"No tests specified\" && exit 0",
+    "postinstall": "prisma generate",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio"
   },
   "browserslist": {
     "production": [
@@ -68,6 +72,7 @@
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^4.6.2",
-    "prettier": "^3.4.2"
+    "prettier": "^3.4.2",
+    "prisma": "6.0.0"
   }
 }

@@ -25,3 +25,7 @@ yarn-error.log*
 .firebaserc
 .firebase/
 firebase.json
+
+# Prisma
+prisma/dev.db
+prisma/dev.db-journal
