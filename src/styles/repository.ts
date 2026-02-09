@@ -90,61 +90,105 @@ export const IssueBlock = styled.div`
 export const Labels = styled.div`
   animation: ${fadeIn} 1s forwards;
   opacity: 0;
-  margin: -10px 20px 20px;
-  padding: 20px 15px 15px 15px;
-  border: none;
-  border-top: none;
-  border-radius: 5px;
-  background: transparent;
-  width: fit-content;
+  margin: -6px 20px 20px;
+  padding: 12px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   z-index: 0;
   @media (max-width: 768px) {
-    margin: 0;
-    padding: 10px;
+    margin: 8px 0 0;
+    padding: 12px 0 0;
+    gap: 6px;
   }
 `;
-export const Label = styled.label`
-  background: #${(props) => props.color};
-  font-size: 0.7rem;
-  padding: 2px 10px;
-  margin: 3px;
-  display: inline-block;
-  border-radius: 3px;
-  color: #000;
+
+export const Label = styled.label<{ color?: string }>`
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px 6px 10px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
   cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+  background: ${(props) =>
+    props.theme.title === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'};
+  color: ${(props) => props.theme.colors.text};
+  border-left: 3px solid ${(props) => (props.color ? `#${props.color}` : 'rgba(0,0,0,0.2)')};
+
+  &:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+  }
 `;
 export const Search = styled.div`
   position: relative;
-  margin: 3rem auto;
+  margin: 2rem 0 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: ${(props) => props.theme.colors.background};
+  border: 1px solid ${(props) => props.theme.colors.border || 'rgba(0,0,0,0.1)'};
+  border-radius: 10px;
+  padding: 0 16px;
+  transition: border-color 0.2s ease;
+
   @media (max-width: 768px) {
-    margin: 1rem auto;
+    margin: 1.5rem 0 2rem;
+    padding: 0 12px;
   }
 `;
+
+export const SearchIcon = styled.span`
+  display: flex;
+  align-items: center;
+  color: ${(props) => props.theme.colors.placeholder || '#a8a8b3'};
+  flex-shrink: 0;
+`;
+
 export const Input = styled.input`
-  background: #fff;
+  flex: 1;
+  min-width: 0;
+  background: transparent;
   border: none;
-  padding: 15px;
-  border-radius: 5px;
-  margin: 0 auto;
-  display: block;
-  width: 100%;
-  text-align: center;
-  transition: all 0.2s ease;
+  padding: 14px 0;
+  font-size: 1rem;
+  color: ${(props) => props.theme.colors.text};
+  outline: none;
 
-  &:focus {
-    box-shadow: 0 0 25px -10px #c62e65;
+  &::placeholder {
+    color: ${(props) => props.theme.colors.placeholder || '#a8a8b3'};
+  }
+  @media (max-width: 768px) {
+    padding: 12px 0;
+    font-size: 0.9375rem;
   }
 `;
 
-export const Icon = styled.label`
-  position: absolute;
-  right: 20px;
-  opacity: 0;
-  transform: translateY(-150%);
+export const Icon = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  margin: 0 -4px 0 0;
+  background: none;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
-  line-height: 1rem;
-  color: red;
-  animation: ${entranceLeft} 0.4s forwards;
+  color: ${(props) => props.theme.colors.placeholder || '#a8a8b3'};
+  transition: color 0.2s, background 0.2s;
+  animation: ${fadeIn} 0.2s ease forwards;
+
+  &:hover {
+    color: ${(props) => props.theme.colors.text};
+    background: rgba(0, 0, 0, 0.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+  }
 `;
 export const Pagination = styled.div`
   display: flex;

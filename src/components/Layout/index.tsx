@@ -1,20 +1,16 @@
 import React from 'react';
-
 import Footer from '../Footer';
 
-import * as S from './styles';
-
 interface LayoutProps {
-  isContentFull?: boolean;
   children: React.ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, isContentFull = false }) => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <S.Container $isContentFull={isContentFull} className="page">
-      {children}
+    <div className="min-h-screen flex flex-col max-w-[1120px] mx-auto w-full px-4">
+      <section className="flex-1 w-full">{children}</section>
       <Footer />
-    </S.Container>
+    </div>
   );
 };
 

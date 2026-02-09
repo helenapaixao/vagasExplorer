@@ -11,10 +11,19 @@ const fullContent = css`
     'footer footer';
 `;
 
-export const Container = styled.main<LayoutProps>`
+const homeLayout = css`
+  grid-template-areas:
+    'header header'
+    'main main'
+    'footer footer';
+  min-height: 100vh;
+  height: auto;
+`;
+
+export const Container = styled.main<LayoutProps & { $isHome?: boolean }>`
   width: 100%;
   max-width: 1120px;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0 auto;
   display: grid;
 
@@ -27,4 +36,5 @@ export const Container = styled.main<LayoutProps>`
     'footer footer';
 
   ${({ $isContentFull }) => $isContentFull && fullContent};
+  ${({ $isHome }) => $isHome && homeLayout};
 `;

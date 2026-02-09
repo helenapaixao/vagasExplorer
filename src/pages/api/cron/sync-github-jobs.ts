@@ -12,12 +12,17 @@ function getReposFromConfig(): { owner: string; repo: string }[] {
   const path = join(process.cwd(), 'public', 'repos.json');
   const raw = readFileSync(path, 'utf-8');
   const list = JSON.parse(raw) as RepoItem[];
-  return list.map((item) => {
-    const parts = item.link.replace(/^\/repository\//, '').split('/').filter(Boolean);
-    const repo = parts.pop() ?? '';
-    const owner = parts.pop() ?? '';
-    return { owner, repo };
-  }).filter((r) => r.owner && r.repo);
+  return list
+    .map((item) => {
+      const parts = item.link
+        .replace(/^\/repository\//, '')
+        .split('/')
+        .filter(Boolean);
+      const repo = parts.pop() ?? '';
+      const owner = parts.pop() ?? '';
+      return { owner, repo };
+    })
+    .filter((r) => r.owner && r.repo);
 }
 
 export default async function handler(
@@ -48,12 +53,15 @@ export default async function handler(
   let totalSynced = 0;
   const errors: string[] = [];
 
-  for (const { owner, repo } of repos) {
+  for (let r = 0; r < repos.length; r += 1) {
+    const { owner, repo } = repos[r];
     let page = 1;
     let hasMore = true;
 
     while (hasMore) {
       try {
+        // Sequential to respect GitHub API rate limit
+        // eslint-disable-next-line no-await-in-loop
         const issues = (await fetchIssues(owner, repo, page, PER_PAGE)) as {
           number: number;
           title: string;
@@ -69,16 +77,23 @@ export default async function handler(
           break;
         }
 
-        for (const issue of issues) {
+        for (let i = 0; i < issues.length; i += 1) {
+          const issue = issues[i];
           const githubCreatedAt = issue.created_at
             ? new Date(issue.created_at)
             : null;
           const labelsJson = issue.labels?.length
             ? JSON.stringify(
-                issue.labels.map((l) => ({ id: l.id, name: l.name, color: l.color })),
+                issue.labels.map((l) => ({
+                  id: l.id,
+                  name: l.name,
+                  color: l.color,
+                })),
               )
             : null;
 
+          // Sequential upserts to avoid DB connection spike
+          // eslint-disable-next-line no-await-in-loop
           await prisma.job.upsert({
             where: {
               owner_repo_issueNumber: {

@@ -21,7 +21,13 @@
     "incremental": true,
     "types": [
       "styled-components"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
   },
   "include": [
     "next-env.d.ts",

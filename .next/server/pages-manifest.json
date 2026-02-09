@@ -2,6 +2,10 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
+  "/": "pages/index.js",
   "/dashboard": "pages/dashboard.js",
+  "/api/repo/issues/[owner]/[repo]": "pages/api/repo/issues/[owner]/[repo].js",
+  "/api/repo/[owner]/[repo]/issue/[issueNumber]": "pages/api/repo/[owner]/[repo]/issue/[issueNumber].js",
+  "/api/repos": "pages/api/repos.js",
   "/repository/[...repository]": "pages/repository/[...repository].js"
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FiChevronRight, FiX, FiArrowLeft } from 'react-icons/fi';
+import { FiChevronRight, FiX, FiArrowLeft, FiSearch } from 'react-icons/fi';
 import ReactMarkdown from 'react-markdown';
 import {
   RepositoryParamsProps,
@@ -15,12 +15,11 @@ import Layout from '../../components/Layout';
 import Header from '../../components/Header';
 
 import * as S from '../../styles/repository';
-import { ToggleTheme } from '../../utils/ToggleThemeInterface';
 import Button from '../../components/Button';
 
 const PER_PAGE = 10;
 
-const Repository: React.FC<ToggleTheme> = ({ toggleTheme }) => {
+const Repository = () => {
   const [repository, setRepository] = useState<RepositoryProps | null>(null);
   const [allIssues, setAllIssues] = useState<IssueProps[]>([]);
   const [searchValue, setSearchValue] = useState('');
@@ -151,8 +150,8 @@ const Repository: React.FC<ToggleTheme> = ({ toggleTheme }) => {
   };
 
   return (
-    <Layout isContentFull>
-      <Header isLink="/dashboard" toggleTheme={toggleTheme} />
+    <Layout>
+      <Header isLink="/dashboard" />
 
       <S.Container>
         {!isRouteReady && <p style={{ marginBottom: 24 }}>Carregando...</p>}
@@ -251,15 +250,19 @@ const Repository: React.FC<ToggleTheme> = ({ toggleTheme }) => {
         {isInsideApp && (
           <S.Issues>
             <S.Search>
+              <S.SearchIcon aria-hidden>
+                <FiSearch size={20} />
+              </S.SearchIcon>
               <S.Input
                 ref={inputRef}
-                type="text"
+                type="search"
+                aria-label="Buscar vagas por tecnologia, nível, local, regime ou tipo"
                 placeholder="Busque por tecnologia, nível de vaga, local, regime, tipo etc..."
                 value={searchValue}
                 onChange={(e) => handleSearch(e.target.value)}
               />
               {searchValue && (
-                <S.Icon onClick={() => handleSearch('')}>
+                <S.Icon type="button" onClick={() => handleSearch('')} aria-label="Limpar busca">
                   <FiX size={20} />
                 </S.Icon>
               )}

@@ -1,62 +1,46 @@
 import React from 'react';
-import Switch from 'react-switch';
 import Link from 'next/link';
-import { shade } from 'polished';
-import { useTheme } from 'styled-components';
-import * as S from './styles';
+import { FiChevronLeft } from 'react-icons/fi';
 import Logo from '../Logo';
 
 interface HeaderProps {
   isLink?: string;
-  toggleTheme(): void;
 }
 
-const handleBack = () => {
-  window.history.back();
-};
-
-const Header: React.FC<HeaderProps> = ({ isLink = undefined, toggleTheme }) => {
-  const { colors, title } = useTheme();
-
+const Header: React.FC<HeaderProps> = ({ isLink }) => {
   return (
-    <S.Container>
-      <S.LogoContainer>
-        <button
-          onClick={handleBack}
-          style={{ all: 'unset', cursor: 'pointer' }}
-          aria-label="Voltar para página anterior"
-          type="button"
+    <header className="flex items-center justify-between py-4 mb-6 gap-4 flex-wrap">
+      <div className="flex items-center gap-3">
+        <Link
+          href={isLink ?? '#'}
+          onClick={(e: React.MouseEvent) => {
+            if (!isLink) {
+              e.preventDefault();
+              window.history.back();
+            }
+          }}
+          className="flex items-center"
+          aria-label="Voltar"
         >
-          <S.LogoImage>
-            <Logo isDark={title === 'dark'} />
-          </S.LogoImage>
-        </button>
-        <h1>vagasExplorer</h1>
-      </S.LogoContainer>
+          <div className="w-10 h-10 flex items-center justify-center">
+            <Logo isDark={false} />
+          </div>
+        </Link>
+        <h1 className="text-lg font-bold">vagasExplorer</h1>
+      </div>
 
-      <Switch
-        onChange={toggleTheme}
-        checked={title === 'dark'}
-        checkedIcon={false}
-        uncheckedIcon={false}
-        height={10}
-        width={40}
-        handleDiameter={20}
-        offColor={shade(0.15, colors.primary)}
-        onColor={colors.secundary}
-      />
-
-      <S.ActionContainer>
+      <div className="flex items-center gap-3">
         {isLink && (
-          <Link href={isLink} legacyBehavior passHref>
-            <S.ActionLink>
-              <S.IconBack />
-              Voltar
-            </S.ActionLink>
+          <Link
+            href={isLink}
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+          >
+            <FiChevronLeft size={16} />
+            Voltar
           </Link>
         )}
-      </S.ActionContainer>
-    </S.Container>
+      </div>
+    </header>
   );
 };
 
