@@ -12,7 +12,7 @@ const Animation: React.FC = () => {
 
   useEffect(() => {
     const el = containerRef.current;
-    if (!el) return undefined;
+    if (!el) return () => {};
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -20,7 +20,6 @@ const Animation: React.FC = () => {
       },
       { threshold: 0.2, rootMargin: '0px 0px -20px 0px' },
     );
-
     observer.observe(el);
     return () => observer.disconnect();
   }, []);

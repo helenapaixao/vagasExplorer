@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FiLogIn, FiGitBranch, FiSearch, FiZap } from 'react-icons/fi';
 import { Button } from '@/components/ui/button';
 import Layout from '../components/Layout';
 import Header from '../components/Header';
 import Animation from '../components/Animation';
+import api from '../services/api';
 
 const Home = () => {
+  const [totalVagas, setTotalVagas] = useState<number | null>(null);
+
+  useEffect(() => {
+    api
+      .get<{ total: number }>('/api/vagas-total')
+      .then(({ data }) => setTotalVagas(data.total))
+      .catch(() => setTotalVagas(null));
+  }, []);
+
   return (
     <Layout>
       <Header />
@@ -16,6 +26,12 @@ const Home = () => {
             <h1 className="text-2xl font-bold leading-tight">
               Vagas de tecnologia em um só lugar
             </h1>
+            {totalVagas !== null && (
+              <p className="text-lg font-semibold text-primary">
+                {totalVagas.toLocaleString('pt-BR')} vagas abertas nos
+                repositórios
+              </p>
+            )}
             <p className="text-lg text-muted-foreground">
               Busque nas comunidades GitHub (backend-br, frontendbr, React
               Brasil e mais). Filtre por stack, nível e regime — e candidate-se
