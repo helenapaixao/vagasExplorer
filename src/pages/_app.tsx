@@ -1,5 +1,6 @@
 import React from 'react';
 import type { AppProps } from 'next/app';
+import { Analytics } from '@vercel/analytics/react';
 import { ThemeProvider as SCThemeProvider } from 'styled-components';
 import light from '../styles/themes/light';
 
@@ -14,6 +15,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <StyledThemeProvider theme={light}>
       <Component {...pageProps} />
+      <Analytics />
     </StyledThemeProvider>
   );
 };
