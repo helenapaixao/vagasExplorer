@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        display: ['var(--font-display)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
@@ -48,6 +52,20 @@ module.exports = {
         },
       },
       keyframes: {
+        // The job ticker: the list is rendered twice, so translating by half
+        // its height loops seamlessly.
+        // Two quick beats then a rest, like an actual pulse — a plain
+        // scale in-out reads as a throb, not a heartbeat.
+        heartbeat: {
+          '0%, 45%, 100%': { transform: 'scale(1)' },
+          '12%': { transform: 'scale(1.28)' },
+          '24%': { transform: 'scale(1.04)' },
+          '34%': { transform: 'scale(1.2)' },
+        },
+        ticker: {
+          from: { transform: 'translateY(0)' },
+          to: { transform: 'translateY(-50%)' },
+        },
         'accordion-down': {
           from: { height: '0' },
           to: { height: 'var(--radix-accordion-content-height)' },
@@ -58,6 +76,8 @@ module.exports = {
         },
       },
       animation: {
+        heartbeat: 'heartbeat 1.6s ease-in-out infinite',
+        ticker: 'ticker var(--ticker-duration, 60s) linear infinite',
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
