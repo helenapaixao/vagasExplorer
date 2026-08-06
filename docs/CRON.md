@@ -1,18 +1,28 @@
 # Cron: sync de vagas do GitHub
 
-O cron **sync-github-jobs** varre os repositórios listados em `public/repos.json`, busca as issues (vagas) na API do GitHub e grava/atualiza na tabela **Job** do banco.
+O cron **sync-github-jobs** varre os repositórios listados em `src/data/repos.json`, busca as issues (vagas) na API do GitHub e grava/atualiza na tabela **Job** do banco.
+
+> **Nenhuma tela do app lê essa tabela hoje.** A busca global (`/vagas`) fala
+> direto com a search API do GitHub, sem banco. O cron continua funcionando e
+> mantém um histórico das vagas, mas é opcional: se você não configurar
+> `DATABASE_URL`, a rota responde 503 e o app funciona normalmente.
+>
+> Mantenha se quiser um arquivo histórico das vagas (a API do GitHub só devolve
+> as issues abertas) ou se pretende voltar a servir a busca a partir do banco
+> para escapar do rate limit da search API. Caso contrário, dá para remover o
+> cron, o `prisma/`, a entrada em `vercel.json` e este documento.
 
 ## Configuração
 
 1. **Banco de dados**
    - Crie um arquivo `.env` na raiz (copie de `.env.example`).
    - **Local (SQLite):** `DATABASE_URL="file:./dev.db"`
-   - Crie as tabelas: `yarn db:push`
+   - Crie as tabelas: `npm run db:push`
    - O arquivo `prisma/dev.db` será criado (já está no `.gitignore`).
 
 2. **Produção (Vercel)**
    - Use Postgres (Neon, Supabase, Railway, etc.) e defina `DATABASE_URL` nas variáveis de ambiente do projeto.
-   - Altere em `prisma/schema.prisma`: `provider = "postgresql"` e rode `yarn db:push` ou use migrations.
+   - Altere em `prisma/schema.prisma`: `provider = "postgresql"` e rode `npm run db:push` ou use migrations.
 
 3. **Proteção da rota (recomendado)**
    - Defina `CRON_SECRET` no `.env` (ex.: um valor aleatório longo).
@@ -25,7 +35,7 @@ No `vercel.json` o cron está configurado para rodar **uma vez por dia** às 6h 
 
 ## Como rodar manualmente
 
-- **Local:** depois de `yarn dev`, chame:
+- **Local:** depois de `npm run dev`, chame:
   - `GET http://localhost:3000/api/cron/sync-github-jobs?secret=SEU_CRON_SECRET`
   - ou com header: `Authorization: Bearer SEU_CRON_SECRET`
 - **Produção:** use o dashboard da Vercel (Cron Jobs) para “Trigger” ou faça um GET na URL do deploy com o `CRON_SECRET`.

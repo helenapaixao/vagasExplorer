@@ -1,23 +1,18 @@
 import React from 'react';
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
 import { Analytics } from '@vercel/analytics/react';
-import { ThemeProvider as SCThemeProvider } from 'styled-components';
-import light from '../styles/themes/light';
 
 import '../styles/globals.css';
 
-const StyledThemeProvider = SCThemeProvider as React.FC<{
-  theme: typeof light;
-  children: React.ReactNode;
-}>;
-
-const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
-  return (
-    <StyledThemeProvider theme={light}>
-      <Component {...pageProps} />
-      <Analytics />
-    </StyledThemeProvider>
-  );
-};
+const MyApp = ({ Component, pageProps }: AppProps) => (
+  <>
+    <Head>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </Head>
+    <Component {...pageProps} />
+    <Analytics />
+  </>
+);
 
 export default MyApp;

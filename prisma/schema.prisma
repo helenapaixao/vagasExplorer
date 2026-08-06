@@ -8,19 +8,20 @@ datasource db {
 }
 
 model Job {
-  id             String    @id @default(cuid())
-  owner          String
-  repo           String
-  issueNumber    Int
-  title          String
-  body           String?
-  htmlUrl        String
-  userLogin      String
-  labels         String?   // JSON string: [{ name, color }]
+  id              String    @id @default(cuid())
+  owner           String
+  repo            String
+  issueNumber     Int
+  title           String
+  body            String?
+  htmlUrl         String
+  userLogin       String
+  labels          String? // JSON string: [{ id, name, color }]
   githubCreatedAt DateTime?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
   @@unique([owner, repo, issueNumber])
   @@index([owner, repo])
+  @@index([githubCreatedAt])
 }
