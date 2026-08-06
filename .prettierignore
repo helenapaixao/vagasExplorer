@@ -13,12 +13,12 @@ dist
 prisma/dev.db
 prisma/dev.db-journal
 
-# Lock files (evitar alteração acidental)
-yarn.lock
+# Lock files
 package-lock.json
+yarn.lock
 pnpm-lock.yaml
 
 # Outros
 coverage
 *.min.js
-public/repos.json
+src/assets/*.json

@@ -30,3 +30,8 @@ firebase.json
 # Prisma
 prisma/dev.db
 prisma/dev.db-journal
+
+# env local
+.env
+tsconfig.tsbuildinfo
+*.tsbuildinfo
