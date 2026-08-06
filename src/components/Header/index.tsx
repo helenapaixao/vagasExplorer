@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FiBookmark } from 'react-icons/fi';
+import { Bookmark } from 'lucide-react';
 import Logo from '../Logo';
 import ThemeToggle from '../ThemeToggle';
 import { useSavedJobs } from '../../hooks/useSavedJobs';
@@ -48,7 +48,7 @@ const Header: React.FC = () => {
           aria-label={`Vagas salvas${mounted ? ` (${saved.length})` : ''}`}
           className="flex items-center gap-1 rounded-md px-2 py-1 text-sm text-muted-foreground hover:text-foreground"
         >
-          <FiBookmark size={16} aria-hidden />
+          <Bookmark size={16} aria-hidden />
           {/* Rendered only after hydration: localStorage isn't readable on the
               server, and a mismatched count would flash. */}
           {mounted && saved.length > 0 && (

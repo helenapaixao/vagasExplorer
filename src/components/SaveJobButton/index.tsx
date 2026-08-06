@@ -1,5 +1,6 @@
 import React from 'react';
-import { FiBookmark } from 'react-icons/fi';
+import { Bookmark } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { jobKey, useSavedJobs } from '../../hooks/useSavedJobs';
 import type { SavedJob } from '../../types/job';
 
@@ -17,33 +18,28 @@ const SaveJobButton: React.FC<SaveJobButtonProps> = ({
   const { isSaved, toggle, mounted } = useSavedJobs();
   const key = jobKey(job.owner, job.repo, job.issueNumber);
   const saved = mounted && isSaved(key);
+  const action = saved ? 'Remover das vagas salvas' : 'Salvar vaga';
 
   return (
-    <button
-      type="button"
+    <Button
+      variant="ghost"
+      size={withLabel ? 'sm' : 'icon'}
       aria-pressed={saved}
-      aria-label={saved ? 'Remover das vagas salvas' : 'Salvar vaga'}
+      aria-label={withLabel ? undefined : action}
+      // Native title instead of a tooltip component: the hint isn't worth
+      // pulling a popover library into every page's bundle.
+      title={action}
       onClick={event => {
         // The card itself is a link; saving shouldn't navigate.
         event.preventDefault();
         event.stopPropagation();
         toggle({ ...job, key });
       }}
-      className={
-        saved
-          ? 'flex shrink-0 items-center gap-2 rounded-md p-2 text-primary transition-colors hover:bg-accent'
-          : 'flex shrink-0 items-center gap-2 rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground'
-      }
+      className={saved ? 'text-primary' : 'text-muted-foreground'}
     >
-      <FiBookmark
-        size={18}
-        aria-hidden
-        fill={saved ? 'currentColor' : 'none'}
-      />
-      {withLabel && (
-        <span className="text-sm">{saved ? 'Salva' : 'Salvar'}</span>
-      )}
-    </button>
+      <Bookmark aria-hidden fill={saved ? 'currentColor' : 'none'} />
+      {withLabel && (saved ? 'Salva' : 'Salvar')}
+    </Button>
   );
 };
 

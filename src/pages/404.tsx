@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { FiCompass } from 'react-icons/fi';
+import { Compass } from 'lucide-react';
 import Layout from '../components/Layout';
 import Seo from '../components/Seo';
 import { Button } from '../components/ui/button';
@@ -13,7 +13,7 @@ const NotFound = () => (
     />
 
     <div className="flex flex-col items-center gap-4 py-20 text-center">
-      <FiCompass size={40} className="text-muted-foreground" aria-hidden />
+      <Compass size={40} className="text-muted-foreground" aria-hidden />
       <h1 className="text-2xl font-bold">Página não encontrada</h1>
       <p className="max-w-md text-muted-foreground">
         O link pode estar quebrado, ou a vaga que você procurava foi removida do

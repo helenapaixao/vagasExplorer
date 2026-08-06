@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from 'next/image';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import type { GitHubRepo } from '../../types/github';
 
 interface RepositoryInfoProps {
@@ -7,24 +7,22 @@ interface RepositoryInfoProps {
 }
 
 const RepositoryInfo: React.FC<RepositoryInfoProps> = ({ repository }) => (
-  <header className="flex flex-wrap items-center gap-6">
-    <Image
-      src={repository.owner.avatar_url}
-      alt=""
-      width={120}
-      height={120}
-      className="shrink-0 rounded-full object-cover"
-      priority
-    />
+  <header className="flex flex-wrap items-center gap-5">
+    <Avatar className="h-20 w-20 shrink-0">
+      <AvatarImage src={repository.owner.avatar_url} alt="" />
+      <AvatarFallback>
+        {repository.owner.login.slice(0, 2).toUpperCase()}
+      </AvatarFallback>
+    </Avatar>
     <div className="min-w-0">
-      <h1 className="text-2xl font-bold sm:text-3xl">{repository.full_name}</h1>
+      <h1 className="text-2xl font-bold tracking-tight">
+        {repository.full_name}
+      </h1>
       {repository.description && (
-        <p className="mt-1 text-muted-foreground">{repository.description}</p>
+        <p className="mt-1 max-w-prose text-muted-foreground">
+          {repository.description}
+        </p>
       )}
-      <p className="mt-4">
-        <strong className="text-2xl">{repository.open_issues_count}</strong>{' '}
-        <span className="text-muted-foreground">vagas abertas</span>
-      </p>
     </div>
   </header>
 );

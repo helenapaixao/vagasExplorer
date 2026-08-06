@@ -1,4 +1,6 @@
 import React from 'react';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 import type { GitHubLabel } from '../../types/github';
 
 interface LabelChipProps {
@@ -8,26 +10,28 @@ interface LabelChipProps {
 }
 
 const LabelChip: React.FC<LabelChipProps> = ({ label, onSelect }) => {
-  const className =
-    'inline-flex items-center rounded-full bg-secondary text-secondary-foreground px-3 py-1.5 text-xs font-medium border-l-[3px]';
+  // GitHub's label color is arbitrary and often unreadable as a background in
+  // one of the themes, so it's used only as an accent stripe.
   const style = { borderLeftColor: `#${label.color}` };
+  const className = 'border-l-[3px] font-normal';
 
   if (!onSelect) {
     return (
-      <span className={className} style={style}>
+      <Badge variant="secondary" className={className} style={style}>
         {label.name}
-      </span>
+      </Badge>
     );
   }
 
   return (
-    <button
-      type="button"
-      className={`${className} transition-opacity hover:opacity-80`}
-      style={style}
-      onClick={() => onSelect(label.name)}
-    >
-      {label.name}
+    <button type="button" onClick={() => onSelect(label.name)}>
+      <Badge
+        variant="secondary"
+        className={cn(className, 'transition-colors hover:bg-accent')}
+        style={style}
+      >
+        {label.name}
+      </Badge>
     </button>
   );
 };

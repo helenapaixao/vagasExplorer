@@ -1,11 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
-import { FiExternalLink, FiTrash2 } from 'react-icons/fi';
+import { ExternalLink, Trash2 } from 'lucide-react';
 
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import { EmptyState } from '../../components/states';
 import { Button } from '../../components/ui/button';
+import { Card } from '../../components/ui/card';
 import { useSavedJobs } from '../../hooks/useSavedJobs';
 import { formatRelativeDate, toIsoDate } from '../../lib/date';
 
@@ -41,51 +42,52 @@ const Salvas = () => {
       {mounted && saved.length > 0 && (
         <ul className="flex list-none flex-col gap-4 p-0">
           {saved.map(job => (
-            <li
-              key={job.key}
-              className="flex items-center gap-4 rounded-md border border-border bg-card p-6"
-            >
-              <div className="min-w-0 flex-1">
-                <Link
-                  href={`/vaga/${job.owner}/${job.repo}/${job.issueNumber}`}
-                  className="text-base font-semibold text-card-foreground no-underline hover:text-primary"
-                >
-                  {job.title}
-                </Link>
-                <p className="mt-1 flex flex-wrap items-center gap-x-2 text-sm text-muted-foreground">
-                  <span>{job.userLogin}</span>
-                  <span aria-hidden>·</span>
-                  <span>
-                    {job.owner}/{job.repo}
-                  </span>
-                  {job.createdAt && (
-                    <>
-                      <span aria-hidden>·</span>
-                      <time dateTime={toIsoDate(job.createdAt)}>
-                        {formatRelativeDate(job.createdAt)}
-                      </time>
-                    </>
-                  )}
-                </p>
-              </div>
+            <li key={job.key}>
+              <Card className="elevated flex items-center gap-4 p-5">
+                <div className="min-w-0 flex-1">
+                  <Link
+                    href={`/vaga/${job.owner}/${job.repo}/${job.issueNumber}`}
+                    className="text-base font-semibold text-card-foreground no-underline hover:text-primary"
+                  >
+                    {job.title}
+                  </Link>
+                  <p className="mt-1 flex flex-wrap items-center gap-x-2 text-sm text-muted-foreground">
+                    <span>{job.userLogin}</span>
+                    <span aria-hidden>·</span>
+                    <span>
+                      {job.owner}/{job.repo}
+                    </span>
+                    {job.createdAt && (
+                      <>
+                        <span aria-hidden>·</span>
+                        <time dateTime={toIsoDate(job.createdAt)}>
+                          {formatRelativeDate(job.createdAt)}
+                        </time>
+                      </>
+                    )}
+                  </p>
+                </div>
 
-              <a
-                href={job.htmlUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Abrir no GitHub"
-                className="rounded-md p-2 text-muted-foreground hover:bg-accent hover:text-foreground"
-              >
-                <FiExternalLink size={18} aria-hidden />
-              </a>
-              <button
-                type="button"
-                onClick={() => remove(job.key)}
-                aria-label={`Remover "${job.title}" das salvas`}
-                className="rounded-md p-2 text-muted-foreground hover:bg-accent hover:text-destructive"
-              >
-                <FiTrash2 size={18} aria-hidden />
-              </button>
+                <Button asChild variant="ghost" size="icon">
+                  <a
+                    href={job.htmlUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Abrir no GitHub"
+                  >
+                    <ExternalLink aria-hidden />
+                  </a>
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => remove(job.key)}
+                  aria-label={`Remover "${job.title}" das salvas`}
+                  className="text-muted-foreground hover:text-destructive"
+                >
+                  <Trash2 aria-hidden />
+                </Button>
+              </Card>
             </li>
           ))}
         </ul>

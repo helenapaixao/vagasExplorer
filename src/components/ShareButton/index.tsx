@@ -1,19 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { FiCheck, FiShare2 } from 'react-icons/fi';
+import React, { useCallback } from 'react';
+import { Share2 } from 'lucide-react';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 
 interface ShareButtonProps {
   title: string;
 }
 
 const ShareButton: React.FC<ShareButtonProps> = ({ title }) => {
-  const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    if (!copied) return undefined;
-    const timer = setTimeout(() => setCopied(false), 2000);
-    return () => clearTimeout(timer);
-  }, [copied]);
-
   const share = useCallback(async () => {
     const url = window.location.href;
 
@@ -30,27 +24,17 @@ const ShareButton: React.FC<ShareButtonProps> = ({ title }) => {
 
     try {
       await navigator.clipboard.writeText(url);
-      setCopied(true);
+      toast.success('Link copiado');
     } catch {
-      // Clipboard blocked (insecure context / permissions): nothing to do.
+      toast.error('Não foi possível copiar o link');
     }
   }, [title]);
 
   return (
-    <button
-      type="button"
-      onClick={share}
-      className="flex items-center gap-2 rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-    >
-      {copied ? (
-        <FiCheck size={18} aria-hidden />
-      ) : (
-        <FiShare2 size={18} aria-hidden />
-      )}
-      <span className="text-sm">
-        {copied ? 'Link copiado' : 'Compartilhar'}
-      </span>
-    </button>
+    <Button variant="ghost" size="sm" onClick={share}>
+      <Share2 aria-hidden />
+      Compartilhar
+    </Button>
   );
 };
 

@@ -1,5 +1,7 @@
 import React from 'react';
-import { FiSearch, FiX } from 'react-icons/fi';
+import { Search, X } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 interface SearchBarProps {
   value: string;
@@ -14,29 +16,31 @@ const SearchBar: React.FC<SearchBarProps> = ({
   placeholder,
   label,
 }) => (
-  <div className="relative my-8 flex items-center gap-3 rounded-lg border border-border bg-background px-4 focus-within:border-primary transition-colors">
-    <FiSearch
-      size={20}
-      className="shrink-0 text-muted-foreground"
+  <div className="relative my-6">
+    <Search
+      size={18}
       aria-hidden
+      className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
     />
-    <input
+    <Input
       type="search"
       aria-label={label}
       placeholder={placeholder}
       value={value}
       onChange={e => onChange(e.target.value)}
-      className="min-w-0 flex-1 border-none bg-transparent py-3.5 text-base outline-none placeholder:text-muted-foreground"
+      className="h-11 pl-10 pr-11 text-base [&::-webkit-search-cancel-button]:appearance-none"
     />
     {value && (
-      <button
+      <Button
         type="button"
+        variant="ghost"
+        size="icon"
         onClick={() => onChange('')}
         aria-label="Limpar busca"
-        className="flex shrink-0 items-center rounded p-2 text-muted-foreground hover:text-foreground hover:bg-accent"
+        className="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2"
       >
-        <FiX size={20} aria-hidden />
-      </button>
+        <X aria-hidden />
+      </Button>
     )}
   </div>
 );

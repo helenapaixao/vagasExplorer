@@ -1,7 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { FiClock } from 'react-icons/fi';
+import { Clock } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import LabelChip from '../LabelChip';
 import SaveJobButton from '../SaveJobButton';
 import { formatRelativeDate, isStale, toIsoDate } from '../../lib/date';
@@ -26,6 +27,8 @@ interface JobCardProps {
   onLabelSelect?: (name: string) => void;
 }
 
+const MAX_LABELS = 8;
+
 const JobCard: React.FC<JobCardProps> = ({
   job,
   showRepo = false,
@@ -34,25 +37,31 @@ const JobCard: React.FC<JobCardProps> = ({
   const href = `/vaga/${job.owner}/${job.repo}/${job.issueNumber}`;
   const relative = formatRelativeDate(job.createdAt);
   const stale = isStale(job.createdAt);
+  const hiddenLabels = job.labels.length - MAX_LABELS;
 
   return (
-    <article className="rounded-md border border-border bg-card transition-all hover:border-primary/50 hover:shadow-md">
-      <div className="flex items-center gap-4 p-6">
+    <Card className="elevated overflow-hidden transition-colors hover:border-primary/40">
+      <div className="flex items-center gap-4 p-5">
         <Link
           href={href}
           // Prefetching keeps the detail page instant on hover/viewport.
           prefetch
-          className="flex min-w-0 flex-1 items-center gap-4 no-underline text-card-foreground"
+          className="flex min-w-0 flex-1 items-center gap-4 no-underline"
         >
-          <Image
-            src={job.avatarUrl ?? `https://github.com/${job.userLogin}.png`}
-            alt=""
-            width={70}
-            height={70}
-            className="hidden shrink-0 rounded-full object-cover sm:block"
-          />
+          <Avatar className="hidden h-14 w-14 shrink-0 sm:flex">
+            <AvatarImage
+              src={job.avatarUrl ?? `https://github.com/${job.userLogin}.png`}
+              alt=""
+            />
+            <AvatarFallback>
+              {job.userLogin.slice(0, 2).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+
           <div className="min-w-0 flex-1">
-            <h2 className="text-base font-semibold sm:text-lg">{job.title}</h2>
+            <h2 className="text-base font-semibold leading-snug">
+              {job.title}
+            </h2>
             <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
               <span>{job.userLogin}</span>
               {showRepo && (
@@ -69,10 +78,12 @@ const JobCard: React.FC<JobCardProps> = ({
                   <time
                     dateTime={toIsoDate(job.createdAt)}
                     className={
-                      stale ? 'flex items-center gap-1 text-amber-600' : ''
+                      stale
+                        ? 'flex items-center gap-1 text-amber-700 dark:text-amber-500'
+                        : undefined
                     }
                   >
-                    {stale && <FiClock size={12} aria-hidden />}
+                    {stale && <Clock size={12} aria-hidden />}
                     {relative}
                   </time>
                 </>
@@ -95,13 +106,18 @@ const JobCard: React.FC<JobCardProps> = ({
       </div>
 
       {job.labels.length > 0 && (
-        <div className="flex flex-wrap gap-2 px-6 pb-4">
-          {job.labels.slice(0, 8).map(label => (
+        <div className="flex flex-wrap gap-1.5 border-t bg-muted/40 px-5 py-3">
+          {job.labels.slice(0, MAX_LABELS).map(label => (
             <LabelChip key={label.id} label={label} onSelect={onLabelSelect} />
           ))}
+          {hiddenLabels > 0 && (
+            <span className="self-center text-xs text-muted-foreground">
+              +{hiddenLabels}
+            </span>
+          )}
         </div>
       )}
-    </article>
+    </Card>
   );
 };
 

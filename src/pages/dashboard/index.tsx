@@ -1,8 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { FiChevronRight } from 'react-icons/fi';
+import { ChevronRight } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import { ErrorState } from '../../components/states';
@@ -13,15 +14,14 @@ import type { RepoItem } from '../../lib/repos';
 const SKELETON_ROWS = [0, 1, 2, 3, 4];
 
 const RepoSkeleton = () => (
-  <div className="flex items-center gap-4 rounded-md border border-border bg-card p-6">
-    <Skeleton className="h-[70px] w-[70px] shrink-0 rounded-full" />
+  <Card className="flex items-center gap-4 p-5">
+    <Skeleton className="h-14 w-14 shrink-0 rounded-full" />
     <div className="min-w-0 flex-1 space-y-2">
       <Skeleton className="h-5 w-48" />
       <Skeleton className="h-4 w-full max-w-sm" />
-      <Skeleton className="h-4 w-full max-w-xs" />
     </div>
     <Skeleton className="h-5 w-5 shrink-0 rounded" />
-  </div>
+  </Card>
 );
 
 const Dashboard = () => {
@@ -55,26 +55,33 @@ const Dashboard = () => {
 
         {!loading &&
           data?.map(repo => (
-            <Link
+            <Card
               key={repo.link}
-              href={repo.link}
-              className="flex items-center gap-4 rounded-md border border-border bg-card p-6 text-foreground no-underline transition-all hover:translate-x-1 hover:border-primary/50 hover:shadow-md"
+              className="elevated transition-colors hover:border-primary/40"
             >
-              <Image
-                src={repo.imageUrl}
-                alt=""
-                width={70}
-                height={70}
-                className="shrink-0 rounded-full object-cover"
-              />
-              <div className="min-w-0 flex-1">
-                <h2 className="text-base font-semibold">{repo.name}</h2>
-                <p className="line-clamp-2 text-sm text-muted-foreground">
-                  {repo.desc}
-                </p>
-              </div>
-              <FiChevronRight size={20} className="shrink-0" aria-hidden />
-            </Link>
+              <Link
+                href={repo.link}
+                className="flex items-center gap-4 p-5 text-card-foreground no-underline"
+              >
+                <Avatar className="h-14 w-14 shrink-0">
+                  <AvatarImage src={repo.imageUrl} alt="" />
+                  <AvatarFallback>
+                    {repo.name.slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-base font-semibold">{repo.name}</h2>
+                  <p className="line-clamp-2 text-sm text-muted-foreground">
+                    {repo.desc}
+                  </p>
+                </div>
+                <ChevronRight
+                  size={20}
+                  className="shrink-0 text-muted-foreground"
+                  aria-hidden
+                />
+              </Link>
+            </Card>
           ))}
       </div>
     </Layout>

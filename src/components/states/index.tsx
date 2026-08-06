@@ -1,25 +1,23 @@
 import React from 'react';
-import { FiAlertCircle, FiInbox, FiRefreshCw } from 'react-icons/fi';
+import { AlertCircle, Inbox, RefreshCw } from 'lucide-react';
 import { Skeleton } from '../ui/skeleton';
 import { Button } from '../ui/button';
+import { Card } from '../ui/card';
+import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 
 const SKELETON_ROWS = [0, 1, 2, 3, 4];
 
 export const JobListSkeleton: React.FC = () => (
   <div className="flex flex-col gap-4" aria-hidden>
     {SKELETON_ROWS.map(row => (
-      <div
-        key={row}
-        className="flex items-center gap-4 rounded-md border border-border bg-card p-6"
-      >
-        <Skeleton className="h-[70px] w-[70px] shrink-0 rounded-full" />
+      <Card key={row} className="flex items-center gap-4 p-5">
+        <Skeleton className="hidden h-14 w-14 shrink-0 rounded-full sm:block" />
         <div className="min-w-0 flex-1 space-y-2">
           <Skeleton className="h-5 w-3/4 max-w-md" />
           <Skeleton className="h-4 w-40" />
-          <Skeleton className="h-4 w-full max-w-xs" />
         </div>
-        <Skeleton className="h-5 w-5 shrink-0 rounded" />
-      </div>
+        <Skeleton className="h-9 w-9 shrink-0 rounded-md" />
+      </Card>
     ))}
   </div>
 );
@@ -37,21 +35,24 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   suggestions = [],
   onSuggestion,
 }) => (
-  <div className="flex flex-col items-center gap-3 rounded-md border border-dashed border-border px-6 py-12 text-center">
-    <FiInbox size={32} className="text-muted-foreground" aria-hidden />
+  <div className="flex flex-col items-center gap-3 rounded-lg border border-dashed px-6 py-14 text-center">
+    <div className="rounded-full bg-muted p-3">
+      <Inbox size={24} className="text-muted-foreground" aria-hidden />
+    </div>
     <p className="font-medium">{title}</p>
     {hint && <p className="max-w-md text-sm text-muted-foreground">{hint}</p>}
     {suggestions.length > 0 && onSuggestion && (
       <div className="mt-2 flex flex-wrap justify-center gap-2">
         {suggestions.map(suggestion => (
-          <button
+          <Button
             key={suggestion}
-            type="button"
+            variant="outline"
+            size="sm"
+            className="rounded-full"
             onClick={() => onSuggestion(suggestion)}
-            className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
           >
             {suggestion}
-          </button>
+          </Button>
         ))}
       </div>
     )}
@@ -64,20 +65,18 @@ interface ErrorStateProps {
 }
 
 export const ErrorState: React.FC<ErrorStateProps> = ({ message, onRetry }) => (
-  <div
-    role="alert"
-    className="flex flex-col items-start gap-3 rounded-md border border-destructive/40 bg-destructive/5 p-6"
-  >
-    <p className="flex items-center gap-2 text-destructive">
-      <FiAlertCircle size={18} aria-hidden />
+  <Alert variant="destructive" className="mb-4">
+    <AlertCircle className="h-4 w-4" aria-hidden />
+    <AlertTitle>Algo deu errado</AlertTitle>
+    <AlertDescription className="flex flex-col items-start gap-3">
       {message}
-    </p>
-    {/* Rate-limit errors clear on their own, so a retry is often all it takes. */}
-    {onRetry && (
-      <Button variant="outline" size="sm" onClick={onRetry}>
-        <FiRefreshCw size={14} aria-hidden />
-        Tentar novamente
-      </Button>
-    )}
-  </div>
+      {/* Rate-limit errors clear on their own, so a retry is often all it takes. */}
+      {onRetry && (
+        <Button variant="outline" size="sm" onClick={onRetry}>
+          <RefreshCw aria-hidden />
+          Tentar novamente
+        </Button>
+      )}
+    </AlertDescription>
+  </Alert>
 );

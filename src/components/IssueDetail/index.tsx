@@ -1,6 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import { FiAlertTriangle, FiArrowLeft, FiExternalLink } from 'react-icons/fi';
+import { AlertTriangle, ArrowLeft, ExternalLink } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Separator } from '@/components/ui/separator';
 import ReactMarkdown from 'react-markdown';
 import LabelChip from '../LabelChip';
 import SaveJobButton from '../SaveJobButton';
@@ -50,11 +53,11 @@ const IssueDetail: React.FC<IssueDetailProps> = ({
         href={backHref}
         className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground no-underline hover:text-foreground hover:underline"
       >
-        <FiArrowLeft size={18} aria-hidden />
+        <ArrowLeft size={18} aria-hidden />
         Voltar para a lista de vagas
       </Link>
 
-      <header className="mb-6 border-b border-border pb-5">
+      <header className="mb-6 border-b pb-5">
         <h1 className="mb-2 text-2xl font-bold">{issue.title}</h1>
         <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
           <span>{issue.user.login}</span>
@@ -71,10 +74,12 @@ const IssueDetail: React.FC<IssueDetailProps> = ({
         </p>
 
         {stale && (
-          <p className="mt-3 flex items-center gap-2 rounded-md border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm text-amber-700 dark:text-amber-400">
-            <FiAlertTriangle size={16} aria-hidden />
-            Vaga publicada há mais de 3 meses — pode já estar preenchida.
-          </p>
+          <Alert className="mt-3 border-amber-500/40 bg-amber-500/10 text-amber-800 dark:text-amber-400">
+            <AlertTriangle className="h-4 w-4" aria-hidden />
+            <AlertDescription>
+              Vaga publicada há mais de 3 meses — pode já estar preenchida.
+            </AlertDescription>
+          </Alert>
         )}
 
         {issue.labels.length > 0 && (
@@ -110,16 +115,19 @@ const IssueDetail: React.FC<IssueDetailProps> = ({
         )}
       </div>
 
-      <footer className="mt-8 border-t border-border pt-5">
-        <a
-          href={issue.html_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 font-semibold text-primary hover:underline"
-        >
-          Ver no GitHub e candidatar
-          <FiExternalLink size={16} aria-hidden />
-        </a>
+      <Separator className="mt-8" />
+      <footer className="mt-5">
+        <Button asChild size="lg">
+          <a
+            href={issue.html_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="no-underline"
+          >
+            Ver no GitHub e candidatar
+            <ExternalLink aria-hidden />
+          </a>
+        </Button>
       </footer>
     </article>
   );

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FiLogIn, FiGitBranch, FiSearch, FiZap } from 'react-icons/fi';
+import { LogIn, GitBranch, Search, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import Layout from '../components/Layout';
 import Animation from '../components/Animation';
 import Seo from '../components/Seo';
@@ -23,17 +24,17 @@ const item = {
 
 const FEATURES = [
   {
-    icon: FiGitBranch,
+    icon: GitBranch,
     title: 'Comunidades GitHub',
     text: 'Vagas dos principais repos brasileiros: backend, frontend, React, Vue, QA, PHP, Flutter e mais.',
   },
   {
-    icon: FiSearch,
+    icon: Search,
     title: 'Busca e filtros',
     text: 'Encontre por tecnologia, nível (júnior a sênior), regime (remoto, híbrido, CLT) e labels.',
   },
   {
-    icon: FiZap,
+    icon: Zap,
     title: 'Direto ao ponto',
     text: 'Leia a vaga completa no app e use o link para se candidatar no GitHub ou no site da empresa.',
   },
@@ -96,7 +97,7 @@ const Home = () => {
                   href="/vagas"
                   className="flex items-center gap-2 no-underline"
                 >
-                  <FiLogIn size={20} aria-hidden />
+                  <LogIn size={20} aria-hidden />
                   Encontrar vagas
                 </Link>
               </Button>
@@ -127,19 +128,16 @@ const Home = () => {
           {FEATURES.map(card => (
             <motion.div
               key={card.title}
-              className="p-6 rounded-lg border border-border bg-card text-card-foreground hover:border-primary hover:shadow-md transition-colors cursor-default"
               variants={item}
-              whileHover={{
-                y: -6,
-                boxShadow: '0 12px 40px rgba(0,0,0,0.08)',
-                transition: { duration: 0.2 },
-              }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
             >
-              <div className="text-primary mb-4">
-                <card.icon size={32} />
-              </div>
-              <h3 className="text-base font-semibold mb-2">{card.title}</h3>
-              <p className="text-sm text-muted-foreground">{card.text}</p>
+              <Card className="elevated h-full cursor-default p-6 transition-colors hover:border-primary/40">
+                <div className="mb-4 w-fit rounded-lg bg-primary/10 p-2.5 text-primary">
+                  <card.icon size={24} aria-hidden />
+                </div>
+                <h3 className="mb-2 text-base font-semibold">{card.title}</h3>
+                <p className="text-sm text-muted-foreground">{card.text}</p>
+              </Card>
             </motion.div>
           ))}
         </motion.div>

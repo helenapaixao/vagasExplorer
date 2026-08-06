@@ -1,30 +1,22 @@
 import React from 'react';
-import { FiMoon, FiSun } from 'react-icons/fi';
-import { useTheme } from '../../hooks/useTheme';
+import dynamic from 'next/dynamic';
+import { Moon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-const ThemeToggle: React.FC = () => {
-  const { theme, toggle, mounted } = useTheme();
+/**
+ * The menu pulls in a popover library, and the header renders on every page.
+ * Loading it lazily keeps that out of the initial bundle; the placeholder is
+ * the same size, so nothing shifts when it swaps in.
+ */
+const ThemeMenu = dynamic(() => import('./ThemeMenu'), {
+  ssr: false,
+  loading: () => (
+    <Button variant="ghost" size="icon" aria-label="Alternar tema" disabled>
+      <Moon />
+    </Button>
+  ),
+});
 
-  return (
-    <button
-      type="button"
-      onClick={toggle}
-      // Before hydration the real theme isn't known, so the label stays
-      // generic instead of claiming the wrong one.
-      aria-label={
-        mounted
-          ? `Mudar para tema ${theme === 'dark' ? 'claro' : 'escuro'}`
-          : 'Alternar tema'
-      }
-      className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-    >
-      {mounted && theme === 'dark' ? (
-        <FiSun size={18} aria-hidden />
-      ) : (
-        <FiMoon size={18} aria-hidden />
-      )}
-    </button>
-  );
-};
+const ThemeToggle: React.FC = () => <ThemeMenu />;
 
 export default ThemeToggle;

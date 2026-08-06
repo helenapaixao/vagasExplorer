@@ -1,27 +1,10 @@
 import { Html, Head, Main, NextScript } from 'next/document';
 
-/**
- * Runs before first paint so the saved theme is applied without a flash of the
- * wrong colors. Kept inline and tiny on purpose.
- */
-const themeScript = `
-(function () {
-  try {
-    var stored = localStorage.getItem('theme');
-    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (stored === 'dark' || (!stored && prefersDark)) {
-      document.documentElement.classList.add('dark');
-    }
-  } catch (e) {}
-})();
-`;
-
+// next-themes injects its own pre-paint script, so there's none here.
 const Document = () => (
-  <Html lang="pt-BR">
+  <Html lang="pt-BR" suppressHydrationWarning>
     <Head>
       <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-      {/* eslint-disable-next-line react/no-danger */}
-      <script dangerouslySetInnerHTML={{ __html: themeScript }} />
     </Head>
     <body>
       <Main />

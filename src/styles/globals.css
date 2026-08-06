@@ -2,83 +2,100 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Contrast targets, verified for both themes:
+ *   text vs surface .............. >= 4.5:1  (WCAG AA, 1.4.3)
+ *   control boundary vs surface .. >= 3.0:1  (WCAG AA, 1.4.11)
+ *
+ * `--border` is for decorative separators and card outlines, so it stays
+ * subtle. `--input` is the boundary of an actual control (inputs, outline
+ * buttons) and therefore has to clear 3:1 — the two were the same value
+ * before, which left every control outline below the threshold.
+ *
+ * The brand pink is the same hue in both themes, only lifted for the dark
+ * background. The previous dark value was a neon pink carrying near-black
+ * text; it passed contrast but read as a garish slab.
+ */
 @layer base {
   :root {
     --radius: 0.625rem;
+
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);
-    --primary: #c62e65;
+    --primary: oklch(0.52 0.176 4);
     --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
+    --secondary: oklch(0.968 0 0);
     --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
+    --muted: oklch(0.968 0 0);
+    --muted-foreground: oklch(0.548 0 0);
+    --accent: oklch(0.948 0 0);
     --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
+    --destructive: oklch(0.55 0.225 27);
     --destructive-foreground: oklch(0.985 0 0);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: #c62e65;
+    --border: oklch(0.902 0 0);
+    --input: oklch(0.66 0 0);
+    --ring: oklch(0.52 0.176 4);
   }
 
   .dark {
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
+    --card: oklch(0.198 0 0);
     --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
+    --popover: oklch(0.213 0 0);
     --popover-foreground: oklch(0.985 0 0);
-    --primary: #f06292;
-    --primary-foreground: oklch(0.145 0 0);
-    --secondary: oklch(0.269 0 0);
+    --primary: oklch(0.57 0.19 4);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.262 0 0);
     --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
+    --muted: oklch(0.228 0 0);
+    --muted-foreground: oklch(0.715 0 0);
+    --accent: oklch(0.295 0 0);
     --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --destructive-foreground: oklch(0.145 0 0);
-    --border: oklch(0.31 0 0);
-    --input: oklch(0.31 0 0);
-    --ring: #f06292;
+    --destructive: oklch(0.58 0.21 25);
+    --destructive-foreground: oklch(0.985 0 0);
+    --border: oklch(0.285 0 0);
+    --input: oklch(0.478 0 0);
+    --ring: oklch(0.57 0.19 4);
   }
 
   * {
-    box-sizing: border-box;
+    @apply border-border;
   }
 
   body {
-    margin: 0;
+    @apply bg-background text-foreground;
     font-family:
       system-ui,
       -apple-system,
       sans-serif;
-    background: var(--background);
-    color: var(--foreground);
     -webkit-font-smoothing: antialiased;
   }
 
-  button:not(:disabled),
-  [role='button']:not(:disabled) {
-    cursor: pointer;
-  }
-
-  /* One visible focus treatment for every interactive element, instead of the
-     ring living only on the shadcn button. */
+  /* One focus treatment for everything interactive, not just the button. */
   a:focus-visible,
   button:focus-visible,
   input:focus-visible,
   select:focus-visible,
   textarea:focus-visible,
   [tabindex]:focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 2px;
-    border-radius: 4px;
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+    border-radius: calc(var(--radius) - 4px);
+  }
+}
+
+@layer utilities {
+  /*
+   * Drop shadows are black, so they vanish against a dark background and the
+   * surface reads as flat. Dark mode gets a hairline top highlight instead,
+   * which is how elevation actually reads on dark UIs.
+   */
+  .elevated {
+    @apply shadow-sm dark:shadow-none dark:ring-1 dark:ring-white/5;
   }
 }
 
