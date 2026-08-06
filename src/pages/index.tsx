@@ -4,9 +4,9 @@ import { motion } from 'framer-motion';
 import { FiLogIn, FiGitBranch, FiSearch, FiZap } from 'react-icons/fi';
 import { Button } from '@/components/ui/button';
 import Layout from '../components/Layout';
-import Header from '../components/Header';
 import Animation from '../components/Animation';
-import api from '../services/api';
+import Seo from '../components/Seo';
+import { fetchJson } from '../lib/fetchJson';
 
 const container = {
   hidden: { opacity: 0 },
@@ -21,20 +21,48 @@ const item = {
   visible: { opacity: 1, y: 0 },
 };
 
+const FEATURES = [
+  {
+    icon: FiGitBranch,
+    title: 'Comunidades GitHub',
+    text: 'Vagas dos principais repos brasileiros: backend, frontend, React, Vue, QA, PHP, Flutter e mais.',
+  },
+  {
+    icon: FiSearch,
+    title: 'Busca e filtros',
+    text: 'Encontre por tecnologia, nível (júnior a sênior), regime (remoto, híbrido, CLT) e labels.',
+  },
+  {
+    icon: FiZap,
+    title: 'Direto ao ponto',
+    text: 'Leia a vaga completa no app e use o link para se candidatar no GitHub ou no site da empresa.',
+  },
+];
+
 const Home = () => {
   const [totalVagas, setTotalVagas] = useState<number | null>(null);
 
   useEffect(() => {
-    api
-      .get<{ total: number }>('/api/vagas-total')
-      .then(({ data }) => setTotalVagas(data.total))
+    const controller = new AbortController();
+
+    fetchJson<{ total: number }>(
+      '/api/vagas-total',
+      undefined,
+      controller.signal,
+    )
+      .then(({ total }) => setTotalVagas(total))
       .catch(() => setTotalVagas(null));
+
+    return () => controller.abort();
   }, []);
 
   return (
     <Layout>
-      <Header />
-      <div className="max-w-[1120px] px-0">
+      <Seo
+        title="vagasExplorer"
+        description="Vagas de tecnologia das comunidades brasileiras no GitHub em um só lugar. Busque por stack, nível e regime e candidate-se direto no GitHub."
+      />
+      <div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start mb-12">
           <motion.div
             className="flex flex-col items-center md:items-start gap-6 text-center md:text-left"
@@ -62,18 +90,19 @@ const Home = () => {
               Brasil e mais). Filtre por stack, nível e regime — e candidate-se
               direto no GitHub.
             </motion.p>
-            <motion.div variants={item}>
-              <Button
-                asChild
-                size="lg"
-                className="bg-primary hover:bg-primary/90 text-primary-foreground"
-              >
+            <motion.div className="flex flex-wrap gap-3" variants={item}>
+              <Button asChild size="lg">
                 <Link
-                  href="/dashboard"
+                  href="/vagas"
                   className="flex items-center gap-2 no-underline"
                 >
-                  <FiLogIn size={20} />
+                  <FiLogIn size={20} aria-hidden />
                   Encontrar vagas
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <Link href="/dashboard" className="no-underline">
+                  Ver repositórios
                 </Link>
               </Button>
             </motion.div>
@@ -95,23 +124,7 @@ const Home = () => {
           viewport={{ once: true, margin: '-60px' }}
           variants={container}
         >
-          {[
-            {
-              icon: FiGitBranch,
-              title: 'Comunidades GitHub',
-              text: 'Vagas dos principais repos brasileiros: backend, frontend, React, Vue, QA, PHP, Flutter e mais.',
-            },
-            {
-              icon: FiSearch,
-              title: 'Busca e filtros',
-              text: 'Encontre por tecnologia, nível (júnior a sênior), regime (remoto, híbrido, CLT) e labels.',
-            },
-            {
-              icon: FiZap,
-              title: 'Direto ao ponto',
-              text: 'Leia a vaga completa no app e use o link para se candidatar no GitHub ou no site da empresa.',
-            },
-          ].map(card => (
+          {FEATURES.map(card => (
             <motion.div
               key={card.title}
               className="p-6 rounded-lg border border-border bg-card text-card-foreground hover:border-primary hover:shadow-md transition-colors cursor-default"

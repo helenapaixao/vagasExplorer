@@ -1,143 +1,119 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { readFileSync } from 'fs';
-import { join } from 'path';
 import { fetchIssues } from '../../../lib/githubApi';
 import { prisma } from '../../../lib/prisma';
+import { getRepoRefs, type RepoRef } from '../../../lib/repos';
+import { allowMethods, singleParam } from '../../../lib/apiHelpers';
+import type { GitHubIssue } from '../../../types/github';
 
 const PER_PAGE = 100;
+const MAX_PAGES = 50;
 
-type RepoItem = { link: string };
+function isAuthorized(req: NextApiRequest): boolean {
+  const secret = process.env.CRON_SECRET;
+  if (!secret) return true;
 
-function getReposFromConfig(): { owner: string; repo: string }[] {
-  const path = join(process.cwd(), 'public', 'repos.json');
-  const raw = readFileSync(path, 'utf-8');
-  const list = JSON.parse(raw) as RepoItem[];
-  return list
-    .map(item => {
-      const parts = item.link
-        .replace(/^\/repository\//, '')
-        .split('/')
-        .filter(Boolean);
-      const repo = parts.pop() ?? '';
-      const owner = parts.pop() ?? '';
-      return { owner, repo };
-    })
-    .filter(r => r.owner && r.repo);
+  const header = req.headers.authorization?.replace(/^Bearer\s+/i, '');
+  return header === secret || singleParam(req.query.secret) === secret;
+}
+
+function toJobData(owner: string, repo: string, issue: GitHubIssue) {
+  const labels = issue.labels ?? [];
+
+  return {
+    owner,
+    repo,
+    issueNumber: issue.number,
+    title: issue.title,
+    body: issue.body ?? null,
+    htmlUrl: issue.html_url,
+    userLogin: issue.user?.login ?? 'unknown',
+    labels: labels.length
+      ? JSON.stringify(
+          labels.map(l => ({ id: l.id, name: l.name, color: l.color })),
+        )
+      : null,
+    githubCreatedAt: issue.created_at ? new Date(issue.created_at) : null,
+  };
+}
+
+async function syncRepo(ref: RepoRef): Promise<number> {
+  const { owner, repo } = ref;
+  let synced = 0;
+
+  for (let page = 1; page <= MAX_PAGES; page += 1) {
+    // Sequential to respect the GitHub API rate limit.
+    // eslint-disable-next-line no-await-in-loop
+    const { issues } = await fetchIssues(owner, repo, {
+      page,
+      perPage: PER_PAGE,
+    });
+    if (issues.length === 0) return synced;
+
+    for (let i = 0; i < issues.length; i += 1) {
+      const data = toJobData(owner, repo, issues[i]);
+
+      // Sequential upserts to avoid a DB connection spike.
+      // eslint-disable-next-line no-await-in-loop
+      await prisma.job.upsert({
+        where: {
+          owner_repo_issueNumber: {
+            owner,
+            repo,
+            issueNumber: data.issueNumber,
+          },
+        },
+        create: data,
+        update: data,
+      });
+      synced += 1;
+    }
+
+    // A short page means GitHub has no more results, even after PRs were
+    // filtered out of it.
+    if (issues.length < PER_PAGE) return synced;
+  }
+
+  return synced;
 }
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (req.method !== 'GET' && req.method !== 'POST') {
-    res.setHeader('Allow', 'GET, POST');
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  if (!allowMethods(req, res, ['GET', 'POST'])) return;
 
-  const secret = process.env.CRON_SECRET;
-  if (secret) {
-    const auth =
-      req.headers.authorization?.replace(/^Bearer\s+/i, '') ?? req.query.secret;
-    if (auth !== secret) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
+  if (!isAuthorized(req)) {
+    res.status(401).json({ error: 'Unauthorized' });
+    return;
   }
 
   if (!process.env.DATABASE_URL) {
-    return res.status(503).json({
+    res.status(503).json({
       error: 'DATABASE_URL not set. Configure the database for the sync cron.',
     });
+    return;
   }
 
-  const repos = getReposFromConfig();
-  let totalSynced = 0;
+  const refs = getRepoRefs();
   const errors: string[] = [];
+  let jobsSynced = 0;
 
-  for (let r = 0; r < repos.length; r += 1) {
-    const { owner, repo } = repos[r];
-    let page = 1;
-    let hasMore = true;
-
-    while (hasMore) {
-      try {
-        // Sequential to respect GitHub API rate limit
-        // eslint-disable-next-line no-await-in-loop
-        const issues = (await fetchIssues(owner, repo, page, PER_PAGE)) as {
-          number: number;
-          title: string;
-          body: string | null;
-          html_url: string;
-          user: { login: string };
-          labels: { id: number; name: string; color: string }[];
-          created_at: string;
-        }[];
-
-        if (issues.length === 0) {
-          hasMore = false;
-          break;
-        }
-
-        for (let i = 0; i < issues.length; i += 1) {
-          const issue = issues[i];
-          const githubCreatedAt = issue.created_at
-            ? new Date(issue.created_at)
-            : null;
-          const labelsJson = issue.labels?.length
-            ? JSON.stringify(
-                issue.labels.map(l => ({
-                  id: l.id,
-                  name: l.name,
-                  color: l.color,
-                })),
-              )
-            : null;
-
-          // Sequential upserts to avoid DB connection spike
-          // eslint-disable-next-line no-await-in-loop
-          await prisma.job.upsert({
-            where: {
-              owner_repo_issueNumber: {
-                owner,
-                repo,
-                issueNumber: issue.number,
-              },
-            },
-            create: {
-              owner,
-              repo,
-              issueNumber: issue.number,
-              title: issue.title,
-              body: issue.body ?? null,
-              htmlUrl: issue.html_url,
-              userLogin: issue.user?.login ?? 'unknown',
-              labels: labelsJson,
-              githubCreatedAt,
-            },
-            update: {
-              title: issue.title,
-              body: issue.body ?? null,
-              htmlUrl: issue.html_url,
-              userLogin: issue.user?.login ?? 'unknown',
-              labels: labelsJson,
-              githubCreatedAt,
-            },
-          });
-          totalSynced += 1;
-        }
-
-        hasMore = issues.length >= PER_PAGE;
-        page += 1;
-      } catch (err) {
-        errors.push(`${owner}/${repo} page ${page}: ${(err as Error).message}`);
-        hasMore = false;
-      }
+  for (let i = 0; i < refs.length; i += 1) {
+    try {
+      // Sequential to respect the GitHub API rate limit.
+      // eslint-disable-next-line no-await-in-loop
+      jobsSynced += await syncRepo(refs[i]);
+    } catch (err) {
+      errors.push(
+        `${refs[i].owner}/${refs[i].repo}: ${(err as Error).message}`,
+      );
     }
   }
 
-  return res.status(200).json({
+  res.status(200).json({
     ok: true,
-    repos: repos.length,
-    jobsSynced: totalSynced,
+    repos: refs.length,
+    jobsSynced,
     errors: errors.length ? errors : undefined,
   });
 }
