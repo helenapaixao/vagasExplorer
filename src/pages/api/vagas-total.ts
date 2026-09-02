@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { searchAllRepos } from '../../lib/githubApi';
-import { getRepoRefs } from '../../lib/repos';
 import { allowMethods, setCacheHeader } from '../../lib/apiHelpers';
 
 const CACHE_TTL_MS = 10 * 60 * 1000;
@@ -22,9 +21,9 @@ export default async function handler(
   }
 
   try {
-    // One search request for the count. Beats summing `open_issues_count`,
-    // which GitHub inflates by including pull requests.
-    const { totalCount } = await searchAllRepos(getRepoRefs(), {
+    // Lista de repositórios vazia: conta o catálogo inteiro, já sem os
+    // reposts que a listagem esconde.
+    const { totalCount } = await searchAllRepos([], {
       page: 1,
       perPage: 1,
     });

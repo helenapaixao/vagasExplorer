@@ -2,6 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * O preflight do Tailwind está desligado (tailwind.config.js) para não mexer
+ * nos styled-components legados, e o GlobalStyle de styled-components nunca
+ * chegou a ser montado — então nada zerava a margem do body nem trocava o
+ * box-sizing. Sem isto, `w-full` + `px-4` somam padding à largura e todas as
+ * telas estouram ~24px na horizontal no celular.
+ *
+ * Só estas duas regras: zerar margens de texto quebraria o espaçamento do
+ * markdown das vagas.
+ */
+@layer base {
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+  }
+}
+
 @layer base {
   :root {
     --radius: 0.625rem;

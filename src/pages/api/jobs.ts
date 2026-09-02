@@ -26,10 +26,11 @@ export default async function handler(
   const query = singleParam(req.query.q) ?? undefined;
   const terms = filtersToSearchTerms(parseFilters(req.query));
 
+  // Lista vazia significa "todo o catálogo"; só o filtro explícito recorta.
   const repoFilter = singleParam(req.query.repo);
-  const refs = getRepoRefs().filter(
-    ref => !repoFilter || `${ref.owner}/${ref.repo}` === repoFilter,
-  );
+  const refs = repoFilter
+    ? getRepoRefs().filter(ref => `${ref.owner}/${ref.repo}` === repoFilter)
+    : [];
 
   try {
     const result = await searchAllRepos(refs, { page, perPage, query, terms });

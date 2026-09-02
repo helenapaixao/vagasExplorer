@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { FiLogIn, FiGitBranch, FiSearch, FiZap } from 'react-icons/fi';
@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import Layout from '../components/Layout';
 import Animation from '../components/Animation';
 import Seo from '../components/Seo';
-import { fetchJson } from '../lib/fetchJson';
+import TotalVagas from '../components/TotalVagas';
 
 const container = {
   hidden: { opacity: 0 },
@@ -40,22 +40,6 @@ const FEATURES = [
 ];
 
 const Home = () => {
-  const [totalVagas, setTotalVagas] = useState<number | null>(null);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    fetchJson<{ total: number }>(
-      '/api/vagas-total',
-      undefined,
-      controller.signal,
-    )
-      .then(({ total }) => setTotalVagas(total))
-      .catch(() => setTotalVagas(null));
-
-    return () => controller.abort();
-  }, []);
-
   return (
     <Layout>
       <Seo
@@ -76,15 +60,9 @@ const Home = () => {
             >
               Vagas de tecnologia em um só lugar
             </motion.h1>
-            {totalVagas !== null && (
-              <motion.p
-                className="text-lg font-semibold text-primary"
-                variants={item}
-              >
-                {totalVagas.toLocaleString('pt-BR')} vagas abertas nos
-                repositórios
-              </motion.p>
-            )}
+            <motion.div variants={item}>
+              <TotalVagas />
+            </motion.div>
             <motion.p className="text-lg text-muted-foreground" variants={item}>
               Busque nas comunidades GitHub (backend-br, frontendbr, React
               Brasil e mais). Filtre por stack, nível e regime — e candidate-se
