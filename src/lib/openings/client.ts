@@ -152,16 +152,25 @@ async function mapWithConcurrency<T, R>(
  * inclui o dataHash: manifest novo gera catálogo novo, sem risco de misturar
  * páginas de gerações diferentes.
  */
+function cachedPerGeneration<T>(
+  prefix: string,
+  dataHash: string,
+  // eslint-disable-next-line no-unused-vars
+  load: () => Promise<T>,
+): Promise<T> {
+  const key = `${prefix}:${dataHash}`;
+
+  // Manifest novo invalida a geração antiga: nunca misturar gerações.
+  Array.from(cache.keys())
+    .filter(existing => existing.startsWith(`${prefix}:`) && existing !== key)
+    .forEach(stale => cache.delete(stale));
+
+  return cached(key, CATALOG_TTL_MS, load);
+}
+
 export function loadCatalog(): Promise<OpeningsOpportunity[]> {
-  return loadManifest().then(manifest => {
-    const key = `catalog:${manifest.dataHash}`;
-
-    // Manifest novo invalida o catálogo antigo: nunca misturar gerações.
-    Array.from(cache.keys())
-      .filter(existing => existing.startsWith('catalog:') && existing !== key)
-      .forEach(stale => cache.delete(stale));
-
-    return cached(key, CATALOG_TTL_MS, async () => {
+  return loadManifest().then(manifest =>
+    cachedPerGeneration('catalog', manifest.dataHash, async () => {
       const pages = await mapWithConcurrency(
         manifest.pages,
         PAGE_FETCH_CONCURRENCY,
@@ -169,22 +178,145 @@ export function loadCatalog(): Promise<OpeningsOpportunity[]> {
       );
 
       return pages.flatMap(page => page.items);
-    });
-  });
+    }),
+  );
 }
 
 function byNewestFirst(a: OpeningsOpportunity, b: OpeningsOpportunity): number {
   return Date.parse(b.createdAt) - Date.parse(a.createdAt);
 }
 
+/** Quanto do corpo entra na chave de dedupe quando não há link externo. */
+const DEDUPE_BODY_PREFIX = 200;
+
+const URL_PATTERN = /https?:\/\/[^\s)\]"'<>]+/g;
+
+/** Links do próprio GitHub são navegação da issue, não destino da candidatura. */
+const GITHUB_HOST_PATTERN = /github\.com|githubusercontent/;
+
+function normalizeText(value: string): string {
+  return value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .trim();
+}
+
+/** Primeiro link de candidatura citado na vaga, se houver. */
+function applicationLinkOf(opportunity: OpeningsOpportunity): string | null {
+  const text = `${opportunity.description ?? ''} ${opportunity.excerpt ?? ''}`;
+  const found = text.match(URL_PATTERN) ?? [];
+
+  return (
+    found
+      .map(raw => raw.replace(/[.,;]+$/, '').toLowerCase())
+      .find(url => !GITHUB_HOST_PATTERN.test(url)) ?? null
+  );
+}
+
+/**
+ * Assinatura de conteúdo da vaga, usada só dentro da mesma comunidade.
+ *
+ * Título sozinho não serve: repos agregadores publicam dezenas de vagas
+ * distintas sob o mesmo "New Internship". Por isso o título é combinado com o
+ * destino da candidatura e, na falta dele, com o início do corpo. Vaga sem
+ * link e sem descrição não tem assinatura confiável: devolve `null` e escapa
+ * da dedupe em vez de colapsar com outra homônima.
+ */
+function dedupeKeyOf(opportunity: OpeningsOpportunity): string | null {
+  const title = normalizeText(opportunity.title);
+  const link = applicationLinkOf(opportunity);
+  if (link) return `${title}\u0000link\u0000${link}`;
+
+  const body = normalizeText(opportunity.description ?? '');
+  if (!body) return null;
+
+  return `${title}\u0000body\u0000${body.slice(0, DEDUPE_BODY_PREFIX)}`;
+}
+
+/**
+ * Remove reposts da mesma vaga preservando a primeira ocorrência — com a lista
+ * já ordenada por data, isso mantém a publicação mais recente.
+ */
+function dropRepostedDuplicates(
+  opportunities: OpeningsOpportunity[],
+): OpeningsOpportunity[] {
+  const seen = new Set<string>();
+
+  return opportunities.filter(opportunity => {
+    const key = dedupeKeyOf(opportunity);
+    if (key === null) return true;
+    if (seen.has(key)) return false;
+
+    seen.add(key);
+    return true;
+  });
+}
+
+function groupByRepository(
+  opportunities: OpeningsOpportunity[],
+): Map<string, OpeningsOpportunity[]> {
+  const byRepository = new Map<string, OpeningsOpportunity[]>();
+
+  opportunities.forEach(opportunity => {
+    const key = opportunity.repository.toLowerCase();
+    const bucket = byRepository.get(key);
+    if (bucket) bucket.push(opportunity);
+    else byRepository.set(key, [opportunity]);
+  });
+
+  return byRepository;
+}
+
+/**
+ * Catálogo sem os reposts, já ordenado da vaga mais recente para a mais antiga.
+ *
+ * A dedupe é aplicada por comunidade: repositórios espelhados publicam a mesma
+ * vaga legitimamente, e colapsá-los apagaria a comunidade de origem do card.
+ */
+export function loadDedupedCatalog(): Promise<OpeningsOpportunity[]> {
+  return loadManifest().then(manifest =>
+    cachedPerGeneration('deduped', manifest.dataHash, async () => {
+      const catalog = await loadCatalog();
+      const deduped: OpeningsOpportunity[] = [];
+
+      groupByRepository(catalog).forEach(items => {
+        deduped.push(...dropRepostedDuplicates(items.sort(byNewestFirst)));
+      });
+
+      return deduped.sort(byNewestFirst);
+    }),
+  );
+}
+
 export async function loadOpportunitiesByRepository(
   repository: string,
 ): Promise<OpeningsOpportunity[]> {
   const wanted = repository.toLowerCase();
-  const catalog = await loadCatalog();
-  return catalog
-    .filter(item => item.repository.toLowerCase() === wanted)
-    .sort(byNewestFirst);
+  const catalog = await loadDedupedCatalog();
+  return catalog.filter(item => item.repository.toLowerCase() === wanted);
+}
+
+/**
+ * Quantas vagas cada comunidade mostra depois da dedupe.
+ *
+ * O `opportunitiesCount` do snapshot conta os reposts e ainda credita a mesma
+ * vaga a repositórios espelhados, então usá-lo faria o card prometer mais
+ * vagas do que a listagem entrega.
+ */
+export function loadOpportunityCounts(): Promise<Map<string, number>> {
+  return loadManifest().then(manifest =>
+    cachedPerGeneration('counts', manifest.dataHash, async () => {
+      const counts = new Map<string, number>();
+
+      groupByRepository(await loadDedupedCatalog()).forEach((items, key) => {
+        counts.set(key, items.length);
+      });
+
+      return counts;
+    }),
+  );
 }
 
 /** Número da issue original, extraído do `sourceId` (`owner/repo#123`). */

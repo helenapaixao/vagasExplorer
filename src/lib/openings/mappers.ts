@@ -45,21 +45,26 @@ function toLabel(name: string): LabelsProps {
   };
 }
 
-export function describeCommunity(community: OpeningsCommunity): string {
-  const vagas =
-    community.opportunitiesCount === 1
-      ? '1 vaga aberta'
-      : `${community.opportunitiesCount} vagas abertas`;
+/**
+ * Contagem exibida. O total do snapshot inclui reposts, então quem já apurou o
+ * número pós-dedupe passa `openings` para o card bater com a listagem.
+ */
+export function describeCommunity(
+  community: OpeningsCommunity,
+  openings: number = community.opportunitiesCount,
+): string {
+  const vagas = openings === 1 ? '1 vaga aberta' : `${openings} vagas abertas`;
   return `${vagas} · ${community.country} · ${community.region}`;
 }
 
 export function toRepositoryProps(
   community: OpeningsCommunity,
+  openings: number = community.opportunitiesCount,
 ): RepositoryProps {
   return {
     full_name: community.repository,
-    description: describeCommunity(community),
-    open_issues_count: community.opportunitiesCount,
+    description: describeCommunity(community, openings),
+    open_issues_count: openings,
     owner: {
       login: community.name,
       avatar_url: community.avatarUrl,

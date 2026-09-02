@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
-import { FiLogIn, FiGitBranch, FiSearch, FiZap } from 'react-icons/fi';
+import { FiGitBranch, FiSearch, FiZap } from 'react-icons/fi';
 import { Button } from '@/components/ui/button';
 import Layout from '../components/Layout';
 import Header from '../components/Header';
 import Animation from '../components/Animation';
-import api from '../services/api';
+import TotalVagas from '../components/TotalVagas';
 
 const container = {
   hidden: { opacity: 0 },
@@ -22,14 +23,14 @@ const item = {
 };
 
 const Home = () => {
-  const [totalVagas, setTotalVagas] = useState<number | null>(null);
+  const [term, setTerm] = useState('');
+  const router = useRouter();
 
-  useEffect(() => {
-    api
-      .get<{ total: number }>('/api/vagas-total')
-      .then(({ data }) => setTotalVagas(data.total))
-      .catch(() => setTotalVagas(null));
-  }, []);
+  const submit = (event: React.FormEvent) => {
+    event.preventDefault();
+    const next = term.trim();
+    router.push(next ? `/vagas?q=${encodeURIComponent(next)}` : '/vagas');
+  };
 
   return (
     <Layout>
@@ -48,34 +49,47 @@ const Home = () => {
             >
               Vagas de tecnologia em um só lugar
             </motion.h1>
-            {totalVagas !== null && (
-              <motion.p
-                className="text-lg font-semibold text-primary"
-                variants={item}
-              >
-                {totalVagas.toLocaleString('pt-BR')} vagas abertas nos
-                repositórios
-              </motion.p>
-            )}
+            <motion.div variants={item}>
+              <TotalVagas />
+            </motion.div>
             <motion.p className="text-lg text-muted-foreground" variants={item}>
               Busque nas comunidades GitHub (backend-br, frontendbr, React
               Brasil e mais). Filtre por stack, nível e regime — e candidate-se
               direto no GitHub.
             </motion.p>
-            <motion.div variants={item}>
-              <Button
-                asChild
-                size="lg"
-                className="bg-primary hover:bg-primary/90 text-primary-foreground"
+            <motion.div variants={item} className="w-full">
+              <form
+                onSubmit={submit}
+                className="flex flex-col sm:flex-row gap-2 w-full"
               >
-                <Link
-                  href="/dashboard"
-                  className="flex items-center gap-2 no-underline"
+                <div className="flex items-center gap-2 flex-1 px-4 h-12 rounded-md border border-border bg-card focus-within:border-primary transition-colors">
+                  <FiSearch
+                    size={18}
+                    className="text-muted-foreground shrink-0"
+                  />
+                  <input
+                    value={term}
+                    onChange={event => setTerm(event.target.value)}
+                    placeholder="React, backend júnior, remoto..."
+                    aria-label="Buscar vagas"
+                    className="flex-1 bg-transparent border-0 outline-none text-sm text-foreground placeholder:text-muted-foreground"
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="h-12 bg-primary hover:bg-primary/90 text-primary-foreground"
                 >
-                  <FiLogIn size={20} />
-                  Encontrar vagas
+                  Buscar vagas
+                </Button>
+              </form>
+              <p className="text-sm text-muted-foreground mt-3">
+                Ou{' '}
+                <Link href="/comunidades" className="text-primary">
+                  navegue pelas comunidades
                 </Link>
-              </Button>
+                .
+              </p>
             </motion.div>
           </motion.div>
           <motion.div

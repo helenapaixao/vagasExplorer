@@ -21,39 +21,43 @@ export const RepositoryInfo = styled.header`
   }
 
   img {
-    width: 120px;
-    height: 120px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
+    flex-shrink: 0;
   }
 
   div {
-    margin-left: 24px;
+    margin-left: 12px;
+    /* Sem isto o flex item recusa encolher e o nome do repo estoura a tela. */
+    min-width: 0;
 
     strong {
-      font-size: 36px;
+      font-size: 22px;
       color: ${props => props.theme.colors.text};
+      overflow-wrap: anywhere;
     }
 
     p {
-      font-size: 18px;
+      font-size: 14px;
       color: ${props => props.theme.colors.text};
       margin-top: 4px;
+      overflow-wrap: anywhere;
     }
   }
 
   ul {
     display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
     list-style: none;
-    margin-top: 40px;
+    margin-top: 24px;
+    padding: 0;
 
     li {
-      & + li {
-        margin-left: 80px;
-      }
-
       strong {
         display: block;
-        font-size: 36px;
+        font-size: 22px;
         color: ${props => props.theme.colors.text};
       }
 
@@ -61,6 +65,34 @@ export const RepositoryInfo = styled.header`
         display: flex;
         margin-top: 4px;
         color: ${props => props.theme.colors.text};
+      }
+    }
+  }
+
+  @media (min-width: 769px) {
+    img {
+      width: 120px;
+      height: 120px;
+    }
+
+    div {
+      margin-left: 24px;
+
+      strong {
+        font-size: 36px;
+      }
+
+      p {
+        font-size: 18px;
+      }
+    }
+
+    ul {
+      gap: 80px;
+      margin-top: 40px;
+
+      li strong {
+        font-size: 36px;
       }
     }
   }
@@ -83,16 +115,16 @@ export const IssueBlock = styled.div`
 export const Labels = styled.div`
   animation: ${fadeIn} 1s forwards;
   opacity: 0;
-  margin: -6px 20px 20px;
+  margin: 8px 0 0;
   padding: 12px 0 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   z-index: 0;
-  @media (max-width: 768px) {
-    margin: 8px 0 0;
-    padding: 12px 0 0;
-    gap: 6px;
+
+  @media (min-width: 769px) {
+    margin: -6px 20px 20px;
+    gap: 8px;
   }
 `;
 
@@ -122,19 +154,19 @@ export const Label = styled.label<{ color?: string }>`
 `;
 export const Search = styled.div`
   position: relative;
-  margin: 2rem 0 2.5rem;
+  margin: 1.5rem 0 2rem;
   display: flex;
   align-items: center;
   gap: 12px;
   background: ${props => props.theme.colors.background};
   border: 1px solid ${props => props.theme.colors.border || 'rgba(0,0,0,0.1)'};
   border-radius: 10px;
-  padding: 0 16px;
+  padding: 0 12px;
   transition: border-color 0.2s ease;
 
-  @media (max-width: 768px) {
-    margin: 1.5rem 0 2rem;
-    padding: 0 12px;
+  @media (min-width: 769px) {
+    margin: 2rem 0 2.5rem;
+    padding: 0 16px;
   }
 `;
 
@@ -150,7 +182,8 @@ export const Input = styled.input`
   min-width: 0;
   background: transparent;
   border: none;
-  padding: 14px 0;
+  padding: 12px 0;
+  /* 16px evita o zoom automatico do iOS ao focar o campo. */
   font-size: 1rem;
   color: ${props => props.theme.colors.text};
   outline: none;
@@ -158,9 +191,9 @@ export const Input = styled.input`
   &::placeholder {
     color: ${props => props.theme.colors.placeholder || '#a8a8b3'};
   }
-  @media (max-width: 768px) {
-    padding: 12px 0;
-    font-size: 0.9375rem;
+
+  @media (min-width: 769px) {
+    padding: 14px 0;
   }
 `;
 

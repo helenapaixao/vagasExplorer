@@ -1,5 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { findCommunity } from '../../../../lib/openings/client';
+import {
+  findCommunity,
+  loadOpportunityCounts,
+} from '../../../../lib/openings/client';
 import { toRepositoryProps } from '../../../../lib/openings/mappers';
 
 export default async function handler(
@@ -22,11 +25,14 @@ export default async function handler(
       return res.status(404).json({ error: 'Repositório não encontrado.' });
     }
 
+    const counts = await loadOpportunityCounts();
+    const openings = counts.get(community.repository.toLowerCase()) ?? 0;
+
     res.setHeader(
       'Cache-Control',
       'public, s-maxage=3600, stale-while-revalidate=86400',
     );
-    return res.status(200).json(toRepositoryProps(community));
+    return res.status(200).json(toRepositoryProps(community, openings));
   } catch {
     return res.status(502).json({ error: 'Erro ao carregar repositório.' });
   }

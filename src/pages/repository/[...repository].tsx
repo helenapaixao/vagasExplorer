@@ -20,6 +20,20 @@ import Button from '../../components/Button';
 
 const PER_PAGE = 10;
 
+/**
+ * Só um 404 significa que o recurso não existe. Tratar 500, 502 ou queda de
+ * rede como "não encontrado" manda o usuário desistir de uma vaga que está lá.
+ */
+function describeFetchError(
+  error: unknown,
+  missingMessage: string,
+  failureMessage: string,
+): string {
+  const status = (error as { response?: { status?: number } })?.response
+    ?.status;
+  return status === 404 ? missingMessage : failureMessage;
+}
+
 const Repository = () => {
   const [repository, setRepository] = useState<RepositoryProps | null>(null);
   const [allIssues, setAllIssues] = useState<IssueProps[]>([]);
@@ -62,8 +76,14 @@ const Repository = () => {
       try {
         const { data } = await api.get(`/api/repo/${repoPath}`);
         setRepository(data as RepositoryProps);
-      } catch {
-        setError('Repositório não encontrado.');
+      } catch (fetchError) {
+        setError(
+          describeFetchError(
+            fetchError,
+            'Repositório não encontrado.',
+            'Erro ao carregar o repositório. Tente novamente.',
+          ),
+        );
       }
     };
 
@@ -84,7 +104,15 @@ const Repository = () => {
     api
       .get(`/api/repo/${repoPath}/issue/${issueNumber}`)
       .then(({ data }) => setIssueDetail(data as IssueProps))
-      .catch(() => setDetailError('Vaga não encontrada.'))
+      .catch(fetchError =>
+        setDetailError(
+          describeFetchError(
+            fetchError,
+            'Vaga não encontrada.',
+            'Erro ao carregar a vaga. Tente novamente.',
+          ),
+        ),
+      )
       .finally(() => setDetailLoading(false));
   }, [isDetailView, repoPath, issueNumber]);
 
