@@ -29,7 +29,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
       {FILTER_GROUPS.map(group => (
         <fieldset key={group.id} className="flex flex-wrap items-center gap-2">
           <legend className="sr-only">{group.label}</legend>
-          <span className="w-20 shrink-0 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          <span className="w-20 shrink-0 text-xs font-semibold uppercase tracking-wide text-foreground">
             {group.label}
           </span>
           {group.options.map(option => {
@@ -44,8 +44,10 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 }
                 className={
                   selected
-                    ? 'rounded-full border border-primary bg-primary px-3 py-1 text-xs font-medium text-primary-foreground'
-                    : 'rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground'
+                    ? 'rounded-full border border-primary bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground'
+                    : // O contorno é o que identifica o chip, então usa o token
+                      // de controle (3.5:1) em vez da borda discreta de card.
+                      'rounded-full border border-control bg-muted px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-primary hover:bg-primary/10 hover:text-primary'
                 }
               >
                 {option.label}
@@ -59,7 +61,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
         <button
           type="button"
           onClick={onClear}
-          className="flex w-fit items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
+          className="flex w-fit items-center gap-1 text-xs font-medium text-primary hover:underline"
         >
           <FiX size={14} aria-hidden />
           Limpar {active} {active === 1 ? 'filtro' : 'filtros'}

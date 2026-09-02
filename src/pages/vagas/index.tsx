@@ -58,6 +58,12 @@ const Vagas = () => {
   );
 
   const total = jobs.data?.total ?? 0;
+
+  // No servidor `router.isReady` é falso, então o recurso nem começa e
+  // `jobs.loading` sai false — o HTML dizia "0 vagas encontradas" enquanto o
+  // cliente já dizia "Buscando...", e a hidratação quebrava. Antes de a rota
+  // ficar pronta a página está carregando, dos dois lados.
+  const loading = !ready || jobs.loading;
   const totalPages = Math.max(1, Math.ceil(total / PER_PAGE));
 
   const handlePageChange = (next: number) => {
@@ -88,16 +94,16 @@ const Vagas = () => {
       <FilterBar filters={filters} onChange={setFilter} onClear={clearAll} />
 
       <p aria-live="polite" className="mb-4 text-sm text-muted-foreground">
-        {jobs.loading
+        {loading
           ? 'Buscando...'
           : `${total.toLocaleString('pt-BR')} ${total === 1 ? 'vaga encontrada' : 'vagas encontradas'}`}
       </p>
 
       {jobs.error && <ErrorState message={jobs.error} onRetry={jobs.reload} />}
 
-      {jobs.loading && <JobListSkeleton />}
+      {loading && <JobListSkeleton />}
 
-      {!jobs.loading && !jobs.error && total === 0 && (
+      {!loading && !jobs.error && total === 0 && (
         <EmptyState
           title="Nenhuma vaga encontrada"
           hint="Tente outra palavra-chave ou remova algum filtro. Você também pode navegar por repositório."
@@ -106,7 +112,7 @@ const Vagas = () => {
         />
       )}
 
-      {!jobs.loading && (
+      {!loading && (
         <div className="flex flex-col gap-4">
           {jobs.data?.jobs.map(job => (
             <JobCard
@@ -123,7 +129,7 @@ const Vagas = () => {
         page={page}
         totalPages={totalPages}
         hasNextPage={page < totalPages}
-        loading={jobs.loading}
+        loading={loading}
         onChange={handlePageChange}
       />
 

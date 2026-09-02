@@ -14,7 +14,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   placeholder,
   label,
 }) => (
-  <div className="relative my-8 flex items-center gap-3 rounded-lg border border-border bg-background px-4 focus-within:border-primary transition-colors">
+  <div className="relative my-8 flex items-center gap-3 rounded-lg border border-control bg-background px-4 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/25">
     <FiSearch
       size={20}
       className="shrink-0 text-muted-foreground"

@@ -60,7 +60,7 @@ const Dashboard = () => {
         .
       </p>
 
-      <div className="mb-6 flex h-12 items-center gap-2 rounded-md border border-border bg-card px-4 transition-colors focus-within:border-primary">
+      <div className="mb-6 flex h-12 items-center gap-2 rounded-md border border-control bg-card px-4 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/25">
         <FiSearch
           size={18}
           className="shrink-0 text-muted-foreground"

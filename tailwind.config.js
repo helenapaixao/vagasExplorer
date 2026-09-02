@@ -14,6 +14,7 @@ module.exports = {
       },
       colors: {
         border: 'var(--border)',
+        control: 'var(--control)',
         input: 'var(--input)',
         ring: 'var(--ring)',
         background: 'var(--background)',
