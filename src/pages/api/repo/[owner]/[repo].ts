@@ -1,39 +1,36 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { fetchRepo } from '../../../../lib/githubApi';
+import { toApiError } from '../../../../lib/httpError';
 import {
-  findCommunity,
-  loadOpportunityCounts,
-} from '../../../../lib/openings/client';
-import { toRepositoryProps } from '../../../../lib/openings/mappers';
+  allowMethods,
+  setCacheHeader,
+  singleParam,
+} from '../../../../lib/apiHelpers';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (req.method !== 'GET') {
-    res.setHeader('Allow', 'GET');
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  if (!allowMethods(req, res, ['GET'])) return;
 
-  const { owner, repo } = req.query;
-  if (typeof owner !== 'string' || typeof repo !== 'string') {
-    return res.status(400).json({ error: 'Parâmetros inválidos.' });
+  const owner = singleParam(req.query.owner);
+  const repo = singleParam(req.query.repo);
+
+  if (!owner || !repo) {
+    res.status(400).json({ error: 'owner and repo are required' });
+    return;
   }
 
   try {
-    const community = await findCommunity(`${owner}/${repo}`);
-    if (!community) {
-      return res.status(404).json({ error: 'Repositório não encontrado.' });
-    }
-
-    const counts = await loadOpportunityCounts();
-    const openings = counts.get(community.repository.toLowerCase()) ?? 0;
-
-    res.setHeader(
-      'Cache-Control',
-      'public, s-maxage=3600, stale-while-revalidate=86400',
+    const data = await fetchRepo(owner, repo);
+    setCacheHeader(res, 300, 600);
+    res.status(200).json(data);
+  } catch (err) {
+    const { status, message } = toApiError(
+      err,
+      'Erro ao buscar repositório.',
+      'Repositório não encontrado.',
     );
-    return res.status(200).json(toRepositoryProps(community, openings));
-  } catch {
-    return res.status(502).json({ error: 'Erro ao carregar repositório.' });
+    res.status(status).json({ error: message });
   }
 }

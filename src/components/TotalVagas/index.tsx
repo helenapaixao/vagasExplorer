@@ -1,32 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   animate,
-  useMotionValue,
-  useTransform,
-  useReducedMotion,
   motion,
+  useMotionValue,
+  useReducedMotion,
+  useTransform,
 } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
-import api from '../../services/api';
+import { fetchJson } from '../../lib/fetchJson';
+import { useAsyncResource } from '../../hooks/useAsyncResource';
 
 const COUNT_DURATION_SECONDS = 1.4;
 
-const TotalVagas = () => {
-  const [total, setTotal] = useState<number | null>(null);
-  const [error, setError] = useState(false);
-  const reduceMotion = useReducedMotion();
+interface TotalResponse {
+  total: number;
+}
 
+const TotalVagas = () => {
+  const { data, error } = useAsyncResource<TotalResponse>(
+    signal => fetchJson('/api/vagas-total', undefined, signal),
+    [],
+    'Erro ao carregar o total de vagas.',
+  );
+
+  const reduceMotion = useReducedMotion();
   const count = useMotionValue(0);
   const display = useTransform(count, value =>
     Math.round(value).toLocaleString('pt-BR'),
   );
 
-  useEffect(() => {
-    api
-      .get<{ total: number }>('/api/vagas-total')
-      .then(({ data }) => setTotal(data.total))
-      .catch(() => setError(true));
-  }, []);
+  const total = data?.total ?? null;
 
   useEffect(() => {
     if (total === null) return undefined;
@@ -58,12 +61,12 @@ const TotalVagas = () => {
 
   return (
     <div className="py-2">
-      <p className="flex items-baseline gap-2 flex-wrap">
+      <p className="flex flex-wrap items-baseline gap-2">
         <motion.span
           className="text-5xl font-bold leading-none text-primary"
           // O leitor de tela recebe o valor final de uma vez; a contagem é
           // enfeite visual e anunciá-la a cada quadro seria ruído.
-          aria-hidden="true"
+          aria-hidden
         >
           {display}
         </motion.span>

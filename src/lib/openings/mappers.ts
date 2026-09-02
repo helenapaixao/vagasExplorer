@@ -1,14 +1,11 @@
-import type {
-  IssueProps,
-  LabelsProps,
-  RepositoryProps,
-} from '../../utils/repositoryInterfaces';
+import type { GitHubIssue, GitHubLabel, GitHubRepo } from '../../types/github';
 import { issueNumberOf } from './client';
 import type { OpeningsCommunity, OpeningsOpportunity } from './types';
 
 /**
- * Adapta os artefatos do pipeline para os contratos que as telas já consomem.
- * Manter o formato evita reescrever as páginas junto com a troca de fonte.
+ * Adapta os artefatos do pipeline para o formato do GitHub que as telas já
+ * consomem. Manter o contrato evita reescrever as páginas junto com a troca
+ * de fonte.
  */
 
 /** Paleta legível nos dois temas, usada para colorir as tags do snapshot. */
@@ -36,7 +33,7 @@ function hashString(value: string): number {
  * O snapshot normaliza as tags e descarta as cores originais do GitHub, então
  * derivamos uma cor estável do próprio nome: a mesma tag pinta igual sempre.
  */
-function toLabel(name: string): LabelsProps {
+function toLabel(name: string): GitHubLabel {
   const hash = hashString(name);
   return {
     id: hash,
@@ -45,10 +42,6 @@ function toLabel(name: string): LabelsProps {
   };
 }
 
-/**
- * Contagem exibida. O total do snapshot inclui reposts, então quem já apurou o
- * número pós-dedupe passa `openings` para o card bater com a listagem.
- */
 export function describeCommunity(
   community: OpeningsCommunity,
   openings: number = community.opportunitiesCount,
@@ -57,13 +50,15 @@ export function describeCommunity(
   return `${vagas} · ${community.country} · ${community.region}`;
 }
 
-export function toRepositoryProps(
+export function toGitHubRepo(
   community: OpeningsCommunity,
   openings: number = community.opportunitiesCount,
-): RepositoryProps {
+): GitHubRepo {
   return {
     full_name: community.repository,
     description: describeCommunity(community, openings),
+    // O snapshot não publica estrelas; as telas só mostram o número quando > 0.
+    stargazers_count: 0,
     open_issues_count: openings,
     owner: {
       login: community.name,
@@ -72,19 +67,23 @@ export function toRepositoryProps(
   };
 }
 
-export function toIssueProps(opportunity: OpeningsOpportunity): IssueProps {
+export function toGitHubIssue(opportunity: OpeningsOpportunity): GitHubIssue {
   const number = issueNumberOf(opportunity);
 
   return {
-    id: opportunity.id,
+    // `GitHubIssue.id` é numérico e serve de chave de lista e de dedupe; o id
+    // do snapshot é string, então derivamos um número estável dele.
+    id: hashString(opportunity.id),
+    number: number ?? 0,
     title: opportunity.title,
     body: opportunity.description || null,
     html_url: opportunity.url,
+    created_at: opportunity.createdAt,
     user: {
       login: opportunity.author.handle,
       avatar_url: opportunity.author.avatarUrl,
     },
     labels: opportunity.tags.map(toLabel),
-    ...(number === null ? {} : { number }),
+    repository_url: `https://api.github.com/repos/${opportunity.repository}`,
   };
 }

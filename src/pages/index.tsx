@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
-import { FiGitBranch, FiSearch, FiZap } from 'react-icons/fi';
+import { FiLogIn, FiGitBranch, FiSearch, FiZap } from 'react-icons/fi';
 import { Button } from '@/components/ui/button';
 import Layout from '../components/Layout';
-import Header from '../components/Header';
 import Animation from '../components/Animation';
+import Seo from '../components/Seo';
 import TotalVagas from '../components/TotalVagas';
 
 const container = {
@@ -22,20 +21,32 @@ const item = {
   visible: { opacity: 1, y: 0 },
 };
 
+const FEATURES = [
+  {
+    icon: FiGitBranch,
+    title: 'Comunidades GitHub',
+    text: 'Vagas dos principais repos brasileiros: backend, frontend, React, Vue, QA, PHP, Flutter e mais.',
+  },
+  {
+    icon: FiSearch,
+    title: 'Busca e filtros',
+    text: 'Encontre por tecnologia, nível (júnior a sênior), regime (remoto, híbrido, CLT) e labels.',
+  },
+  {
+    icon: FiZap,
+    title: 'Direto ao ponto',
+    text: 'Leia a vaga completa no app e use o link para se candidatar no GitHub ou no site da empresa.',
+  },
+];
+
 const Home = () => {
-  const [term, setTerm] = useState('');
-  const router = useRouter();
-
-  const submit = (event: React.FormEvent) => {
-    event.preventDefault();
-    const next = term.trim();
-    router.push(next ? `/vagas?q=${encodeURIComponent(next)}` : '/vagas');
-  };
-
   return (
     <Layout>
-      <Header />
-      <div className="max-w-[1120px] px-0">
+      <Seo
+        title="vagasExplorer"
+        description="Vagas de tecnologia das comunidades brasileiras no GitHub em um só lugar. Busque por stack, nível e regime e candidate-se direto no GitHub."
+      />
+      <div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start mb-12">
           <motion.div
             className="flex flex-col items-center md:items-start gap-6 text-center md:text-left"
@@ -57,39 +68,21 @@ const Home = () => {
               Brasil e mais). Filtre por stack, nível e regime — e candidate-se
               direto no GitHub.
             </motion.p>
-            <motion.div variants={item} className="w-full">
-              <form
-                onSubmit={submit}
-                className="flex flex-col sm:flex-row gap-2 w-full"
-              >
-                <div className="flex items-center gap-2 flex-1 px-4 h-12 rounded-md border border-border bg-card focus-within:border-primary transition-colors">
-                  <FiSearch
-                    size={18}
-                    className="text-muted-foreground shrink-0"
-                  />
-                  <input
-                    value={term}
-                    onChange={event => setTerm(event.target.value)}
-                    placeholder="React, backend júnior, remoto..."
-                    aria-label="Buscar vagas"
-                    className="flex-1 bg-transparent border-0 outline-none text-sm text-foreground placeholder:text-muted-foreground"
-                  />
-                </div>
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="h-12 bg-primary hover:bg-primary/90 text-primary-foreground"
+            <motion.div className="flex flex-wrap gap-3" variants={item}>
+              <Button asChild size="lg">
+                <Link
+                  href="/vagas"
+                  className="flex items-center gap-2 no-underline"
                 >
-                  Buscar vagas
-                </Button>
-              </form>
-              <p className="text-sm text-muted-foreground mt-3">
-                Ou{' '}
-                <Link href="/comunidades" className="text-primary">
-                  navegue pelas comunidades
+                  <FiLogIn size={20} aria-hidden />
+                  Encontrar vagas
                 </Link>
-                .
-              </p>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <Link href="/dashboard" className="no-underline">
+                  Ver repositórios
+                </Link>
+              </Button>
             </motion.div>
           </motion.div>
           <motion.div
@@ -109,23 +102,7 @@ const Home = () => {
           viewport={{ once: true, margin: '-60px' }}
           variants={container}
         >
-          {[
-            {
-              icon: FiGitBranch,
-              title: 'Comunidades GitHub',
-              text: 'Vagas dos principais repos brasileiros: backend, frontend, React, Vue, QA, PHP, Flutter e mais.',
-            },
-            {
-              icon: FiSearch,
-              title: 'Busca e filtros',
-              text: 'Encontre por tecnologia, nível (júnior a sênior), regime (remoto, híbrido, CLT) e labels.',
-            },
-            {
-              icon: FiZap,
-              title: 'Direto ao ponto',
-              text: 'Leia a vaga completa no app e use o link para se candidatar no GitHub ou no site da empresa.',
-            },
-          ].map(card => (
+          {FEATURES.map(card => (
             <motion.div
               key={card.title}
               className="p-6 rounded-lg border border-border bg-card text-card-foreground hover:border-primary hover:shadow-md transition-colors cursor-default"

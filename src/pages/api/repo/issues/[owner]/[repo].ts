@@ -1,48 +1,48 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { loadOpportunitiesByRepository } from '../../../../../lib/openings/client';
-import { toIssueProps } from '../../../../../lib/openings/mappers';
-
-const DEFAULT_PER_PAGE = 10;
-const MAX_PER_PAGE = 100;
-
-function parsePositiveInt(value: unknown, fallback: number): number {
-  const parsed = Number.parseInt(String(value ?? ''), 10);
-  return Number.isNaN(parsed) || parsed < 1 ? fallback : parsed;
-}
+import { fetchIssues } from '../../../../../lib/githubApi';
+import { toApiError } from '../../../../../lib/httpError';
+import { filtersToSearchTerms, parseFilters } from '../../../../../lib/filters';
+import {
+  allowMethods,
+  clampInt,
+  setCacheHeader,
+  singleParam,
+} from '../../../../../lib/apiHelpers';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (req.method !== 'GET') {
-    res.setHeader('Allow', 'GET');
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (!allowMethods(req, res, ['GET'])) return;
+
+  const owner = singleParam(req.query.owner);
+  const repo = singleParam(req.query.repo);
+
+  if (!owner || !repo) {
+    res.status(400).json({ error: 'owner and repo are required' });
+    return;
   }
 
-  const { owner, repo } = req.query;
-  if (typeof owner !== 'string' || typeof repo !== 'string') {
-    return res.status(400).json({ error: 'Parâmetros inválidos.' });
-  }
-
-  const page = parsePositiveInt(req.query.page, 1);
-  const perPage = Math.min(
-    parsePositiveInt(req.query.per_page, DEFAULT_PER_PAGE),
-    MAX_PER_PAGE,
-  );
+  const page = clampInt(req.query.page ?? 1, 1, 100);
+  const perPage = clampInt(req.query.per_page ?? 10, 1, 100);
+  const query = singleParam(req.query.q) ?? undefined;
+  const terms = filtersToSearchTerms(parseFilters(req.query));
 
   try {
-    const opportunities = await loadOpportunitiesByRepository(
-      `${owner}/${repo}`,
+    const data = await fetchIssues(owner, repo, {
+      page,
+      perPage,
+      query,
+      terms,
+    });
+    setCacheHeader(res, 120, 300);
+    res.status(200).json(data);
+  } catch (err) {
+    const { status, message } = toApiError(
+      err,
+      'Erro ao carregar vagas.',
+      'Repositório não encontrado.',
     );
-    const start = (page - 1) * perPage;
-    const items = opportunities.slice(start, start + perPage).map(toIssueProps);
-
-    res.setHeader(
-      'Cache-Control',
-      'public, s-maxage=600, stale-while-revalidate=3600',
-    );
-    return res.status(200).json(items);
-  } catch {
-    return res.status(502).json({ error: 'Erro ao carregar vagas.' });
+    res.status(status).json({ error: message });
   }
 }

@@ -1,26 +1,37 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { loadDedupedCatalog } from '../../lib/openings/client';
+import { searchAllRepos } from '../../lib/githubApi';
+import { allowMethods, setCacheHeader } from '../../lib/apiHelpers';
+
+const CACHE_TTL_MS = 10 * 60 * 1000;
+
+let cachedTotal: number | null = null;
+let cachedAt = 0;
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (req.method !== 'GET') {
-    res.setHeader('Allow', 'GET');
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (!allowMethods(req, res, ['GET'])) return;
+
+  setCacheHeader(res, 300, 600);
+
+  if (cachedTotal !== null && Date.now() - cachedAt < CACHE_TTL_MS) {
+    res.status(200).json({ total: cachedTotal });
+    return;
   }
 
   try {
-    // O total do manifest conta os reposts que a listagem esconde; contar o
-    // catálogo deduplicado mantém a home coerente com o que o app entrega.
-    const catalog = await loadDedupedCatalog();
+    // Lista de repositórios vazia: conta o catálogo inteiro, já sem os
+    // reposts que a listagem esconde.
+    const { totalCount } = await searchAllRepos([], {
+      page: 1,
+      perPage: 1,
+    });
 
-    res.setHeader(
-      'Cache-Control',
-      'public, s-maxage=300, stale-while-revalidate=600',
-    );
-    return res.status(200).json({ total: catalog.length });
+    cachedTotal = totalCount;
+    cachedAt = Date.now();
+    res.status(200).json({ total: totalCount });
   } catch {
-    return res.status(502).json({ error: 'Erro ao calcular total de vagas.' });
+    res.status(500).json({ error: 'Erro ao calcular total de vagas.' });
   }
 }

@@ -15,7 +15,6 @@
     "jsx": "preserve",
     "allowSyntheticDefaultImports": true,
     "incremental": true,
-    "types": ["styled-components"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

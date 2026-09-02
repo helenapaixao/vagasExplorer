@@ -1,45 +1,43 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { findOpportunityByIssue } from '../../../../../../lib/openings/client';
-import { toIssueProps } from '../../../../../../lib/openings/mappers';
+import { fetchIssue } from '../../../../../../lib/githubApi';
+import { toApiError } from '../../../../../../lib/httpError';
+import {
+  allowMethods,
+  setCacheHeader,
+  singleParam,
+} from '../../../../../../lib/apiHelpers';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (req.method !== 'GET') {
-    res.setHeader('Allow', 'GET');
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (!allowMethods(req, res, ['GET'])) return;
+
+  const owner = singleParam(req.query.owner);
+  const repo = singleParam(req.query.repo);
+  const issueNumber = singleParam(req.query.issueNumber);
+
+  if (!owner || !repo || !issueNumber) {
+    res.status(400).json({ error: 'owner, repo and issueNumber required' });
+    return;
   }
 
-  const { owner, repo, issueNumber } = req.query;
-  if (
-    typeof owner !== 'string' ||
-    typeof repo !== 'string' ||
-    typeof issueNumber !== 'string'
-  ) {
-    return res.status(400).json({ error: 'Parâmetros inválidos.' });
-  }
-
-  const number = Number.parseInt(issueNumber, 10);
-  if (Number.isNaN(number)) {
-    return res.status(400).json({ error: 'Número de vaga inválido.' });
+  const num = Number(issueNumber);
+  if (!Number.isInteger(num) || num < 1) {
+    res.status(400).json({ error: 'Invalid issue number' });
+    return;
   }
 
   try {
-    const opportunity = await findOpportunityByIssue(
-      `${owner}/${repo}`,
-      number,
+    const data = await fetchIssue(owner, repo, num);
+    setCacheHeader(res, 120, 300);
+    res.status(200).json(data);
+  } catch (err) {
+    const { status, message } = toApiError(
+      err,
+      'Erro ao carregar vaga.',
+      'Vaga não encontrada.',
     );
-    if (!opportunity) {
-      return res.status(404).json({ error: 'Vaga não encontrada.' });
-    }
-
-    res.setHeader(
-      'Cache-Control',
-      'public, s-maxage=600, stale-while-revalidate=3600',
-    );
-    return res.status(200).json(toIssueProps(opportunity));
-  } catch {
-    return res.status(502).json({ error: 'Erro ao carregar vaga.' });
+    res.status(status).json({ error: message });
   }
 }

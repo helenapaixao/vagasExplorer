@@ -1,45 +1,65 @@
 import React from 'react';
 import Link from 'next/link';
-import { FiChevronLeft } from 'react-icons/fi';
+import { useRouter } from 'next/router';
+import { FiBookmark } from 'react-icons/fi';
 import Logo from '../Logo';
+import ThemeToggle from '../ThemeToggle';
+import { useSavedJobs } from '../../hooks/useSavedJobs';
 
-interface HeaderProps {
-  isLink?: string;
-}
+const NAV = [
+  { href: '/vagas', label: 'Buscar vagas' },
+  { href: '/dashboard', label: 'Repositórios' },
+];
 
-const Header: React.FC<HeaderProps> = ({ isLink }) => {
+const Header: React.FC = () => {
+  const router = useRouter();
+  const { saved, mounted } = useSavedJobs();
+
   return (
-    <header className="flex items-center justify-between py-4 mb-6 gap-4 flex-wrap">
-      <div className="flex items-center gap-3">
-        <Link
-          href={isLink ?? '#'}
-          onClick={(e: React.MouseEvent) => {
-            if (!isLink) {
-              e.preventDefault();
-              window.history.back();
-            }
-          }}
-          className="flex items-center"
-          aria-label="Voltar"
-        >
-          <div className="w-10 h-10 flex items-center justify-center">
-            <Logo isDark={false} />
-          </div>
-        </Link>
-        <h1 className="text-lg font-bold">vagasExplorer</h1>
-      </div>
+    <header className="mb-6 flex flex-wrap items-center justify-between gap-4 py-4">
+      <Link
+        href="/"
+        className="flex items-center gap-3 no-underline text-foreground"
+      >
+        <Logo />
+        <span className="text-lg font-bold">vagasExplorer</span>
+      </Link>
 
-      <div className="flex items-center gap-3">
-        {isLink && (
+      <nav className="flex items-center gap-1 sm:gap-3">
+        {NAV.map(item => (
           <Link
-            href={isLink}
-            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+            key={item.href}
+            href={item.href}
+            aria-current={
+              router.pathname.startsWith(item.href) ? 'page' : undefined
+            }
+            className={
+              router.pathname.startsWith(item.href)
+                ? 'rounded-md px-2 py-1 text-sm font-medium text-foreground'
+                : 'rounded-md px-2 py-1 text-sm text-muted-foreground hover:text-foreground'
+            }
           >
-            <FiChevronLeft size={16} />
-            Voltar
+            {item.label}
           </Link>
-        )}
-      </div>
+        ))}
+
+        <Link
+          href="/salvas"
+          aria-label={`Vagas salvas${mounted ? ` (${saved.length})` : ''}`}
+          className="flex items-center gap-1 rounded-md px-2 py-1 text-sm text-muted-foreground hover:text-foreground"
+        >
+          <FiBookmark size={16} aria-hidden />
+          {/* Rendered only after hydration: localStorage isn't readable on the
+              server, and a mismatched count would flash. */}
+          {mounted && saved.length > 0 && (
+            <span className="rounded-full bg-primary px-1.5 text-xs text-primary-foreground">
+              {saved.length}
+            </span>
+          )}
+        </Link>
+
+        <ThemeToggle />
+      </nav>
     </header>
   );
 };

@@ -31,5 +31,7 @@ firebase.json
 prisma/dev.db
 prisma/dev.db-journal
 
-# TypeScript incremental build info
+# env local
+.env
 tsconfig.tsbuildinfo
+*.tsbuildinfo

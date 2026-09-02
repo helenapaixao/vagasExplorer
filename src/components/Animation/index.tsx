@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
-import LottieLib from 'react-lottie';
-import type { LottieProps } from 'react-lottie';
-import { Container } from './styles';
-import animationData from '../../assets/25920-questions.json';
+import React, { useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 
-const Lottie = LottieLib as unknown as React.ComponentType<LottieProps>;
+/**
+ * The Lottie player and its ~390 KB animation JSON are loaded on demand, so
+ * they stay out of the initial bundle.
+ */
+const LottiePlayer = dynamic(() => import('./LottiePlayer'), { ssr: false });
 
 const Animation: React.FC = () => {
   const [isInView, setIsInView] = useState(false);
@@ -12,7 +13,7 @@ const Animation: React.FC = () => {
 
   useEffect(() => {
     const el = containerRef.current;
-    if (!el) return () => {};
+    if (!el) return undefined;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -20,24 +21,15 @@ const Animation: React.FC = () => {
       },
       { threshold: 0.2, rootMargin: '0px 0px -20px 0px' },
     );
+
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
   return (
-    <Container ref={containerRef}>
-      {isInView && (
-        <Lottie
-          key="lottie-inview"
-          options={{
-            loop: true,
-            autoplay: true,
-            animationData,
-          }}
-          direction={1}
-        />
-      )}
-    </Container>
+    <div ref={containerRef} className="w-full max-w-[400px] aspect-square">
+      {isInView && <LottiePlayer />}
+    </div>
   );
 };
 
