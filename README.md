@@ -16,11 +16,18 @@
 
 Esse projeto foi desenvolvido com as seguintes tecnologias:
 
+- [Next.js](https://nextjs.org)
 - [React](https://reactjs.org)
+- [TypeScript](https://www.typescriptlang.org)
+- [Tailwind CSS](https://tailwindcss.com) + [styled-components](https://styled-components.com)
 
 ## 💻 Projeto
 
 O vagaExplorer é um projeto desenvolvido para contribuir com a comunidade de desenvolvedores em busca de uma oportunidade de trabalho.
+
+As vagas vêm do snapshot público do [openings-dev/data-pipeline](https://github.com/openings-dev/data-pipeline) (MIT), que varre comunidades do GitHub e publica JSON estático já normalizado — área, stack, senioridade, regime, país e faixa salarial. O app apenas lê esse snapshot: não precisa de token do GitHub, cron nem banco de dados.
+
+Para apontar para um espelho próprio, defina `OPENINGS_DATA_BASE_URL` (veja `.env.example`).
 
 Você pode vizualizar o projeto em produção [aqui](https://vagasexplorer.netlify.app/).
 

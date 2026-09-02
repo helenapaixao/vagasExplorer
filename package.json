@@ -6,7 +6,6 @@
     "node": "22.x"
   },
   "dependencies": {
-    "@prisma/client": "6.0.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
@@ -39,12 +38,9 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "next build",
     "start": "next start",
     "test": "echo \"No tests specified\" && exit 0",
-    "postinstall": "prisma generate",
-    "db:push": "prisma db push",
-    "db:studio": "prisma studio",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky"
@@ -80,7 +76,6 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "husky": "^9.1.7",
     "prettier": "^3.4.2",
-    "prisma": "6.0.0",
     "tailwindcss": "^3.4.17"
   }
 }

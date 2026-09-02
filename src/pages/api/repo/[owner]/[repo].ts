@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { fetchRepo } from '../../../../lib/githubApi';
+import { findCommunity } from '../../../../lib/openings/client';
+import { toRepositoryProps } from '../../../../lib/openings/mappers';
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,23 +13,21 @@ export default async function handler(
 
   const { owner, repo } = req.query;
   if (typeof owner !== 'string' || typeof repo !== 'string') {
-    return res.status(400).json({ error: 'owner and repo are required' });
+    return res.status(400).json({ error: 'Parâmetros inválidos.' });
   }
 
   try {
-    const data = await fetchRepo(owner, repo);
+    const community = await findCommunity(`${owner}/${repo}`);
+    if (!community) {
+      return res.status(404).json({ error: 'Repositório não encontrado.' });
+    }
+
     res.setHeader(
       'Cache-Control',
-      'public, s-maxage=300, stale-while-revalidate=600',
+      'public, s-maxage=3600, stale-while-revalidate=86400',
     );
-    return res.status(200).json(data);
-  } catch (err) {
-    const status = (err as { status?: number }).status ?? 500;
-    let message = 'Erro ao buscar repositório.';
-    if (status === 404) message = 'Repositório não encontrado.';
-    if (status === 403)
-      message =
-        'Limite da API do GitHub atingido. Configure GITHUB_TOKEN no .env (veja .env.example).';
-    return res.status(status).json({ error: message });
+    return res.status(200).json(toRepositoryProps(community));
+  } catch {
+    return res.status(502).json({ error: 'Erro ao carregar repositório.' });
   }
 }

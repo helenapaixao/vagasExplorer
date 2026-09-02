@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { fetchIssue } from '../../../../../../lib/githubApi';
+import { findOpportunityByIssue } from '../../../../../../lib/openings/client';
+import { toIssueProps } from '../../../../../../lib/openings/mappers';
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,27 +17,29 @@ export default async function handler(
     typeof repo !== 'string' ||
     typeof issueNumber !== 'string'
   ) {
-    return res
-      .status(400)
-      .json({ error: 'owner, repo and issueNumber required' });
+    return res.status(400).json({ error: 'Parâmetros inválidos.' });
   }
 
-  const num = parseInt(issueNumber, 10);
-  if (Number.isNaN(num) || num < 1) {
-    return res.status(400).json({ error: 'Invalid issue number' });
+  const number = Number.parseInt(issueNumber, 10);
+  if (Number.isNaN(number)) {
+    return res.status(400).json({ error: 'Número de vaga inválido.' });
   }
 
   try {
-    const data = await fetchIssue(owner, repo, num);
+    const opportunity = await findOpportunityByIssue(
+      `${owner}/${repo}`,
+      number,
+    );
+    if (!opportunity) {
+      return res.status(404).json({ error: 'Vaga não encontrada.' });
+    }
+
     res.setHeader(
       'Cache-Control',
-      'public, s-maxage=120, stale-while-revalidate=300',
+      'public, s-maxage=600, stale-while-revalidate=3600',
     );
-    return res.status(200).json(data);
-  } catch (err) {
-    const status = (err as { status?: number }).status ?? 500;
-    const message =
-      status === 404 ? 'Vaga não encontrada.' : 'Erro ao carregar vaga.';
-    return res.status(status).json({ error: message });
+    return res.status(200).json(toIssueProps(opportunity));
+  } catch {
+    return res.status(502).json({ error: 'Erro ao carregar vaga.' });
   }
 }

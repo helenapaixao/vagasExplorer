@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import { loadCommunities } from '../../lib/openings/client';
+import { describeCommunity } from '../../lib/openings/mappers';
 
 export type RepoItem = {
   link: string;
@@ -19,15 +19,24 @@ export default async function handler(
   }
 
   try {
-    const path = join(process.cwd(), 'public', 'repos.json');
-    const raw = readFileSync(path, 'utf-8');
-    const data = JSON.parse(raw) as RepoItem[];
+    const communities = await loadCommunities();
+
+    const data: RepoItem[] = communities
+      .slice()
+      .sort((a, b) => b.opportunitiesCount - a.opportunitiesCount)
+      .map(community => ({
+        link: `/repository/${community.repository}`,
+        imageUrl: community.avatarUrl,
+        name: community.name,
+        desc: describeCommunity(community),
+      }));
+
     res.setHeader(
       'Cache-Control',
       'public, s-maxage=3600, stale-while-revalidate=86400',
     );
     return res.status(200).json(data);
   } catch {
-    return res.status(500).json({ error: 'Erro ao carregar repositórios.' });
+    return res.status(502).json({ error: 'Erro ao carregar repositórios.' });
   }
 }
